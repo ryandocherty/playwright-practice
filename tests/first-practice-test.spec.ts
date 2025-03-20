@@ -1,5 +1,6 @@
-//Import the Playwright test library:
+//Import 'test' and 'expect' the Playwright test library:
 import { test, expect } from "@playwright/test";
+import { error } from "console";
 
 test("Has Google title", async ({ page }) => {
   //Navigate to google's homepage:
@@ -31,6 +32,33 @@ test("Has Store page title", async ({ page }) => {
   //Wait for the Store page to be fully loaded first:
   await page.waitForLoadState("networkidle");
 
-  //Check that the Store page title contains "Google store" substring:
+  //Assert that the Store page title contains "Google store" substring:
   await expect(page).toHaveTitle(/Google Store/);
 });
+
+test("Invalid Google email", async ({ page }) => {
+  await page.goto("https://www.google.com/");
+  await page.waitForLoadState("networkidle");
+  await page.locator('role=button[name="Reject all"]').click();
+
+  await page.locator('role=link[name="Sign in"]').click();
+
+  //Locate the input field using the 'name' attribute
+  //I double checked, the name of google's input box is "identifier"
+  //Then fill it with an invalid email address:
+  await page.fill('[name="identifier"]', "blah123@gmail.com");
+
+  //Click the 'Next' button with the invalid email address
+  await page.click("#identifierNext");
+
+  await page.waitForLoadState("networkidle");
+
+  //This is the exact element name for the error message:
+  await page.waitForSelector('[jsname="r4nke"]', { state: "visible" });
+
+  //Assert that the error message is correct:
+  expect(await page.locator('[jsname="r4nke"]').textContent()).toBe("Couldn’t sign you in");
+});
+
+//Dummy website for automation practice:
+//https://automationexercise.com/
