@@ -26,8 +26,6 @@ test("saucedemo: check backpack price", async () => {
   //assert the correct price is displayed:
   expect(await priceText.trim()).toBe("$29.99");
 
-  console.log(priceText);
-
   await page.getByRole("button", { name: "Open Menu" }).click();
   await page.getByRole("link", { name: "Logout" }).click();
 
