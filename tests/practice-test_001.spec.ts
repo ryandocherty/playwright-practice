@@ -1,6 +1,5 @@
 //Import 'test' and 'expect' the Playwright test library:
 import { test, expect } from "@playwright/test";
-import { error } from "console";
 
 test("Has Google title", async ({ page }) => {
   //Navigate to google's homepage:
@@ -60,5 +59,6 @@ test("Invalid Google email", async ({ page }) => {
   expect(await page.locator('[jsname="r4nke"]').textContent()).toBe("Couldn’t sign you in");
 });
 
-//Dummy website for automation practice:
+//Dummy websites for automation practice:
 //https://automationexercise.com/
+//https://www.saucedemo.com/v1/
