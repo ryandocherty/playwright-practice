@@ -2,7 +2,7 @@ import { test, expect, firefox } from "@playwright/test";
 
 test("saucedemo: login, add backpack to cart, logout", async () => {
   const browser = await firefox.launch({
-    headless: false,
+    headless: true,
   });
   const context = await browser.newContext();
   const page = await context.newPage();
