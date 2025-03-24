@@ -1,5 +1,4 @@
-const { firefox } = require("playwright");
-import { test, expect } from "@playwright/test";
+import { test, expect, firefox } from "@playwright/test";
 
 test("saucedemo: check backpack price", async () => {
   const browser = await firefox.launch({
