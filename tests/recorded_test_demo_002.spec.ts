@@ -1,11 +1,6 @@
-import { test, expect, firefox } from "@playwright/test";
+import { test, expect } from "@playwright/test";
 
-test("saucedemo: login, add backpack to cart, logout", async () => {
-  const browser = await firefox.launch({
-    headless: true,
-  });
-  const context = await browser.newContext();
-  const page = await context.newPage();
+test("saucedemo: login, add backpack to cart, logout", async ({ page }) => {
   await page.goto("https://www.saucedemo.com/v1/");
 
   const label = await page.getByRole("heading", { name: "Accepted usernames are:" });
@@ -23,8 +18,4 @@ test("saucedemo: login, add backpack to cart, logout", async () => {
     .click();
   await page.getByRole("button", { name: "Open Menu" }).click();
   await page.getByRole("link", { name: "Logout" }).click();
-
-  // ---------------------
-  await context.close();
-  await browser.close();
 });

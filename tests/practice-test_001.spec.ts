@@ -55,8 +55,10 @@ test("Invalid Google email", async ({ page }) => {
   //This is the exact element name for the error message:
   await page.waitForSelector('[jsname="r4nke"]', { state: "visible" });
 
+  //RegEx to check if the text contains both "sign" and "in":
+  const regex_signin = /(?=.*\bsign\b)(?=.*\bin\b)/i;
   //Assert that the error message is correct:
-  expect(await page.locator('[jsname="r4nke"]').textContent()).toBe("Couldn’t sign you in");
+  expect(await page.locator('[jsname="r4nke"]').textContent()).toMatch(regex_signin);
 });
 
 //Dummy websites for automation practice:

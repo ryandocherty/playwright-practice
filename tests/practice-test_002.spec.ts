@@ -1,11 +1,6 @@
-import { test, expect, firefox } from "@playwright/test";
+import { test, expect } from "@playwright/test";
 
-test("saucedemo: check backpack price", async () => {
-  const browser = await firefox.launch({
-    headless: true,
-  });
-  const context = await browser.newContext();
-  const page = await context.newPage();
+test("saucedemo: check backpack price", async ({ page }) => {
   await page.goto("https://www.saucedemo.com/v1/");
   await page.locator('[data-test="username"]').click();
   await page.locator('[data-test="username"]').fill("standard_user");
@@ -13,7 +8,7 @@ test("saucedemo: check backpack price", async () => {
   await page.locator('[data-test="password"]').fill("secret_sauce");
   await page.getByRole("button", { name: "LOGIN" }).click();
 
-  //Check the backpack price:
+  //Click the link for the backpack:
   await page.getByRole("link", { name: "Sauce Labs Backpack" }).click();
 
   //the '.' prefix before inventory_details_price indicates you are selecting by class name:
@@ -27,8 +22,4 @@ test("saucedemo: check backpack price", async () => {
 
   await page.getByRole("button", { name: "Open Menu" }).click();
   await page.getByRole("link", { name: "Logout" }).click();
-
-  // ---------------------
-  await context.close();
-  await browser.close();
 });
