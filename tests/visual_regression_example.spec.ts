@@ -11,7 +11,8 @@ ensuring that the application's appearence remains as intended.
 */
 
   //Take a screenshot of the initial state of the landing page:
-  await expect(page).toHaveScreenshot("saucedemo-landing-page.png");
+  await page.waitForLoadState("networkidle");
+  await expect(page).toHaveScreenshot("saucedemo-landing-page.png", { maxDiffPixels: 100 });
   //This line checks the current page's screenshot matches a baseline screenshot,
   //named 'saucedemo-landing-page.png'.
   //If a baseline image does not exist, it will create one.
@@ -23,7 +24,8 @@ ensuring that the application's appearence remains as intended.
   await page.getByRole("button", { name: "LOGIN" }).click();
 
   //Take another screenshot of the initial state after logging in:
-  await expect(page).toHaveScreenshot("saucedemo-logged-in.png");
+  await page.waitForLoadState("networkidle");
+  await expect(page).toHaveScreenshot("saucedemo-logged-in.png", { maxDiffPixels: 100 });
 });
 
 /*

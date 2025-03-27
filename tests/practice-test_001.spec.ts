@@ -55,7 +55,3 @@ test("Invalid Google email", async ({ page }) => {
   //Assert that the error message is correct:
   expect(await page.locator('[jsname="r4nke"]').textContent()).toMatch(regex_signin);
 });
-
-//Dummy websites for automation practice:
-//https://automationexercise.com/
-//https://www.saucedemo.com/v1/

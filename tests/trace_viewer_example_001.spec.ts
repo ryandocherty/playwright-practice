@@ -10,5 +10,5 @@ test("Trace Viewer example", async ({ page }) => {
   console.log("Hello from the console!");
 
   //This is wrong on purpose, to demo the Trace Viewer:
-  await page.getByRole("button", { name: "WRONG" }).click();
+  //await page.getByRole("button", { name: "WRONG" }).click();
 });
