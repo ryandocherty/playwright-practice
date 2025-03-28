@@ -6,9 +6,5 @@ test("Trace Viewer example", async ({ page }) => {
   await page.locator('[data-test="username"]').fill("standard_user");
   await page.locator('[data-test="password"]').click();
   await page.locator('[data-test="password"]').fill("secret_sauce");
-
-  console.log("Hello from the console!");
-
-  //This is wrong on purpose, to demo the Trace Viewer:
-  //await page.getByRole("button", { name: "WRONG" }).click();
+  await page.getByRole("button", { name: "LOGIN" }).click();
 });

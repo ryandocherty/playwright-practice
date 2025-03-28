@@ -3,7 +3,7 @@ import { test, expect } from "@playwright/test";
 test("saucedemo: login, add backpack to cart, logout", async ({ page }) => {
   await page.goto("https://www.saucedemo.com/v1/");
 
-  const label = await page.getByRole("heading", { name: "Accepted usernames are:" });
+  const label = page.getByRole("heading", { name: "Accepted usernames are:" });
   expect(await label.innerText()).toBe("Accepted usernames are:");
 
   await page.locator('[data-test="username"]').click();

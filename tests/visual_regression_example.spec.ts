@@ -6,7 +6,7 @@ test("Visual regression example", async ({ page }) => {
   /*
 Using expect(page).toHaveScreenshot() helps maintain consistent UI
 by checking for unintended visual changes across builds.
-This is particularly useful when changed are made to the frontend code,
+This is particularly useful when changes are made to the frontend code,
 ensuring that the application's appearence remains as intended.
 */
 
