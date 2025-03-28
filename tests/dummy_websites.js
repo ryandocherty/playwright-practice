@@ -3,6 +3,8 @@
 
 https://automationexercise.com/
 https://www.saucedemo.com/v1/
+https://www.saucedemo.com/
+https://demo.applitools.com/
 
 
 https://testing-playground.com/
