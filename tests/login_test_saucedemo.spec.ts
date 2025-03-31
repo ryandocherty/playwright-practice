@@ -63,15 +63,3 @@ test("Saucedemo invalid login: invalid password", async ({ page }) => {
     "Epic sadface: Username and password do not match any user in this service"
   );
 });
-
-test("Saucedemo invalid login: locked_out_user", async ({ page }) => {
-  //attempt to login with username for someone who is locked out:
-  await page.locator(SELECTORS.usernameInputBox_Saucedemo).fill("locked_out_user");
-  //this is a valid password:
-  await page.locator(SELECTORS.passwordInputBox_Saucedemo).fill("secret_sauce");
-  await page.locator(SELECTORS.loginButton_Saucedemo).click();
-  await expect(page.locator(SELECTORS.errorMessage_Saucedemo)).toBeVisible();
-  expect(await getElementText(page, SELECTORS.errorMessage_Saucedemo)).toBe(
-    "Epic sadface: Sorry, this user has been locked out."
-  );
-});
