@@ -1,6 +1,6 @@
 "use strict";
-import { test, expect } from "@playwright/test";
-import { getElementText, SELECTORS } from "./saucedemo_helpers";
+import { test, expect, selectors } from "@playwright/test";
+import { getElementText, SELECTORS, addToCartButtons, removeFromCartButtons } from "./saucedemo_helpers";
 
 /*
 These tests are to check that the error messages displayed
@@ -64,10 +64,9 @@ test("Saucedemo invalid login: invalid password", async ({ page }) => {
   );
 });
 
-test("Saucedemo invalid login: locked_out_user", async ({ page }) => {
-  //attempt to login with username for someone who is locked out:
+test("Saucedemo login: locked_out_user", async ({ page }) => {
+  //locked_out_user = unable to log-in
   await page.locator(SELECTORS.usernameInputBox).fill("locked_out_user");
-  //this is a valid password:
   await page.locator(SELECTORS.passwordInputBox).fill("secret_sauce");
   await page.locator(SELECTORS.loginButton).click();
   await expect(page.locator(SELECTORS.errorMessage)).toBeVisible();
@@ -76,29 +75,70 @@ test("Saucedemo invalid login: locked_out_user", async ({ page }) => {
   );
 });
 
-test("Saucedemo invalid login: problem_user", async ({ page }) => {
-  //attempt to login with username for someone who is locked out:
+test("Saucedemo login: problem_user", async ({ page }) => {
+  //problem_user = just shows the same dog picture for every item
+
   await page.locator(SELECTORS.usernameInputBox).fill("problem_user");
-  //this is a valid password:
   await page.locator(SELECTORS.passwordInputBox).fill("secret_sauce");
   await page.locator(SELECTORS.loginButton).click();
   await page.waitForLoadState("networkidle");
 
   //Saucedemo just shows images of dogs when logged in as problem_user
   //here I'm checking that the image of the first item is visible:
-  await page.locator(SELECTORS.firstItemImage_datatest).waitFor({ state: "visible" });
-  expect(page.locator(SELECTORS.firstItemImage_datatest)).toBeVisible();
+  await page.locator(SELECTORS.firstItemImage).waitFor({ state: "visible" });
+  expect(page.locator(SELECTORS.firstItemImage)).toBeVisible();
 
   //A const to store the src of the first item viewable on the webpage.
   //I already have the exact src in saucedemo_helpers.ts,
   //but I want to grab it here fresh to do a comparison:
-  const firstItem_src_attribute = await page.locator(SELECTORS.firstItemImage_datatest).getAttribute("src");
+  const firstItem_src = await page.locator(SELECTORS.firstItemImage).getAttribute("src");
 
   //assert that the 'src' of the first item image is the same as the dog item image:
-  expect(firstItem_src_attribute === SELECTORS.dogImage_src);
+  expect(firstItem_src === SELECTORS.dogImage_src);
 
   //Saucedemo shows normal images when logged in as standard_user,
   //so here I'm checking that the src found earlier does not match
-  //what a standard_user would be seeing:
-  expect(firstItem_src_attribute !== SELECTORS.backpackImage_src);
+  //what a standard_user would be seeing (backpack image):
+  expect(firstItem_src !== SELECTORS.backpackImage_src);
+});
+
+test("Saucedemo login: performance_glitch_user", async ({ page }) => {
+  //performance_glitch_user = simulates slow log-in speed
+
+  await page.locator(SELECTORS.usernameInputBox).fill("performance_glitch_user");
+  await page.locator(SELECTORS.passwordInputBox).fill("secret_sauce");
+
+  //Timing the speed it takes to log in as a performance_glitch_user:
+  const startTime = Date.now();
+  await page.locator(SELECTORS.loginButton).click();
+  await page.waitForLoadState("networkidle");
+  const endTime = Date.now();
+  const loadTime = endTime - startTime;
+  console.log(`Log-in took ${loadTime / 1000} seconds`);
+
+  //expect the log-in time to be less than 10s:
+  expect(loadTime).toBeLessThan(10000);
+});
+
+test("Saucedemo login: error_user", async ({ page }) => {
+  //error_user = simulates some buttons not working
+
+  await page.locator(SELECTORS.usernameInputBox).fill("error_user");
+  await page.locator(SELECTORS.passwordInputBox).fill("secret_sauce");
+  await page.locator(SELECTORS.loginButton).click();
+  await page.waitForLoadState("networkidle");
+
+  //loop through each of the "Add to cart" buttons and click them:
+  for (const addToCartID of addToCartButtons) {
+    const button = await page.$(addToCartID);
+    if (button?.isVisible()) {
+      await button.click();
+    } else {
+      console.warn(`Button ${addToCartID} not found`);
+    }
+  }
+
+  //ow do the same loop, but check that they are the updated "Remove" buttons:
+  for (const removeFromCartID of removeFromCartButtons) {
+  }
 });
