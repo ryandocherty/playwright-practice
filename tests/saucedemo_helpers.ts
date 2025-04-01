@@ -1,4 +1,4 @@
-//-----------This is a helper file for login_test_saucedemo.spec.ts-----------
+//----------This is a helper file for login_test_saucedemo.spec.ts----------
 
 import { Page } from "playwright/test";
 

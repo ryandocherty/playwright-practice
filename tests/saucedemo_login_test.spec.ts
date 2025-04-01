@@ -1,6 +1,6 @@
 "use strict";
 import { test, expect } from "@playwright/test";
-import { getElementText, SELECTORS } from "./helpers_saucedemo";
+import { getElementText, SELECTORS } from "./saucedemo_helpers";
 
 /*
 These tests are to check that the error messages displayed
