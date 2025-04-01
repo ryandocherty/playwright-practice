@@ -1,13 +1,16 @@
-//----------This is a helper file for login_test_saucedemo.spec.ts----------
+//----------This is a helper file for saucedemo_login_test.spec.ts----------
 
 import { Page } from "playwright/test";
 
 //declare constants for various selectors on saucedemo.com:
 export const SELECTORS = {
-  loginButton_Saucedemo: '[data-test="login-button"]',
-  errorMessage_Saucedemo: '[data-test="error"]',
-  usernameInputBox_Saucedemo: '[data-test="username"]',
-  passwordInputBox_Saucedemo: '[data-test="password"]',
+  loginButton: '[data-test="login-button"]',
+  errorMessage: '[data-test="error"]',
+  usernameInputBox: '[data-test="username"]',
+  passwordInputBox: '[data-test="password"]',
+  firstItemImage_datatest: '[data-test="inventory-item-sauce-labs-backpack-img"]',
+  backpackImage_src: "/static/media/sauce-backpack-1200x1500.0a0b85a3.jpg",
+  dogImage_src: "/static/media/sl-404.168b1cce.jpg",
 };
 
 //Function to extract text from any of the elements defined above:
