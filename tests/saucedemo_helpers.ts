@@ -28,6 +28,9 @@ export const addToCartButtons = [
 
 export const removeFromCartButtons = [
   //Remove from cart buttons:
+  //Note - after clicking the "Add to cart" buttons above,
+  //element names of the buttons change, which is why I'm creating
+  //a separate array for just the "Remove" buttons
   '[data-test="remove-sauce-labs-backpack"]',
   '[data-test="remove-sauce-labs-bike-light"]',
   '[data-test="remove-sauce-labs-bolt-t-shirt"]',
@@ -43,5 +46,13 @@ export async function getElementText(page: Page, selector: string) {
     const element = document.querySelector(selec);
     //If the element is found, return the text content. If not found, return an error
     return element ? element?.textContent : console.log("Element not found");
+  }, selector);
+}
+
+//Function to extract data-test attribute from any of the elements defined above:
+export async function getElementDataTest(page: Page, selector: string) {
+  return await page.evaluate((selec) => {
+    const element = document.querySelector(selec);
+    return element ? element?.getAttribute("data-test") : console.log("Element not found");
   }, selector);
 }

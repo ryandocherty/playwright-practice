@@ -1,6 +1,12 @@
 "use strict";
 import { test, expect, selectors } from "@playwright/test";
-import { getElementText, SELECTORS, addToCartButtons, removeFromCartButtons } from "./saucedemo_helpers";
+import {
+  getElementText,
+  SELECTORS,
+  addToCartButtons,
+  removeFromCartButtons,
+  getElementDataTest,
+} from "./saucedemo_helpers";
 
 /*
 These tests are to check that the error messages displayed
@@ -128,17 +134,37 @@ test("Saucedemo login: error_user", async ({ page }) => {
   await page.locator(SELECTORS.loginButton).click();
   await page.waitForLoadState("networkidle");
 
-  //loop through each of the "Add to cart" buttons and click them:
-  for (const addToCartID of addToCartButtons) {
-    const button = await page.$(addToCartID);
-    if (button?.isVisible()) {
-      await button.click();
-    } else {
-      console.warn(`Button ${addToCartID} not found`);
-    }
-  }
+  //page.$$ returns an array of all "Add to Cart" buttons:
+  //Note - all of the "data-test" attributes for the buttons
+  //initially start with "add-to-cart", which makes this simple
+  //Note - the "^=" is a wildcard match to select all attributes that start with a specific value
+  const initialButtons = await page.$$(`button[data-test^="add-to-cart"]`);
 
-  //ow do the same loop, but check that they are the updated "Remove" buttons:
-  for (const removeFromCartID of removeFromCartButtons) {
+  //initialise an array to store the broken buttons' data-test attributes
+  const brokenButtons = [];
+
+  //loop through each of the buttons found with data-test attribute starting with "add-to-cart":
+  for (const button of initialButtons) {
+    //grab the "data-test" attribute for each button in the loop:
+    const initialButtons_DataTest = await button.getAttribute("data-test");
+
+    await page.pause();
+    await button.click();
+    await page.waitForLoadState("networkidle");
+    const buttonText = await button.innerText();
+
+    //NOTE FOR LATER: here is the problem
+    //It's still reading the buttons as "add to cart":
+    console.log(`Button text: ${buttonText}`);
+
+    if ((await button.innerText()) !== "Remove") {
+      brokenButtons.push(await button.getAttribute("data-test"));
+    }
+    console.log(`Initial Button Data Test: ${initialButtons_DataTest}`);
   }
 });
+
+//1. grab all original data-test^="add-to-cart" attributes before clicking any buttons
+//2. loop through and click all the buttons
+//3. grab all the buttons that now have data-test^="remove"
+//4. output the buttons that do not have data-test^="remove"
