@@ -134,37 +134,34 @@ test("Saucedemo login: error_user", async ({ page }) => {
   await page.locator(SELECTORS.loginButton).click();
   await page.waitForLoadState("networkidle");
 
-  //page.$$ returns an array of all "Add to Cart" buttons:
-  //Note - all of the "data-test" attributes for the buttons
-  //initially start with "add-to-cart", which makes this simple
-  //Note - the "^=" is a wildcard match to select all attributes that start with a specific value
-  const initialButtons = await page.$$(`button[data-test^="add-to-cart"]`);
+  //page.$$ returns an array of all the specified elements found
+  //here I'm returning an array of buttons with the Class "btn_inventory":
+  const initialButtons = await page.$$(`button.btn_inventory`);
 
-  //initialise an array to store the broken buttons' data-test attributes
-  const brokenButtons = [];
-
-  //loop through each of the buttons found with data-test attribute starting with "add-to-cart":
+  //loop through each of the buttons found with Class "btn_inventory":
   for (const button of initialButtons) {
     //grab the "data-test" attribute for each button in the loop:
     const initialButtons_DataTest = await button.getAttribute("data-test");
+    console.log(`Initial Button data-test: "${initialButtons_DataTest}"`);
 
-    await page.pause();
     await button.click();
     await page.waitForLoadState("networkidle");
-    const buttonText = await button.innerText();
+  }
 
-    //NOTE FOR LATER: here is the problem
-    //It's still reading the buttons as "add to cart":
-    console.log(`Button text: ${buttonText}`);
+  //after clicking the buttons, return an updated array of the buttons' Class:
+  const buttonsAfterClick = await page.$$(`button.btn_inventory`);
+
+  //Reason for using a separate loop for the "buttonsAfterClick" array:
+  //Initially tried to do this all in one loop using the "initialButtons" array,
+  //but it was still reading ALL the buttons' innerText as "Add to cart",
+  //and it was dtill reading the data-test attributes as "data-test="add-to-cart"
+  for (const button of buttonsAfterClick) {
+    const clickedButtons_DataTest = await button.getAttribute("data-test");
 
     if ((await button.innerText()) !== "Remove") {
-      brokenButtons.push(await button.getAttribute("data-test"));
+      console.log(`Button with data-test attribute "${clickedButtons_DataTest}" has not updated.`);
+    } else {
+      console.log(`Button with data-test attribute "${clickedButtons_DataTest}" has updated correctly.`);
     }
-    console.log(`Initial Button Data Test: ${initialButtons_DataTest}`);
   }
 });
-
-//1. grab all original data-test^="add-to-cart" attributes before clicking any buttons
-//2. loop through and click all the buttons
-//3. grab all the buttons that now have data-test^="remove"
-//4. output the buttons that do not have data-test^="remove"
