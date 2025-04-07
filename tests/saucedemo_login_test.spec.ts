@@ -150,18 +150,20 @@ test("Saucedemo login: error_user", async ({ page }) => {
 
   //after clicking the buttons, return an updated array of the buttons' Class:
   const buttonsAfterClick = await page.$$(`button.btn_inventory`);
+  const itemNames = await page.$$(`.inventory_item_name`);
 
-  //Reason for using a separate loop for the "buttonsAfterClick" array:
-  //Initially tried to do this all in one loop using the "initialButtons" array,
-  //but it was still reading ALL the buttons' innerText as "Add to cart",
-  //and it was dtill reading the data-test attributes as "data-test="add-to-cart"
+  //loop through the array of buttons afetr they've been clicked:
   for (const button of buttonsAfterClick) {
-    const clickedButtons_DataTest = await button.getAttribute("data-test");
+    const clickedButton_DataTest = await button.getAttribute("data-test");
+
+    //cleaned-up versions of the data-test attribute strings:
+    //using regex to replace either "add-to-cart-" or "remove-" with empty space:
+    const clickedButton_substring = clickedButton_DataTest?.replace(/(add-to-cart-|remove-)/, "");
 
     if ((await button.innerText()) !== "Remove") {
-      console.log(`Button with data-test attribute "${clickedButtons_DataTest}" has not updated.`);
+      console.log(`\nButton for item "${clickedButton_substring}" has not updated.`);
     } else {
-      console.log(`Button with data-test attribute "${clickedButtons_DataTest}" has updated correctly.`);
+      console.log(`\nButton for item "${clickedButton_substring}" has updated correctly.`);
     }
   }
 });
