@@ -142,7 +142,10 @@ test("Saucedemo login: error_user", async ({ page }) => {
   for (const button of initialButtons) {
     //grab the "data-test" attribute for each button in the loop:
     const initialButtons_DataTest = await button.getAttribute("data-test");
-    console.log(`Initial Button data-test: "${initialButtons_DataTest}"`);
+    console.log(`Clicking button: "${initialButtons_DataTest}"`);
+
+    //assert that the button text says "Add to cart" before clicking:
+    expect((await button.innerText()) === "Add to cart");
 
     await button.click();
     await page.waitForLoadState("networkidle");
@@ -150,20 +153,32 @@ test("Saucedemo login: error_user", async ({ page }) => {
 
   //after clicking the buttons, return an updated array of the buttons' Class:
   const buttonsAfterClick = await page.$$(`button.btn_inventory`);
-  const itemNames = await page.$$(`.inventory_item_name`);
 
-  //loop through the array of buttons afetr they've been clicked:
+  //loop through the array of buttons after they've been clicked:
   for (const button of buttonsAfterClick) {
-    const clickedButton_DataTest = await button.getAttribute("data-test");
+    //1. Use evaluateHandle() to access the DOM directly via a function that operates on the button element.
+    //2. The function passed into evaluateHandle() uses the closest() method to find the nearest ancestor
+    //    with the Class ".inventory_item".
+    //3. It then queries for the desired ".inventory_item_name" Class.
+    //4. After obtaining the handle for the ".inventory_item_name" Class, I'm calling evaluate() on that handle
+    //    to then retrieve the innerText (the actual item name).
+    const itemNameElementHandle = await button.evaluateHandle((btn) =>
+      btn.closest(".inventory_item")?.querySelector(".inventory_item_name")
+    );
+    const itemName = await itemNameElementHandle.evaluate((elem) => elem?.innerHTML);
 
-    //cleaned-up versions of the data-test attribute strings:
-    //using regex to replace either "add-to-cart-" or "remove-" with empty space:
-    const clickedButton_substring = clickedButton_DataTest?.replace(/(add-to-cart-|remove-)/, "");
+    //after using evaluateHandle() to create the element reference,
+    //use dispose() to prevent memory leaks:
+    await itemNameElementHandle.dispose();
 
-    if ((await button.innerText()) !== "Remove") {
-      console.log(`\nButton for item "${clickedButton_substring}" has not updated.`);
+    const buttonText = await button.innerText();
+
+    if (buttonText !== "Remove") {
+      expect(buttonText !== "Remove");
+      console.log(`Button for item "${itemName}" has NOT updated and still reads as "${buttonText}".`);
     } else {
-      console.log(`\nButton for item "${clickedButton_substring}" has updated correctly.`);
+      expect(buttonText === "Remove");
+      console.log(`Button for item "${itemName}" has correctly updated to "${buttonText}".`);
     }
   }
 });
