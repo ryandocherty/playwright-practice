@@ -13,7 +13,13 @@ export const SELECTORS = {
   //Selectors once logged in:
   firstItemImage: '[data-test="inventory-item-sauce-labs-backpack-img"]',
   backpackImage_src: "/static/media/sauce-backpack-1200x1500.0a0b85a3.jpg",
+  bikelightImage_scr: "/static/media/bike-light-1200x1500.37c843b0.jpg",
+  boltshirtImage_src: "/static/media/bolt-shirt-1200x1500.c2599ac5.jpg",
+  fleecejacketImage_src: "/static/media/sauce-pullover-1200x1500.51d7ffaf.jpg",
+  onsieImage_src: "/static/media/red-onesie-1200x1500.2ec615b2.jpg",
+  redshirtImage: "/static/media/red-tatt-1200x1500.30dadef4.jpg",
   dogImage_src: "/static/media/sl-404.168b1cce.jpg",
+  logoutButton: '[data-test="logout-sidebar-link"]',
 };
 
 export const addToCartButtons = [
@@ -25,6 +31,15 @@ export const addToCartButtons = [
   '[data-test="add-to-cart-sauce-labs-onesie"]',
   '[data-test="add-to-cart-test\\.allthethings\\(\\)-t-shirt-\\(red\\)"]',
 ];
+
+export const correctItemPrices = {
+  backpackPrice: 29.99,
+  bikelightPrice: 9.99,
+  boltshirtPrice: 15.99,
+  fleecejacketPrice: 49.99,
+  onsiePrice: 7.99,
+  redshirtPrice: 15.99,
+};
 
 export const removeFromCartButtons = [
   //Remove from cart buttons:
