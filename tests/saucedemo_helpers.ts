@@ -1,6 +1,6 @@
 //----------This is a helper file for saucedemo_login_test.spec.ts----------
 
-import { Page } from "playwright/test";
+import { ElementHandle, Locator, Page } from "playwright/test";
 
 //declare constants for various selectors on saucedemo.com:
 export const SELECTORS = {
@@ -54,7 +54,7 @@ export const removeFromCartButtons = [
   '[data-test="remove-test\\.allthethings\\(\\)-t-shirt-\\(red\\)"]',
 ];
 
-//Function to extract text from any of the elements defined above:
+//function to extract text from any of the elements defined above:
 export async function getElementText(page: Page, selector: string) {
   return await page.evaluate((selec) => {
     //Query the given element:
@@ -62,4 +62,34 @@ export async function getElementText(page: Page, selector: string) {
     //If the element is found, return the text content. If not found, return an error
     return element ? element?.textContent : console.log("Element not found");
   }, selector);
+}
+
+//function to extract the item name using its corresponding "price" element handle:
+//Param: priceElementHandle - the Playwright ElementHandle for the price element.
+export async function getItemName(priceElementHandle: ElementHandle) {
+  //1. Use evaluateHandle() to access the DOM directly via a function that operates on the price element ("pric").
+  //2. The function passed into evaluateHandle() uses the closest() method to find the nearest ancestor
+  //    with the Class ".inventory_item".
+  //3. It then queries for the desired ".inventory_item_name" Class.
+  //4. After obtaining the handle for the ".inventory_item_name" Class, I'm calling evaluate() on that handle
+  //    to then retrieve the innerText (the actual item name).
+  try {
+    const itemNameElementHandle = await priceElementHandle.evaluateHandle((pric: HTMLElement) =>
+      pric.closest(".inventory_item")?.querySelector(".inventory_item_name")
+    );
+
+    //grab the actual item name, while also checking it's not null/undefinied:
+    const itemName = itemNameElementHandle
+      ? await itemNameElementHandle.evaluate((elem: HTMLElement) => elem?.innerHTML)
+      : undefined;
+
+    //dispose of the element handle to avoid memeory leaks:
+    await itemNameElementHandle.dispose();
+
+    //finally return the name of the item:
+    return itemName;
+  } catch (error) {
+    console.log(`Error retrieving item name: `, error);
+    return undefined;
+  }
 }

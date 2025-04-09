@@ -6,6 +6,7 @@ import {
   addToCartButtons,
   removeFromCartButtons,
   correctItemPrices,
+  getItemName,
 } from "./saucedemo_helpers";
 
 /*
@@ -159,21 +160,7 @@ test.describe("Saucedemo: logging in as different users", () => {
 
     //loop through the array of buttons after they've been clicked:
     for (const button of buttonsAfterClick) {
-      //1. Use evaluateHandle() to access the DOM directly via a function that operates on the button element.
-      //2. The function passed into evaluateHandle() uses the closest() method to find the nearest ancestor
-      //    with the Class ".inventory_item".
-      //3. It then queries for the desired ".inventory_item_name" Class.
-      //4. After obtaining the handle for the ".inventory_item_name" Class, I'm calling evaluate() on that handle
-      //    to then retrieve the innerText (the actual item name).
-      const itemNameElementHandle = await button.evaluateHandle((btn) =>
-        btn.closest(".inventory_item")?.querySelector(".inventory_item_name")
-      );
-      const itemName = await itemNameElementHandle.evaluate((elem) => elem?.innerHTML);
-
-      //after using evaluateHandle() to create the element reference,
-      //use dispose() to prevent memory leaks:
-      await itemNameElementHandle.dispose();
-
+      const itemName = await getItemName(button);
       const buttonText = await button.innerText();
 
       if (buttonText !== "Remove") {
@@ -207,17 +194,8 @@ test.describe("Saucedemo: logging in as different users", () => {
       //clean-up the string (remove the dollar sign basically) and convert to purely numerical:
       const displayedPrice_asNum = parseFloat(displayedPrice_asText.replace(/[^0-9.-]+/g, ""));
 
-      //grab the corresponding item name element:
-      const itemNameElementHandle = await price.evaluateHandle((pric) =>
-        pric.closest(".inventory_item")?.querySelector(".inventory_item_name")
-      );
-
-      //grab the actual item name, while also checking it's not null/undefinied:
-      const itemName = itemNameElementHandle
-        ? await itemNameElementHandle.evaluate((elem) => elem?.innerHTML)
-        : undefined;
-
-      await itemNameElementHandle.dispose();
+      //grab the item name using the function in helpers.ts:
+      const itemName = await getItemName(price);
 
       //if itemName exists, add itemName & displayedPrice_asNum to displayedPrices object:
       if (itemName) {
