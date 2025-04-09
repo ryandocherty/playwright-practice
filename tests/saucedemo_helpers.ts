@@ -63,11 +63,3 @@ export async function getElementText(page: Page, selector: string) {
     return element ? element?.textContent : console.log("Element not found");
   }, selector);
 }
-
-//Function to extract data-test attribute from any of the elements defined above:
-export async function getElementDataTest(page: Page, selector: string) {
-  return await page.evaluate((selec) => {
-    const element = document.querySelector(selec);
-    return element ? element?.getAttribute("data-test") : console.log("Element not found");
-  }, selector);
-}

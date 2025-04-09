@@ -5,7 +5,6 @@ import {
   SELECTORS,
   addToCartButtons,
   removeFromCartButtons,
-  getElementDataTest,
   correctItemPrices,
 } from "./saucedemo_helpers";
 
@@ -198,10 +197,35 @@ test.describe("Saucedemo: logging in as different users", () => {
     //return an array of all of the Classes of the currently displayed item prices:
     const incorrectItemPrices = await page.$$(".inventory_item_price");
 
-    //output the currently displayed item prices:
+    //initialise an empty object to hold the displayed prices:
+    const displayedPrices: Record<string, number> = {};
+
+    //loop to output the currently displayed item prices:
     for (const price of incorrectItemPrices) {
-      const displayedPrice = await price.innerText();
-      console.log(displayedPrice);
+      const displayedPrice_asText = await price.innerText();
+
+      //clean-up the string (remove the dollar sign basically) and convert to purely numerical:
+      const displayedPrice_asNum = parseFloat(displayedPrice_asText.replace(/[^0-9.-]+/g, ""));
+
+      //grab the corresponding item name element:
+      const itemNameElementHandle = await price.evaluateHandle((pric) =>
+        pric.closest(".inventory_item")?.querySelector(".inventory_item_name")
+      );
+
+      //grab the actual item name, while also checking it's not null/undefinied:
+      const itemName = itemNameElementHandle
+        ? await itemNameElementHandle.evaluate((elem) => elem?.innerHTML)
+        : undefined;
+
+      await itemNameElementHandle.dispose();
+
+      //if itemName exists, add itemName & displayedPrice_asNum to displayedPrices object:
+      if (itemName) {
+        displayedPrices[itemName] = displayedPrice_asNum;
+        console.log(`Item Name: ${itemName}\nDisplayed Price: ${displayedPrice_asNum}\n`);
+      } else {
+        console.log(`Could not find the item name for the displayed price.`);
+      }
     }
   });
 });
