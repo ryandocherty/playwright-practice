@@ -2,11 +2,11 @@
 import { test, expect, selectors } from "@playwright/test";
 import {
   getElementText,
+  getItemName,
   SELECTORS,
   addToCartButtons,
   removeFromCartButtons,
   correctItemPrices,
-  getItemName,
 } from "./saucedemo_helpers";
 
 /*
