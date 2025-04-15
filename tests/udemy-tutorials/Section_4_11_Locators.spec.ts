@@ -25,9 +25,7 @@ If you need to write the locator based on text:
 text=""
 */
 
-test("Udemy: Selectors Demo", async ({ browser }) => {
-  const context = await browser.newContext();
-  const page = await context.newPage();
+test("Udemy: Selectors Demo", async ({ page }) => {
   await page.goto("https://rahulshettyacademy.com/loginpagePractise/");
 
   await page.locator(`input#username`).fill("Hello");

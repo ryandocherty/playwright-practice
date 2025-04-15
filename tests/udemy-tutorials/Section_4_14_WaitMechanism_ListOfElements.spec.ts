@@ -2,9 +2,7 @@
 
 import { test, expect } from "@playwright/test";
 
-test("Udemy: List of Elements", async ({ browser }) => {
-  const context = await browser.newContext();
-  const page = await context.newPage();
+test("Udemy: List of Elements", async ({ page }) => {
   await page.goto("https://rahulshettyacademy.com/loginpagePractise/");
 
   const userNameInputBox = page.locator(`#username`);

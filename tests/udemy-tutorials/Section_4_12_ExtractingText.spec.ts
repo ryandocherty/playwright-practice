@@ -2,9 +2,7 @@
 
 import { test, expect } from "@playwright/test";
 
-test("Udemy: Extracting Text Demo", async ({ browser }) => {
-  const context = await browser.newContext();
-  const page = await context.newPage();
+test("Udemy: Extracting Text Demo", async ({ page }) => {
   await page.goto("https://rahulshettyacademy.com/loginpagePractise/");
 
   await page.locator(`#username`).fill(`Wrong_Username`);
