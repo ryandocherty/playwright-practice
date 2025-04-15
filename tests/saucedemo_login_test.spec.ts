@@ -28,7 +28,7 @@ test.describe("Saucedemo: invalid logins", () => {
 
     //1. Call the getElementText() function (defined in saucedemo_helpers.ts)
     //2. Pass 1st arg: the 'page' fixture
-    //3. Pass 2nd arg: the specified selector (defined in saucedemo_helpers.ts)
+    //3. Pass 2nd arg: the specified selector as a string (defined in saucedemo_helpers.ts)
     expect(await getElementText(page, SELECTORS.errorMessage)).toBe("Epic sadface: Username is required");
   });
 
@@ -87,6 +87,13 @@ test.describe("Saucedemo: logging in as different users", () => {
 
   test("Saucedemo login: problem_user", async ({ page }) => {
     //problem_user = just shows the same dog picture for every item
+
+    /*
+    Idea for future:
+    Atm, this test just checks the first image on the website and validates against "dogImage_src".
+    Could use page.$$ to return a fresh array of all images on the website?
+    Then loop through the array, grab the images src's and compare to "dogImage_src"?
+    */
 
     await page.locator(SELECTORS.usernameInputBox).fill("problem_user");
     await page.locator(SELECTORS.passwordInputBox).fill("secret_sauce");

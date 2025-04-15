@@ -1,4 +1,4 @@
-//8. What is browser context and Page fixtures in Playwright ?
+//Section 3.8: What is browser context and Page fixtures in Playwright ?
 
 import { test, expect } from "@playwright/test";
 
