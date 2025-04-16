@@ -10,4 +10,5 @@ export const UDEMY_SELECTORS = {
   popUp_OkayButton: `#okayBtn`,
   popUp_CancelButton: `#cancelBtn`,
   termsCheckBox: `#terms`,
+  blinkingTextBanner: `.blinkingText`,
 };
