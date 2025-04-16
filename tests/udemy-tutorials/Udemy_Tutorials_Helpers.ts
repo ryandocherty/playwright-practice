@@ -9,4 +9,5 @@ export const UDEMY_SELECTORS = {
   radioButtons: `.radiotextsty`,
   popUp_OkayButton: `#okayBtn`,
   popUp_CancelButton: `#cancelBtn`,
+  termsCheckBox: `#terms`,
 };

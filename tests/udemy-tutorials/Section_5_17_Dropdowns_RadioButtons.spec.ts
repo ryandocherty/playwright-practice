@@ -55,11 +55,13 @@ test("Udemy: Dropdowns and Radio Buttons", async ({ page }) => {
   When we click the "User" radio button on this website, a pop-up appears.
   The pop-up contains a message, with "Cancel" and "Okay" buttons.
 
-  The HTML for the button is as follows:
+  The HTML for the buttons is as follows:
 
   <button type="button" id="okayBtn" class="btn btn-success" autofocus="" css="1">Okay</button>
+  <button type="button" id="cancelBtn" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
 
-  We can use the "id" atrribute to make a unique selector "#okayBtn".
+  We can use the "id" atrribute to make a unique selector 
+  for the "okay" button - "#okayBtn".
   */
 
   await page.locator(`#okayBtn`).click();
