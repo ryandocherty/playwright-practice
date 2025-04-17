@@ -1,7 +1,7 @@
 //Section 5.20: Handling Child windows & Tabs with Playwright by switching browser context
 
 import { test, expect } from "@playwright/test";
-import { UDEMY_SELECTORS } from "./Udemy_Tutorials_Helpers";
+import { SELECTORS } from "./Udemy_Tutorials_Helpers";
 
 test("Udemy: Child Windows", async ({ browser }) => {
   /*
@@ -56,13 +56,16 @@ test("Udemy: Child Windows", async ({ browser }) => {
   We don't use "await" in this case, we need something more asynchronous.
   For this, we can wrap these steps in an array using Promise.all().
 
-  Whenever we think a set of steps need to execute in parallel, we use Promise.all().
+  Whenever you think a set of steps need to execute in parallel, use Promise.all().
   Promise.all() is an array of Promises, and creates a new Promise that is resolved
   with an array of results when all of the provided Promises resolve,
   or reject when any Promise is rejected.
   */
 
-  const [newPage] = await Promise.all([context.waitForEvent(`page`), page.locator(`.blinkingText`).click()]);
+  const [newPage] = await Promise.all([
+    context.waitForEvent(`page`),
+    page.locator(SELECTORS.blinkingTextLink).click(),
+  ]);
 
   /*
   This array will now keep iterating thorugh these steps as long as a Promise is not rejected.

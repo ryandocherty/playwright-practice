@@ -70,7 +70,9 @@ test("Udemy: Dynamic Waiting", async ({ page }) => {
   for (let i = 0; i < expectedProductTitles.length; i++) {
     expect(expectedProductTitles).toHaveLength(allCardTitles2.length);
     expect(expectedProductTitles[i]).toBe(allCardTitles2[i]);
-    console.log(`\nExpected Name: ${expectedProductTitles[i]} \nReceived Name: ${allCardTitles2[i]}`);
+    console.log(
+      `\nExpected Name: ${expectedProductTitles[i]} \nReceived Name: ${allCardTitles2[i]}`
+    );
   }
   //------------------------------------------------------------
 });

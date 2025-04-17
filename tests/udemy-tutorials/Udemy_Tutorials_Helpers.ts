@@ -1,6 +1,6 @@
 //----------Helper file for Udemy tutotials----------
 
-export const UDEMY_SELECTORS = {
+export const SELECTORS = {
   userNameInputBox: `#username`,
   passwordInputBox: `[type="password"]`,
   signInButton: `#signInBtn`,
