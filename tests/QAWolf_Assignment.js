@@ -22,7 +22,7 @@ import { test, expect, chromium } from "@playwright/test";
 */
 
 async function sortHackerNewsArticles() {
-  const browser = await chromium.launch({ headless: true });
+  const browser = await chromium.launch({ headless: false });
   const context = await browser.newContext();
   const page = await context.newPage();
 
@@ -110,6 +110,9 @@ async function sortHackerNewsArticles() {
   } else {
     console.log(`Timestamp(s) mismatch found!\nThe articles are unlikely sorted by newest to oldest.`);
   }
+
+  await context.close();
+  await browser.close();
 }
 
 (async () => {
