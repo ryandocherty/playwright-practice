@@ -77,6 +77,64 @@ test("Udemy: Child Windows", async ({ browser }) => {
   Because we're not using "await", it won't wait for this Promise pending to change 
   to Promise fulfiled and it will then immediately execute the click() operation.
 
+  ----------What is "const [newPage]"?--------------------
+  Promise.all() here resolves to an array with two elements (two resolved promise values). 
+  We're only interested in the first result: the new page that was opened, 
+  which comes from the first promise context.waitForEvent(`page`).
+
+  So by writing "const [newPage]", we're saying:
+  "From the array of results, assign the first element to the variable newPage"
+
+  "const [newPage]" is using the destructuring assignment to extract
+  the first element from the array that is returned by Promise.all().
+
+  "const [newPage]" is not declaring a new array; it is destructuring the returned array from Promise.all().
+  It grabs the first value in the array — the new page object that was emitted by context.waitForEvent('page').
+  This allows you to work with the new page directly afterwards.
+  --------------------------------------------------------
+
   The array will ultimately return an index of fulfiled Promises.
   */
+
+  //Now we'll interact with the new page.
+  //Let's grab this text on the new page:
+  //"Please email us at mentor@rahulshettyacademy.com with below template to receive response".
+  //Then we'll use string method(s) to extract just "rahulshettyacademy.com".
+
+  //Firstly grab the whole string:
+  const originalText = await newPage.locator(`.red`).textContent();
+  const fullText = originalText?.trim();
+  expect(fullText).toBe(
+    `Please email us at mentor@rahulshettyacademy.com with below template to receive response`
+  );
+  console.log(fullText);
+
+  //Use split() to return a (new) array using "@" as the seperator.
+  const textArray = fullText?.split(`@`);
+  expect(textArray).toEqual([
+    `Please email us at mentor`,
+    `rahulshettyacademy.com with below template to receive response`,
+  ]);
+  console.log(textArray);
+  //Now "textArray" will contain:
+  //Index 0: "Please email us at mentor".
+  //Index 1: "rahulshettyacademy.com with below template to receive response".
+
+  //We need the interact with the string stored in Index 1, which contains the domain we want to extract.
+  //We can use split() again, using the whitespace after "rahulshettyacademy.com" as the seperator.
+  //We can specify that we only want to interact on index[1] of textArray,
+  //then on index[1] we split again using the whitespace as the seperator.
+  //Finally, we can specify that we then only want domainText to contain index[0] of this
+  //new array, which will just be "rahulshettyacademy.com":
+  const domainText = textArray?.[1].split(` `)[0];
+  expect(domainText).toBe(`rahulshettyacademy.com`);
+  console.log(domainText);
+  //Id we didn't specify "[0]" at the end, domainText would contain:
+  //Index 0: 'rahulshettyacademy.com',
+  //Index 1:'with',
+  //Index 2:'below',
+  //Index 3:'template',
+  //Index 4:'to',
+  //Index 5:'receive',
+  //Index 6:'response'
 });
