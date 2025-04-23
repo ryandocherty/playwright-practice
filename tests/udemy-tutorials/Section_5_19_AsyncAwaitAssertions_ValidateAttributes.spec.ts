@@ -1,7 +1,6 @@
 //Section 5.19: Using async await with Assertions and understand validating the attributes
 
 import { test, expect } from "@playwright/test";
-import { SELECTORS } from "./Udemy_Tutorials_Helpers";
 
 test("Udemy: Using Async Await With Assertions, Validating Attributes", async ({ page }) => {
   await page.goto("https://rahulshettyacademy.com/loginpagePractise/");

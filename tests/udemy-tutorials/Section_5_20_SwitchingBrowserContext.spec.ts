@@ -1,11 +1,11 @@
 //Section 5.20: Handling Child windows & Tabs with Playwright by switching browser context
 
 import { test, expect } from "@playwright/test";
-import { SELECTORS } from "./Udemy_Tutorials_Helpers";
+import { SELECTORS_LOGINPRACTICE } from "./Udemy_Tutorials_Helpers";
 
 test("Udemy: Child Windows", async ({ browser }) => {
   /*
-  For this test I want hanle clicking a link that will open a new page.
+  For this test I want handle clicking a link that will open a new page.
 
 
   When we use "page", we're limited to the scope of the single page we're interacting with.
@@ -64,7 +64,7 @@ test("Udemy: Child Windows", async ({ browser }) => {
 
   const [newPage] = await Promise.all([
     context.waitForEvent(`page`),
-    page.locator(SELECTORS.blinkingTextLink).click(),
+    page.locator(SELECTORS_LOGINPRACTICE.blinkingTextLink).click(),
   ]);
 
   /*
@@ -83,7 +83,9 @@ test("Udemy: Child Windows", async ({ browser }) => {
   which comes from the first promise context.waitForEvent(`page`).
 
   So by writing "const [newPage]", we're saying:
-  "From the array of results, assign the first element to the variable newPage"
+  "From the array of results, assign the first element to the variable newPage".
+
+  If you were opening 2 pages, you could write something like "const [newPage, newPage2]" etc.
 
   "const [newPage]" is using the destructuring assignment to extract
   the first element from the array that is returned by Promise.all().
@@ -98,7 +100,7 @@ test("Udemy: Child Windows", async ({ browser }) => {
 
   //Now we'll interact with the new page.
   //Let's grab this text on the new page:
-  //"Please email us at mentor@rahulshettyacademy.com with below template to receive response".
+  //"Please email us at mentor@rahulshettyacademy.com with below template to receive response ".
   //Then we'll use string method(s) to extract just "rahulshettyacademy.com".
 
   //Firstly grab the whole string:
@@ -117,8 +119,8 @@ test("Udemy: Child Windows", async ({ browser }) => {
   ]);
   console.log(textArray);
   //Now "textArray" will contain:
-  //Index 0: "Please email us at mentor".
-  //Index 1: "rahulshettyacademy.com with below template to receive response".
+  //Index 0: 'Please email us at mentor'.
+  //Index 1: 'rahulshettyacademy.com with below template to receive response'.
 
   //We need the interact with the string stored in Index 1, which contains the domain we want to extract.
   //We can use split() again, using the whitespace after "rahulshettyacademy.com" as the seperator.

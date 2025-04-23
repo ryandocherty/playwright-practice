@@ -1,6 +1,6 @@
 //----------Helper file for Udemy tutotials----------
 
-export const SELECTORS = {
+export const SELECTORS_LOGINPRACTICE = {
   userNameInputBox: `#username`,
   passwordInputBox: `[type="password"]`,
   signInButton: `#signInBtn`,
@@ -11,4 +11,11 @@ export const SELECTORS = {
   popUp_CancelButton: `#cancelBtn`,
   termsCheckBox: `#terms`,
   blinkingTextLink: `.blinkingText`,
+};
+
+export const SELECTORS_CLIENT = {
+  registerAccountLink: `.login-wrapper-footer-text`,
+  userEmailInput: `#userEmail`,
+  userPasswordInput: `#userPassword`,
+  loginButton: `#login`,
 };
