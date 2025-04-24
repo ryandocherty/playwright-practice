@@ -18,4 +18,5 @@ export const SELECTORS_CLIENT = {
   userEmailInput: `#userEmail`,
   userPasswordInput: `#userPassword`,
   loginButton: `#login`,
+  productTitles: `.card-body b`,
 };
