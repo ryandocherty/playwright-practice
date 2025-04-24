@@ -38,11 +38,35 @@ test("Udemy: Client Item Purchase Test", async ({ browser }) => {
   await page.locator(SELECTORS_CLIENT.loginButton).click();
   await expect(page).toHaveURL(`https://rahulshettyacademy.com/client/dashboard/dash`);
 
-  const products = page.locator(SELECTORS_CLIENT.productTitles);
-  const productTitlesText = await page.locator(SELECTORS_CLIENT.productTitles).allTextContents();
+  const products = page.locator(`.card-body`); //returns an array.
+  await page.waitForLoadState(`networkidle`); //without this, productTitles below weren't being grabbed.
+  const productTitles = await page.locator(SELECTORS_CLIENT.productTitles).allTextContents();
   const productsAmount = await page.locator(SELECTORS_CLIENT.productTitles).count();
-  console.log(`Number of products found: ${productsAmount}`);
-  console.log(productTitlesText);
 
-  for (let i = 0; i < productsAmount; i++) {}
+  console.log(`Number of products found: ${productsAmount}`);
+  console.log(productTitles);
+
+  //Chained locator using the "products" array:
+  //"products" uses the ".card-body" class to loop through the products at position "i",
+  //then locates the corresponding "b" attribute (product names/text).
+  //If it matches the desired product name, use ".card-body" again to then
+  //locate the corresponding button and then click it:
+  for (let i = 0; i < productsAmount; ++i) {
+    if ((await products.nth(i).locator(`b`).textContent()) === `ZARA COAT 3`) {
+      await expect(products.nth(i).getByRole(`button`, { name: ` Add To Cart` })).toBeVisible();
+      await products.nth(i).getByRole(`button`, { name: ` Add To Cart` }).click();
+      console.log(`Clicked 'Add To Cart'.`);
+      break;
+    }
+  }
+
+  //Click the 'Cart' button:
+  await page.locator(`[routerlink='/dashboard/cart']`).click();
+
+  //Grab the text of the itemInCart:
+  const itemInCart = await page.locator(`div[class='cartSection'] h3`).textContent();
+
+  //Assert the correct item (ZARA COAT 3) is in the cart:
+  console.log(`Item in cart: ${itemInCart}`);
+  expect(itemInCart).toBe(`ZARA COAT 3`);
 });

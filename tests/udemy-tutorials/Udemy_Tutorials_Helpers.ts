@@ -19,4 +19,5 @@ export const SELECTORS_CLIENT = {
   userPasswordInput: `#userPassword`,
   loginButton: `#login`,
   productTitles: `.card-body b`,
+  addToCartButtons: `.card-body i`,
 };
