@@ -2,6 +2,7 @@
 //Section 7.28: Add assertions for the actions performed and implement necessary Sync steps
 //Section 7.29: Handling Auto suggestive dropdown options with playwright - Example
 //Section 7.30: Complete E2E flow of Placing the order and grab the OrderID with Playwright
+//Section 7.31: Dynamically find the order from OrderHistory page using Playwright Script logic
 
 import { test, expect } from "@playwright/test";
 import { SELECTORS_CLIENT } from "./Udemy_Tutorials_Helpers";
@@ -57,6 +58,9 @@ test("Udemy: Client Item Purchase Test", async ({ browser }) => {
   console.log(`Number of products found: ${productsTitles_count}`);
   console.log(productTitles);
 
+  const targetProduct = `ZARA COAT 3`;
+  const targetCountry = `United Kingdom`;
+
   //Initialise a variable to hold the item's displayed price before adding to cart:
   //Also initialising with a default value (null), otherwise I get an error
   //later on when comparing "priceBeforeCart" to "priceInCart".
@@ -68,7 +72,7 @@ test("Udemy: Client Item Purchase Test", async ({ browser }) => {
   //If it matches the desired product name, use ".card-body" again to then
   //locate the corresponding button and then click it:
   for (let i = 0; i < productsTitles_count; ++i) {
-    if ((await products.nth(i).locator(`b`).textContent()) === `ZARA COAT 3`) {
+    if ((await products.nth(i).locator(`b`).textContent()) === targetProduct) {
       await expect(products.nth(i).getByRole(`button`, { name: ` Add To Cart` })).toBeVisible();
 
       const priceBeforeCart: any = await products.nth(i).locator(`.text-muted`).textContent();
@@ -94,14 +98,14 @@ test("Udemy: Client Item Purchase Test", async ({ browser }) => {
   await page.locator(`div li`).first().waitFor();
 
   //Assert that the item added to the cart (ZARA COAT 3) is visible:
-  const isItemInCartVisible = await page.locator(`h3:has-text('ZARA COAT 3')`).isVisible();
+  const isItemInCartVisible = await page.locator(`h3:has-text('${targetProduct}')`).isVisible();
   expect(isItemInCartVisible).toBeTruthy();
 
   //Grab the text of the current item in cart:
   const itemInCart = await page.locator(`div[class='cartSection'] h3`).first().textContent();
 
   //Assert the correct item (ZARA COAT 3) is in the cart:
-  expect(itemInCart).toBe(`ZARA COAT 3`);
+  expect(itemInCart).toBe(targetProduct);
 
   //Grab the displayed price of the current item in cart:
   const priceInCart: any = await page.locator(`.prodTotal`).textContent();
@@ -169,7 +173,7 @@ test("Udemy: Client Item Purchase Test", async ({ browser }) => {
 
   for (let i = 0; i < countryListOptions_count; i++) {
     let countryListText = await selectCountryListOptions.nth(i).textContent();
-    if (countryListText?.trim() === "United Kingdom") {
+    if (countryListText?.trim() === targetCountry) {
       console.log(`Selecting country: ${countryListText.trim()}`);
       await selectCountryListOptions.nth(i).click();
       break;
@@ -207,14 +211,16 @@ test("Udemy: Client Item Purchase Test", async ({ browser }) => {
   const orderId = orderId_raw?.replace(/\|/g, ``).trim();
   console.log(`orderID: ${orderId}`);
 
-  const orderId_test = `blah`;
-
-  /*------------------------------------Order History Page----------------------------------*/
+  /*------------------------------------Order History Page-----------------------------------*/
   /*-----------------------------------------------------------------------------------------*/
 
   //Click the "Order History" link:
-  await page.locator(`[routerlink="/dashboard/myorders"]`).first().click();
-  //await page.locator(`.ng-star-inserted`).first().waitFor();
+  const orderhistoryLink = page.locator(`[routerlink="/dashboard/myorders"]`).first();
+  expect(orderhistoryLink).toBeVisible();
+  await orderhistoryLink.click();
+  console.log(`Clicked 'Order history'`);
+
+  const viewOrderButton = page.locator(`button:has-text('View')`);
 
   //Locate the order ID column, assert it to be visible:
   const orderIdColumn = page.locator(`th[scope="row"]`);
@@ -228,14 +234,57 @@ test("Udemy: Client Item Purchase Test", async ({ browser }) => {
   const orderIdColumnText = await orderIdColumn.allTextContents();
   console.log(orderIdColumnText);
 
-  //A loop to dynamically find the order Id of the
-  //order that has just been placed and output its position in the list:
+  //A loop to dynamically find the order Id of the recently placed order,
+  //then output its position in the list and click the "view" button:
   for (let i = 0; i < orderIdColumn_count; i++) {
     if ((await orderIdColumn.nth(i).textContent()) === orderId) {
       console.log(`Order Id "${orderId}" found at position ${i + 1} in the list`);
+      expect(viewOrderButton.nth(i)).toBeVisible();
+      await viewOrderButton.nth(i).click();
+      console.log(`Clicked 'View order'`);
       break;
     } else {
       console.log(`Order Id not found`);
     }
   }
+
+  /*------------------------------------Order Summary Page-----------------------------------*/
+  /*-----------------------------------------------------------------------------------------*/
+
+  //Wait for the order summary page to load:
+  await page.locator(`.tagline`).waitFor();
+  await expect(page).toHaveURL(`https://rahulshettyacademy.com/client/dashboard/order-details/` + orderId);
+
+  //Assert the correct order Id is displayed on the "Order Summary" page:
+  const orderIdOnSummary_raw = await page.locator(`.col-text`).textContent();
+  const orderIdOnSummary = orderIdOnSummary_raw?.trim();
+  console.log(`Order Id (on order summary): ${orderIdOnSummary}`);
+  expect(orderIdOnSummary).toBe(orderId);
+
+  //Assert the correct item is displayed on the "Order Summary" page:
+  const itemNameOnSummary_raw = await page.locator(`.title`).textContent();
+  const itemNameOnSummary = itemNameOnSummary_raw?.trim();
+  console.log(`Item name (on order summary): ${itemNameOnSummary}`);
+  expect(itemNameOnSummary).toBe(targetProduct);
+
+  //Order summary is split into 2 sections: "Billing Address" & "Delivery Address"
+  //Both sections display the email address and country for the order,
+  //so I'm grabbing these strings separately (they are the same in this test):
+  const billingAddressSection = page.locator(`div[class="address"]`).first();
+  const billingEmailOnSummary = await billingAddressSection.locator(`.text`).first().textContent();
+  const billingCountryOnSummary = await billingAddressSection.locator(`.text`).last().textContent();
+  const deliveryAddressSection = page.locator(`div[class="address"]`).last();
+  const deliveryEmailOnSummary = await deliveryAddressSection.locator(`.text`).first().textContent();
+  const deliveryCountryOnSummary = await deliveryAddressSection.locator(`.text`).last().textContent();
+
+  console.log(`Billing email (on summary): ${billingEmailOnSummary}`);
+  console.log(`Billing country (on summary): ${billingCountryOnSummary}`);
+  console.log(`Delivery email (on summary): ${deliveryEmailOnSummary}`);
+  console.log(`Delivery country (on summary): ${deliveryCountryOnSummary}`);
+
+  //Assert thr correct billing & delivery information to be displayed:
+  expect(billingEmailOnSummary?.trim()).toBe(loginEmail);
+  expect(deliveryEmailOnSummary?.trim()).toBe(loginEmail);
+  expect(billingCountryOnSummary?.trim()).toContain(targetCountry);
+  expect(deliveryCountryOnSummary?.trim()).toContain(targetCountry);
 });
