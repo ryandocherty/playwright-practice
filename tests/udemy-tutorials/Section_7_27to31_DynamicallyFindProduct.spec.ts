@@ -44,6 +44,7 @@ test("Udemy: Client Item Purchase Test", async ({ browser }) => {
 
   await page.fill(SELECTORS_CLIENT.userEmailInput, loginEmail);
   await page.fill(SELECTORS_CLIENT.userPasswordInput, loginPassword);
+  expect(page.locator(SELECTORS_CLIENT.loginButton)).toBeVisible();
   await page.locator(SELECTORS_CLIENT.loginButton).click();
   await expect(page).toHaveURL(`https://rahulshettyacademy.com/client/dashboard/dash`);
 
@@ -258,18 +259,26 @@ test("Udemy: Client Item Purchase Test", async ({ browser }) => {
   //Assert the correct order Id is displayed on the "Order Summary" page:
   const orderIdOnSummary_raw = await page.locator(`.col-text`).textContent();
   const orderIdOnSummary = orderIdOnSummary_raw?.trim();
-  console.log(`Order Id (on order summary): ${orderIdOnSummary}`);
+  console.log(`Order Id (on summary): ${orderIdOnSummary}`);
   expect(orderIdOnSummary).toBe(orderId);
 
   //Assert the correct item is displayed on the "Order Summary" page:
-  const itemNameOnSummary_raw = await page.locator(`.title`).textContent();
-  const itemNameOnSummary = itemNameOnSummary_raw?.trim();
-  console.log(`Item name (on order summary): ${itemNameOnSummary}`);
-  expect(itemNameOnSummary).toBe(targetProduct);
+  const productNameOnSummary_raw = await page.locator(`.title`).textContent();
+  const productNameOnSummary = productNameOnSummary_raw?.trim();
+  console.log(`Item name (on summary): ${productNameOnSummary}`);
+  expect(productNameOnSummary).toBe(targetProduct);
+
+  //Assert the correct price is displayed on the "Order Summary" page:
+  const priceOnSummary_raw: any = await page.locator(`.price`).textContent();
+  const priceOnSummary_Numeric: number = parseFloat(priceOnSummary_raw?.replace(/[^0-9]+/g, ""));
+  console.log(`Item price (on summary): $${priceOnSummary_Numeric}`);
+  expect(priceOnSummary_Numeric).toEqual(
+    priceBeforeCart_Numeric && priceInCart_Numeric && priceInOrderConfirmed_Numeric
+  );
 
   //Order summary is split into 2 sections: "Billing Address" & "Delivery Address"
   //Both sections display the email address and country for the order,
-  //so I'm grabbing these strings separately (they are the same in this test):
+  //so I'm grabbing these strings separately (however, they are the same in this test):
   const billingAddressSection = page.locator(`div[class="address"]`).first();
   const billingEmailOnSummary = await billingAddressSection.locator(`.text`).first().textContent();
   const billingCountryOnSummary = await billingAddressSection.locator(`.text`).last().textContent();
@@ -282,7 +291,7 @@ test("Udemy: Client Item Purchase Test", async ({ browser }) => {
   console.log(`Delivery email (on summary): ${deliveryEmailOnSummary}`);
   console.log(`Delivery country (on summary): ${deliveryCountryOnSummary}`);
 
-  //Assert thr correct billing & delivery information to be displayed:
+  //Assert the correct billing & delivery information is displayed:
   expect(billingEmailOnSummary?.trim()).toBe(loginEmail);
   expect(deliveryEmailOnSummary?.trim()).toBe(loginEmail);
   expect(billingCountryOnSummary?.trim()).toContain(targetCountry);
