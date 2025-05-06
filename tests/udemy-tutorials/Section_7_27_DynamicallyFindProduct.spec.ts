@@ -51,10 +51,10 @@ test("Udemy: Client Item Purchase Test", async ({ browser }) => {
 
   const products = page.locator(`.card-body`); //returns an array.
   await page.waitForLoadState(`networkidle`); //without this, productTitles below weren't being grabbed.
-  const productTitles = await page.locator(SELECTORS_CLIENT.productTitles).allTextContents();
-  const productsAmount = await page.locator(SELECTORS_CLIENT.productTitles).count();
+  const productTitles = await page.locator(`.card-body b`).allTextContents();
+  const productsTitles_count = await page.locator(`.card-body b`).count();
 
-  console.log(`Number of products found: ${productsAmount}`);
+  console.log(`Number of products found: ${productsTitles_count}`);
   console.log(productTitles);
 
   //Initialise a variable to hold the item's displayed price before adding to cart:
@@ -67,7 +67,7 @@ test("Udemy: Client Item Purchase Test", async ({ browser }) => {
   //then locates the corresponding "b" attribute (product names/text).
   //If it matches the desired product name, use ".card-body" again to then
   //locate the corresponding button and then click it:
-  for (let i = 0; i < productsAmount; ++i) {
+  for (let i = 0; i < productsTitles_count; ++i) {
     if ((await products.nth(i).locator(`b`).textContent()) === `ZARA COAT 3`) {
       await expect(products.nth(i).getByRole(`button`, { name: ` Add To Cart` })).toBeVisible();
 
@@ -98,7 +98,7 @@ test("Udemy: Client Item Purchase Test", async ({ browser }) => {
   expect(isItemInCartVisible).toBeTruthy();
 
   //Grab the text of the current item in cart:
-  const itemInCart = await page.locator(`div[class='cartSection'] h3`).textContent();
+  const itemInCart = await page.locator(`div[class='cartSection'] h3`).first().textContent();
 
   //Assert the correct item (ZARA COAT 3) is in the cart:
   expect(itemInCart).toBe(`ZARA COAT 3`);
@@ -164,9 +164,10 @@ test("Udemy: Client Item Purchase Test", async ({ browser }) => {
 
   //Then I need to loop through the list options and select the desired one:
   const selectCountryListOptions = page.locator(`.ta-results button`);
-  const countryListOptionsCount = await selectCountryListOptions.count();
+  const countryListOptions_count = await selectCountryListOptions.count();
+  console.log(`Number of countries in current list: ${countryListOptions_count}`);
 
-  for (let i = 0; i < countryListOptionsCount; i++) {
+  for (let i = 0; i < countryListOptions_count; i++) {
     let countryListText = await selectCountryListOptions.nth(i).textContent();
     if (countryListText?.trim() === "United Kingdom") {
       console.log(`Selecting country: ${countryListText.trim()}`);
@@ -182,6 +183,59 @@ test("Udemy: Client Item Purchase Test", async ({ browser }) => {
   const placeOrderButton = page.locator(`.action__submit`);
   await placeOrderButton.click();
 
+  //Assert that the "Thank you" message appears:
   const orderPlacedMessage = await page.locator(`.hero-primary`).textContent();
-  expect(orderPlacedMessage).toContain(`THANKYOU`);
+  expect(orderPlacedMessage?.trim()).toBe(`Thankyou for the order.`);
+
+  //Grab the item name displayed on the confirmation page:
+  const itemInOrderConfirmed = await page.locator(`div[class="title"]`).first().textContent();
+  console.log(`Item name (order confirmed): ${itemInOrderConfirmed}`);
+  //Assert the correct item appears on the confirmation page:
+  expect(itemInOrderConfirmed).toBe(itemInCart);
+
+  //Grab the price displayed on the confirmation page:
+  const priceInOrderConfirmed: any = await page.locator(`.title`).nth(1).textContent();
+  //Convert the price to purely numeric:
+  const priceInOrderConfirmed_Numeric: number = parseFloat(priceInOrderConfirmed?.replace(/[^0-9]+/g, ""));
+  console.log(`Item price (order confirmed): $${priceInOrderConfirmed_Numeric}`);
+  //Assert the correct price is displayed on the confirmation page:
+  expect(priceInOrderConfirmed_Numeric).toEqual(priceInCart_Numeric);
+
+  //Grab order ID displayed on the confirmation page:
+  const orderId_raw = await page.locator(`.em-spacer-1 .ng-star-inserted`).textContent();
+  //Clean up the order ID (remove symbols and trim it):
+  const orderId = orderId_raw?.replace(/\|/g, ``).trim();
+  console.log(`orderID: ${orderId}`);
+
+  const orderId_test = `blah`;
+
+  /*------------------------------------Order History Page----------------------------------*/
+  /*-----------------------------------------------------------------------------------------*/
+
+  //Click the "Order History" link:
+  await page.locator(`[routerlink="/dashboard/myorders"]`).first().click();
+  //await page.locator(`.ng-star-inserted`).first().waitFor();
+
+  //Locate the order ID column, assert it to be visible:
+  const orderIdColumn = page.locator(`th[scope="row"]`);
+  await expect(orderIdColumn.first()).toBeVisible(); //without this, orderIdColumn_count is 0
+
+  //Count the number of order Id's found:
+  const orderIdColumn_count = await orderIdColumn.count();
+  console.log(`Number of Order Id's found: ${orderIdColumn_count}`);
+
+  //Output the order Id strings:
+  const orderIdColumnText = await orderIdColumn.allTextContents();
+  console.log(orderIdColumnText);
+
+  //A loop to dynamically find the order Id of the
+  //order that has just been placed and output its position in the list:
+  for (let i = 0; i < orderIdColumn_count; i++) {
+    if ((await orderIdColumn.nth(i).textContent()) === orderId) {
+      console.log(`Order Id "${orderId}" found at position ${i + 1} in the list`);
+      break;
+    } else {
+      console.log(`Order Id not found`);
+    }
+  }
 });
