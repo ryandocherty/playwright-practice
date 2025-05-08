@@ -82,7 +82,7 @@ test("Udemy: Client Item Purchase Test", async ({ browser }) => {
       console.log(`Item Price (before cart): $${priceBeforeCart_Numeric}`);
 
       await products.nth(i).getByRole(`button`, { name: ` Add To Cart` }).click();
-      console.log(`Clicked 'Add To Cart'`);
+      console.log(`Clicking 'Add To Cart'...`);
       break;
     }
   }
