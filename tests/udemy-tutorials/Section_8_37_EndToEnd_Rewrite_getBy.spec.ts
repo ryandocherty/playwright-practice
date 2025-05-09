@@ -116,10 +116,11 @@ test("Udemy: e2e Practice Rewrite", async ({ browser }) => {
   console.log(`Name (in cart): ${productName_InCart?.trim()}`);
 
   //Expect the product name & price to still be the same:
-  expect(productName_InCart).toBe(targetProductName);
-  expect(price_InCart_Numeric).toEqual(price_BeforeCart_Numeric);
+  expect(page.getByText(targetProductName)).toBeVisible();
   expect(productName_InCart_Element).toBeVisible();
   expect(price_InCart_Element).toBeVisible();
+  expect(productName_InCart).toBe(targetProductName);
+  expect(price_InCart_Numeric).toEqual(price_BeforeCart_Numeric);
 
   /*------------------------------------Checkout Page--------------------------------------------*/
   /*---------------------------------------------------------------------------------------------*/
@@ -165,9 +166,25 @@ test("Udemy: e2e Practice Rewrite", async ({ browser }) => {
   await couponCodeInput.pressSequentially(`420`, { delay: 100 });
   await couponCodeInput.clear();
 
-  //Email address is automatically entered, just need to assert it's correct:
-  //const emailAddressInput = page.getByLabel(loginEmail);
-  //expect(await emailAddressInput.textContent()).toBe(loginEmail);
+  //Email address is automatically entered, just need to assert it's visible:
+  const emailAddressDisplay = page.getByText(loginEmail);
+  expect(emailAddressDisplay).toBeVisible();
+
+  //Enter shipping country:
+  const selectCountryInput = page.getByPlaceholder(`Select Country`);
+  expect(selectCountryInput).toBeEnabled();
+  await selectCountryInput.pressSequentially(`United`);
+  await page.getByRole(`button`, { name: ` United Kingdom` }).click();
+
+  /*------------------------------------Order Confirmed Page---------------------------------*/
+  /*-----------------------------------------------------------------------------------------*/
+
+  //Click "Place Order":
+  await page.getByText(`Place Order `).click();
+
+  //Assert the correct product name and price is displayed:
+  expect(page.getByText(targetProductName)).toBeVisible();
+  expect(page.getByText(price_BeforeCart)).toBeVisible();
 
   /*------------------------------------Close Browser--------------------------------------------*/
   /*---------------------------------------------------------------------------------------------*/
