@@ -57,23 +57,26 @@ test("Udemy: e2e Practice Rewrite", async ({ browser }) => {
   //2. Filter these "card-body" classes down to one containing text "ZARA COAT 3".
   //3. Then within this single "card-body" class, locate a button with name "Add to Cart".
   //4. Click this "Add to Cart" button.
-  await page
+  const addToCartButton_Element = page
     .locator(`.card-body`)
-    .filter({ hasText: `ZARA COAT 3` })
-    .getByRole(`button`, { name: ` Add To Cart` })
-    .click();
+    .filter({ hasText: targetProductName })
+    .getByRole(`button`, { name: ` Add To Cart` });
 
-  //Grab the price of the peoduct before adding to cart:
-  const priceBeforeCart: any = await page
+  expect(addToCartButton_Element).toBeVisible();
+  await addToCartButton_Element.click();
+
+  const price_BeforeCart_Element = page
     .locator(`.card-body`)
-    .filter({ hasText: `ZARA COAT 3` })
-    .locator(`.text-muted`)
-    .textContent();
+    .filter({ hasText: targetProductName })
+    .locator(`.text-muted`);
 
-  //Convert "priceBeforeCart" to purely numeric:
-  const priceBeforeCart_Numeric: number = parseFloat(priceBeforeCart?.replace(/[^0-9.-]+/g, ""));
+  expect(price_BeforeCart_Element).toBeVisible();
+  const price_BeforeCart: any = await price_BeforeCart_Element.textContent();
 
-  console.log(`${targetProductName} price (products page): $${priceBeforeCart_Numeric}`);
+  //Convert "price_BeforeCart" to purely numeric:
+  const price_BeforeCart_Numeric: number = parseFloat(price_BeforeCart?.replace(/[^0-9.-]+/g, ``));
+
+  console.log(`Price (products page): $${price_BeforeCart_Numeric}`);
 
   //There are 3 buttons named "Add to Cart", the one I want is just the "Cart" button, so I need to:
   //1. Locate element(s) with "listitem" parent (only the "Cart" button has this).
@@ -85,30 +88,89 @@ test("Udemy: e2e Practice Rewrite", async ({ browser }) => {
   /*-------------------------------------Cart page-----------------------------------------------*/
   /*---------------------------------------------------------------------------------------------*/
 
-  //For safety, wait for the "Checkout" button to load first:
+  //For safety, wait for the "Checkout" button to load before continuing to interact:
   await page.getByRole(`button`).filter({ hasText: `Checkout` }).waitFor();
 
-  //Grab the name of the product once its inside the cart:
-  const productName_InCart = await page
+  //Grabbing the element separately before extracting the text.
+  //This is so I can use toBeVisible() later on.
+  const productName_InCart_Element: any = page
+    .locator(`.cartSection`)
+    .filter({ hasText: targetProductName })
+    .getByRole(`heading`);
+
+  //Grab the name of the product once it's inside the cart:
+  const productName_InCart: any = await productName_InCart_Element.textContent();
+
+  const price_InCart_Element: any = page
     .locator(`.cartSection`)
     .filter({ hasText: targetProductName })
     .getByRole(`paragraph`)
-    .filter({ hasText: `MRP` })
-    .textContent();
+    .filter({ hasText: `MRP` });
 
-  const priceInCart: any = await page
-    .locator(`.cartSection`)
-    .filter({ hasText: targetProductName })
-    .getByRole(`paragraph`)
-    .filter({ hasText: `MRP` })
-    .textContent();
+  //Grab the price of the product once it's inside the cart:
+  const price_InCart = await price_InCart_Element.textContent();
+  //Convert "price_InCart" to purely numeric:
+  const price_InCart_Numeric: number = parseFloat(price_InCart?.replace(/[^0-9.-]+/g, ``));
 
-  const priceInCart_Numeric: number = parseFloat(priceInCart?.replace(/[^0-9.-]+/g, ""));
+  console.log(`Price (in cart): $${price_InCart_Numeric}`);
+  console.log(`Name (in cart): ${productName_InCart?.trim()}`);
 
-  console.log(`Product name (in cart): ${productName_InCart}`);
-  console.log(`Price (in cart): $${priceInCart_Numeric}`);
+  //Expect the product name & price to still be the same:
+  expect(productName_InCart).toBe(targetProductName);
+  expect(price_InCart_Numeric).toEqual(price_BeforeCart_Numeric);
+  expect(productName_InCart_Element).toBeVisible();
+  expect(price_InCart_Element).toBeVisible();
 
-  //expect(productName_InCart).toBe(targetProduct);
+  /*------------------------------------Checkout Page--------------------------------------------*/
+  /*---------------------------------------------------------------------------------------------*/
 
-  await page.pause();
+  //Click the "Checkout" button:
+  const checkoutButton = page.getByRole(`button`, { name: `Checkout` });
+  expect(checkoutButton).toBeVisible();
+  await checkoutButton.click();
+
+  //Enter a credit cart number:
+  const creditCardNumberInput = page.getByRole(`textbox`).first();
+  expect(creditCardNumberInput).toBeEditable();
+  await creditCardNumberInput.clear();
+  await creditCardNumberInput.pressSequentially(`1234 5678 9012 3456`, { delay: 100 });
+
+  //Enter a CVV number:
+  const CVVCodeInput = page.getByRole(`textbox`).nth(1);
+  expect(CVVCodeInput).toBeEditable();
+  await CVVCodeInput.clear();
+  await CVVCodeInput.pressSequentially(`420`, { delay: 100 });
+
+  //Enter an credit card expiry month:
+  const expiryDate_Month = page.getByRole(`combobox`).first();
+  expect(expiryDate_Month).toBeEnabled();
+  await expiryDate_Month.selectOption(`12`);
+
+  //Enter an credit card expiry day:
+  const expiryDate_Day = page.getByRole(`combobox`).nth(1);
+  expect(expiryDate_Day).toBeEnabled();
+  await expiryDate_Day.selectOption(`21`);
+
+  //Enter the name on the credit card:
+  const nameOnCardInput = page.getByRole(`textbox`).nth(2);
+  expect(nameOnCardInput).toBeEditable();
+  await nameOnCardInput.clear();
+  await nameOnCardInput.pressSequentially(`Duane Dibbley`, { delay: 100 });
+
+  //Enter a coupon code (optional):
+  const couponCodeInput = page.getByRole(`textbox`).nth(3);
+  const applyCouponButton = page.getByRole(`button`, { name: `Apply Coupon` });
+  expect(couponCodeInput).toBeEditable();
+  expect(applyCouponButton).toBeEnabled();
+  await couponCodeInput.pressSequentially(`420`, { delay: 100 });
+  await couponCodeInput.clear();
+
+  //Email address is automatically entered, just need to assert it's correct:
+  //const emailAddressInput = page.getByLabel(loginEmail);
+  //expect(await emailAddressInput.textContent()).toBe(loginEmail);
+
+  /*------------------------------------Close Browser--------------------------------------------*/
+  /*---------------------------------------------------------------------------------------------*/
+  await context.close();
+  await browser.close();
 });
