@@ -48,10 +48,13 @@ test("Udemy: e2e Practice Rewrite", async ({ browser }) => {
   const productsTitles_count = await page.locator(`.card-body b`).count();
 
   console.log(`Number of products found: ${productsTitles_count}`);
-  console.log(productTitles);
+  console.table(productTitles);
 
   const targetProductName = `ZARA COAT 3`;
   const targetCountry = `United Kingdom`;
+
+  console.log(`Target Product: ${targetProductName}`);
+  console.log(`Target Country: ${targetCountry}`);
 
   //1. Locate "card-body" classes (each available product has this class).
   //2. Filter these "card-body" classes down to one containing text "ZARA COAT 3".
@@ -64,26 +67,27 @@ test("Udemy: e2e Practice Rewrite", async ({ browser }) => {
 
   expect(addToCartButton_Element).toBeVisible();
   await addToCartButton_Element.click();
+  console.log(`Clicking 'Add to Cart' for ${targetProductName}...`);
 
-  const price_BeforeCart_Element = page
+  const price_ProductsPage_Element = page
     .locator(`.card-body`)
     .filter({ hasText: targetProductName })
     .locator(`.text-muted`);
 
-  expect(price_BeforeCart_Element).toBeVisible();
-  const price_BeforeCart: any = await price_BeforeCart_Element.textContent();
+  expect(price_ProductsPage_Element).toBeVisible();
+  const price_ProductsPage: any = await price_ProductsPage_Element.textContent();
 
-  //Convert "price_BeforeCart" to purely numeric:
-  const price_BeforeCart_Numeric: number = parseFloat(price_BeforeCart?.replace(/[^0-9.-]+/g, ``));
+  //Convert "price_ProductsPage" to purely numeric:
+  const price_ProductsPage_Numeric: number = parseFloat(price_ProductsPage?.replace(/[^0-9.-]+/g, ``));
 
-  console.log(`Price (products page): $${price_BeforeCart_Numeric}`);
+  console.log(`Price (products page): $${price_ProductsPage_Numeric}`);
 
   //There are 3 buttons named "Add to Cart", the one I want is just the "Cart" button, so I need to:
   //1. Locate element(s) with "listitem" parent (only the "Cart" button has this).
   //2. Then within "listitem" parent, locate a button with name "Cart".
   expect(page.getByRole(`listitem`).getByRole(`button`, { name: `  Cart ` })).toBeVisible();
   await page.getByRole(`listitem`).getByRole(`button`, { name: `  Cart ` }).click();
-  console.log(`Clicking 'Add To Cart'...`);
+  console.log(`Clicking 'Cart'...`);
 
   /*-------------------------------------Cart page-----------------------------------------------*/
   /*---------------------------------------------------------------------------------------------*/
@@ -120,7 +124,7 @@ test("Udemy: e2e Practice Rewrite", async ({ browser }) => {
   expect(productName_InCart_Element).toBeVisible();
   expect(price_InCart_Element).toBeVisible();
   expect(productName_InCart).toBe(targetProductName);
-  expect(price_InCart_Numeric).toEqual(price_BeforeCart_Numeric);
+  expect(price_InCart_Numeric).toEqual(price_ProductsPage_Numeric);
 
   /*------------------------------------Checkout Page--------------------------------------------*/
   /*---------------------------------------------------------------------------------------------*/
@@ -129,6 +133,7 @@ test("Udemy: e2e Practice Rewrite", async ({ browser }) => {
   const checkoutButton = page.getByRole(`button`, { name: `Checkout` });
   expect(checkoutButton).toBeVisible();
   await checkoutButton.click();
+  console.log(`Clicking 'Checkout'...`);
 
   //Enter a credit cart number:
   const creditCardNumberInput = page.getByRole(`textbox`).first();
@@ -141,16 +146,6 @@ test("Udemy: e2e Practice Rewrite", async ({ browser }) => {
   expect(CVVCodeInput).toBeEditable();
   await CVVCodeInput.clear();
   await CVVCodeInput.pressSequentially(`420`, { delay: 100 });
-
-  //Enter an credit card expiry month:
-  const expiryDate_Month = page.getByRole(`combobox`).first();
-  expect(expiryDate_Month).toBeEnabled();
-  await expiryDate_Month.selectOption(`12`);
-
-  //Enter an credit card expiry day:
-  const expiryDate_Day = page.getByRole(`combobox`).nth(1);
-  expect(expiryDate_Day).toBeEnabled();
-  await expiryDate_Day.selectOption(`21`);
 
   //Enter the name on the credit card:
   const nameOnCardInput = page.getByRole(`textbox`).nth(2);
@@ -166,6 +161,16 @@ test("Udemy: e2e Practice Rewrite", async ({ browser }) => {
   await couponCodeInput.pressSequentially(`420`, { delay: 100 });
   await couponCodeInput.clear();
 
+  //Enter an credit card expiry month:
+  const expiryDate_Month = page.getByRole(`combobox`).first();
+  expect(expiryDate_Month).toBeEnabled();
+  await expiryDate_Month.selectOption(`12`);
+
+  //Enter an credit card expiry day:
+  const expiryDate_Day = page.getByRole(`combobox`).nth(1);
+  expect(expiryDate_Day).toBeEnabled();
+  await expiryDate_Day.selectOption(`21`);
+
   //Email address is automatically entered, just need to assert it's visible:
   const emailAddressDisplay = page.getByText(loginEmail);
   expect(emailAddressDisplay).toBeVisible();
@@ -175,24 +180,52 @@ test("Udemy: e2e Practice Rewrite", async ({ browser }) => {
   expect(selectCountryInput).toBeEnabled();
   await selectCountryInput.pressSequentially(`United`);
   await page.getByRole(`button`, { name: ` United Kingdom` }).click();
+  console.log(`Selecting Country: ${targetCountry}...`);
 
-  /*------------------------------------Order Confirmed Page---------------------------------*/
-  /*-----------------------------------------------------------------------------------------*/
+  /*------------------------------------Order Confirmed Page-------------------------------------*/
+  /*---------------------------------------------------------------------------------------------*/
 
-  //Click "Place Order":
+  //Click the "Place Order" button:
   await page.getByText(`Place Order `).click();
+  console.log(`Clicking 'Place Order'...`);
 
   //Assert the correct product name and price is displayed:
+
   expect(page.getByText(targetProductName)).toBeVisible();
-  expect(page.getByText(price_BeforeCart)).toBeVisible();
+  expect(page.getByText(price_ProductsPage)).toBeVisible();
 
   //Grab order ID displayed on the confirmation page.
   //This regex matches text that starts and ends with "|" (the format of all order ID's):
-  const orderId_raw = await page.getByText(/^\s*\|.*\|\s*$/).textContent();
+  const orderId_raw: any = await page.getByText(/^\s*\|.*\|\s*$/).textContent();
 
   //Clean up the order ID (remove "|" symbols and trim it):
   const orderId = orderId_raw?.replace(/\|/g, ``).trim();
   console.log(`Order ID: ${orderId}`);
+
+  /*------------------------------------Order History Page---------------------------------------*/
+  /*---------------------------------------------------------------------------------------------*/
+
+  //Click the "Orders" link:
+  const ordersButton = page.getByRole(`button`, { name: `  ORDERS` });
+  expect(ordersButton).toBeVisible();
+  await ordersButton.click();
+  console.log(`Clicking 'Orders'...`);
+
+  //For safety, wait for the "Your Orders" header to load before continuing to interact:
+  await page.getByRole(`heading`, { name: `Your Orders` }).waitFor();
+
+  //Assert that the orderID, product name, and price are visible on the Order History page:
+  expect(page.getByText(orderId).first()).toBeVisible();
+  expect(page.getByText(targetProductName).first()).toBeVisible();
+  expect(page.getByText(price_ProductsPage).first()).toBeVisible();
+
+  //1. Locate the table rows (max of 7 rows displayed)
+  //2. Filter the rows to the one that contains the recent orderID
+  //3. On this single row, locate the "View" button and click it
+  const viewButton = page.locator(`tr`).filter({ hasText: orderId }).getByRole(`button`, { name: `View` });
+  expect(viewButton).toBeVisible();
+  await viewButton.click();
+  console.log(`Clicking 'View'...`);
 
   /*------------------------------------Close Browser--------------------------------------------*/
   /*---------------------------------------------------------------------------------------------*/
