@@ -186,6 +186,14 @@ test("Udemy: e2e Practice Rewrite", async ({ browser }) => {
   expect(page.getByText(targetProductName)).toBeVisible();
   expect(page.getByText(price_BeforeCart)).toBeVisible();
 
+  //Grab order ID displayed on the confirmation page.
+  //This regex matches text that starts and ends with "|" (the format of all order ID's):
+  const orderId_raw = await page.getByText(/^\s*\|.*\|\s*$/).textContent();
+
+  //Clean up the order ID (remove "|" symbols and trim it):
+  const orderId = orderId_raw?.replace(/\|/g, ``).trim();
+  console.log(`Order ID: ${orderId}`);
+
   /*------------------------------------Close Browser--------------------------------------------*/
   /*---------------------------------------------------------------------------------------------*/
   await context.close();
