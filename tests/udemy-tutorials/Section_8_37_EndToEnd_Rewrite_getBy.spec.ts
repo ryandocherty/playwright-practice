@@ -219,6 +219,9 @@ test("Udemy: e2e Practice Rewrite", async ({ browser }) => {
   expect(page.getByText(targetProductName).first()).toBeVisible();
   expect(page.getByText(price_ProductsPage).first()).toBeVisible();
 
+  /*------------------------------------Order Summary Page-----------------------------------*/
+  /*-----------------------------------------------------------------------------------------*/
+
   //1. Locate the table rows (max of 7 rows displayed)
   //2. Filter the rows to the one that contains the recent orderID
   //3. On this single row, locate the "View" button and click it
@@ -227,8 +230,19 @@ test("Udemy: e2e Practice Rewrite", async ({ browser }) => {
   await viewButton.click();
   console.log(`Clicking 'View'...`);
 
+  //Wait for the "Order Summary" title to load before continuing to interact:
+  await page.locator(`.email-title`).first().waitFor();
+
+  //Assert all of the correct information is visible on the "Order Summary" page:
+  expect(page.getByText(loginEmail).first()).toBeVisible();
+  expect(page.getByText(orderId)).toBeVisible();
+  expect(page.getByText(targetProductName).first()).toBeVisible();
+  expect(page.getByText(targetCountry).first()).toBeVisible();
+  expect(page.getByText(price_ProductsPage).first()).toBeVisible();
+
   /*------------------------------------Close Browser--------------------------------------------*/
   /*---------------------------------------------------------------------------------------------*/
+
   await context.close();
   await browser.close();
 });
