@@ -7,6 +7,7 @@ test("Udemy: Handling Calenders", async ({ browser }) => {
   const page = await context.newPage();
 
   await page.goto("https://rahulshettyacademy.com/seleniumPractise");
+  await page.locator(`.brand`).first().waitFor();
 
   //Open the "Top Deals" page
   const [page_TopDeals] = await Promise.all([
@@ -14,6 +15,7 @@ test("Udemy: Handling Calenders", async ({ browser }) => {
     page.getByRole(`link`, { name: `Top Deals` }).click(),
   ]);
 
+  await page_TopDeals.locator(`.brand`).first().waitFor();
   await expect(page_TopDeals).toHaveURL(`https://rahulshettyacademy.com/seleniumPractise/#/offers`);
 
   /*------------------------------------Close Browser--------------------------------------------*/
