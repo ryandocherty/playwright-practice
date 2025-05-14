@@ -9,6 +9,9 @@ test("Udemy: Handling Calenders", async ({ browser }) => {
   await page.goto("https://rahulshettyacademy.com/seleniumPractise");
   await page.locator(`.brand`).first().waitFor();
 
+  /*------------------------------------Top Deals Page-------------------------------------------*/
+  /*---------------------------------------------------------------------------------------------*/
+
   //Open the "Top Deals" page
   const [page_TopDeals] = await Promise.all([
     context.waitForEvent(`page`),

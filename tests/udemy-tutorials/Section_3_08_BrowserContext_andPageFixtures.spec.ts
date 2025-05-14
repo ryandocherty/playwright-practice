@@ -25,6 +25,9 @@ test("Udemy: Browser fixture", async ({ browser }) => {
   //This page is now where you'll perform automation tests.
 
   await page.goto("https://www.saucedemo.com/");
+
+  await context.close();
+  await browser.close();
 });
 
 /* 

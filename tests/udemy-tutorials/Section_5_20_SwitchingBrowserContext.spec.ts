@@ -139,4 +139,7 @@ test("Udemy: Child Windows", async ({ browser }) => {
   //Index 4:'to',
   //Index 5:'receive',
   //Index 6:'response'
+
+  await context.close();
+  await browser.close();
 });
