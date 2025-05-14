@@ -7,6 +7,7 @@ Here you will find various tests and scripts that I have created based on tutori
 
 - **Tests**: A collection of tests covering different use cases and scenarios using Playwright.
 - **Tutorials**: Notes and examples from YouTube tutorials, documentation on playwright.dev, but mostly courses from Udemy.
+- **Languages**: JavaScript, TypeScript.
 
 ## Udemy Courses
 **Title**: [*Playwright JS/TS Automation Testing from Scratch & Framework*](https://www.udemy.com/course/playwright-tutorials-automation-testing/)
