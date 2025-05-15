@@ -1,7 +1,7 @@
 # Playwright Automation Learning Repository
 
 Welcome to my Playwright Automation Learning repository! This repository is dedicated to practicing and learning Playwright for web automation testing. 
-Here you will find various tests and scripts that I have created based on tutorials and documentation from different sources.
+Here you will find various tests and scripts that I've created based on tutorials and documentation from different sources.
 
 ## Contents
 
