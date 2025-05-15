@@ -12,8 +12,6 @@ Here you will find various tests and scripts that I have created based on tutori
 ## Udemy Courses
 **Title**: [*Playwright JS/TS Automation Testing from Scratch & Framework*](https://www.udemy.com/course/playwright-tutorials-automation-testing/)
 
-**Tutor**: *Rahul Shetty*
-
 **Modules**:
 1. Introduction to Playwright Automation & Course expectations
 2. Getting started with Playwright Automation Core concepts
