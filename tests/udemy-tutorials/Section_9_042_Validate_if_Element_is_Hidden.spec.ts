@@ -8,9 +8,8 @@ test("Udemy: Handling Calenders", async ({ browser }) => {
 
   await page.goto("https://rahulshettyacademy.com/seleniumPractise");
 
-  /*------------------------------------Close Browser--------------------------------------------*/
+  /*------------------------------------Close Context--------------------------------------------*/
   /*---------------------------------------------------------------------------------------------*/
 
   await context.close();
-  await browser.close();
 });

@@ -22,6 +22,6 @@ test("Udemy: Using Async Await With Assertions, Validating Attributes", async ({
   that the link/banner has this class.
   */
 
-  const blinkingtextBanner = page.locator(`.blinkingText`);
+  const blinkingtextBanner = page.locator(`.blinkingText`).first();
   await expect(blinkingtextBanner).toHaveAttribute(`class`, `blinkingText`);
 });

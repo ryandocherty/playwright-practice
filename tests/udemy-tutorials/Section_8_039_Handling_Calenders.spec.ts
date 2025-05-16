@@ -95,9 +95,9 @@ test("Udemy: Handling Calenders", async ({ browser }) => {
     const date = await inputs[i].getAttribute(`value`);
     expect(date).toEqual(desiredDate[i]);
   }
-  /*------------------------------------Close Browser--------------------------------------------*/
+
+  /*------------------------------------Close Context--------------------------------------------*/
   /*---------------------------------------------------------------------------------------------*/
 
   await context.close();
-  await browser.close();
 });

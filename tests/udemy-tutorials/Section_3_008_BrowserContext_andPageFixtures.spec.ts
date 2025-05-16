@@ -27,7 +27,6 @@ test("Udemy: Browser fixture", async ({ browser }) => {
   await page.goto("https://www.saucedemo.com/");
 
   await context.close();
-  await browser.close();
 });
 
 /* 
@@ -38,4 +37,5 @@ test("Udemy: Browser fixture", async ({ browser }) => {
 */
 test("Udemy: Page fixture", async ({ page }) => {
   await page.goto("https://www.saucedemo.com/");
+  expect(await page.title()).toBe("Swag Labs");
 });

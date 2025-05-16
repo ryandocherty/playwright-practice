@@ -64,7 +64,7 @@ test("Udemy: Child Windows", async ({ browser }) => {
 
   const [newPage] = await Promise.all([
     context.waitForEvent(`page`),
-    page.locator(SELECTORS_LOGINPRACTICE.blinkingTextLink).click(),
+    page.locator(SELECTORS_LOGINPRACTICE.blinkingTextLink).first().click(),
   ]);
 
   /*
@@ -106,9 +106,7 @@ test("Udemy: Child Windows", async ({ browser }) => {
   //Firstly grab the whole string:
   const originalText = await newPage.locator(`.red`).textContent();
   const fullText = originalText?.trim();
-  expect(fullText).toBe(
-    `Please email us at mentor@rahulshettyacademy.com with below template to receive response`
-  );
+  expect(fullText).toBe(`Please email us at mentor@rahulshettyacademy.com with below template to receive response`);
   console.log(fullText);
 
   //Use split() to return a (new) array using "@" as the seperator.
@@ -140,6 +138,8 @@ test("Udemy: Child Windows", async ({ browser }) => {
   //Index 5:'receive',
   //Index 6:'response'
 
+  /*------------------------------------Close Context--------------------------------------------*/
+  /*---------------------------------------------------------------------------------------------*/
+
   await context.close();
-  await browser.close();
 });

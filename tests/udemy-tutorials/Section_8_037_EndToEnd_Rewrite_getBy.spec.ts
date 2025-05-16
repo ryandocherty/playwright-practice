@@ -240,9 +240,8 @@ test("Udemy: e2e Practice Rewrite", async ({ browser }) => {
   expect(page.getByText(targetCountry).first()).toBeVisible();
   expect(page.getByText(price_ProductsPage).first()).toBeVisible();
 
-  /*------------------------------------Close Browser--------------------------------------------*/
+  /*------------------------------------Close Context--------------------------------------------*/
   /*---------------------------------------------------------------------------------------------*/
 
   await context.close();
-  await browser.close();
 });

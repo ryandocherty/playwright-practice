@@ -297,8 +297,7 @@ test("Udemy: Client Item Purchase Test", async ({ browser }) => {
   expect(billingCountryOnSummary?.trim()).toContain(targetCountry);
   expect(deliveryCountryOnSummary?.trim()).toContain(targetCountry);
 
-  /*------------------------------------Close Browser--------------------------------------------*/
+  /*------------------------------------Close Context--------------------------------------------*/
   /*---------------------------------------------------------------------------------------------*/
   await context.close();
-  await browser.close();
 });
