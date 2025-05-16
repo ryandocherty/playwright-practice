@@ -23,7 +23,7 @@ test("Udemy: Handling Calenders", async ({ browser }) => {
 
   //Declare the desired calender date:
   const desiredDay: any = `09`;
-  const desiredMonth: any = `01`;
+  const desiredMonth: any = `1`;
   const desiredYear: any = `2040`;
 
   //Remove leading zeros if present:
@@ -31,7 +31,8 @@ test("Udemy: Handling Calenders", async ({ browser }) => {
   let desiredMonth_noZeros = desiredMonth;
   if (desiredDay.startsWith(`0`)) {
     desiredDay_noZeros = desiredDay.slice(1);
-  } else if (desiredMonth.startsWith(`0`)) {
+  }
+  if (desiredMonth.startsWith(`0`)) {
     desiredMonth_noZeros = desiredMonth.slice(1);
   }
 
@@ -82,10 +83,10 @@ test("Udemy: Handling Calenders", async ({ browser }) => {
   /*---------------------Top Deals Page - Calender Assertions - Using a Loop---------------------*/
   /*---------------------------------------------------------------------------------------------*/
 
-  //1. Create an array "expectedDate" with the desired month, day, and year
-  //2. Return an array "inputs" of <input> tags which correspond to the month, day, year displayed on the webpage
-  //3. Loop through the "inputs" array and extract the "value" attribute (m/d/y numbers)
-  //4. Then check the desired date matches "expectedDate" at each index
+  //1. Create an array "expectedDate" with desiredMonth, desiredDay, desiredYear.
+  //2. Return an array "inputs" of <input> tags which correspond to the month, day, year displayed on the webpage.
+  //3. Loop through the "inputs" array and extract the "value" attribute (the actual m/d/y numbers).
+  //4. Then check the "desiredDate" matches "expectedDate" at each index.
 
   const desiredDate = [desiredMonth, desiredDay, desiredYear];
   const inputs: any = page_TopDeals.locator(`.react-date-picker__inputGroup input`); //an array of <input> tags
