@@ -96,11 +96,11 @@ test("Udemy: Client Item Purchase Test", async ({ browser }) => {
 
   //Click the 'Cart' link, then wait for the cart items to load (they all have a "div li" attribute):
   await page.locator(`[routerlink='/dashboard/cart']`).click();
-  await page.locator(`div li`).first().waitFor();
+  await page.locator(`h1`).first().waitFor();
 
+  await page.pause();
   //Assert that the item added to the cart (ZARA COAT 3) is visible:
-  const isItemInCartVisible = await page.locator(`h3:has-text('${targetProduct}')`).isVisible();
-  expect(isItemInCartVisible).toBeTruthy();
+  expect(page.getByText(targetProduct)).toBeVisible();
 
   //Grab the text of the current item in cart:
   const itemInCart = await page.locator(`div[class='cartSection'] h3`).first().textContent();

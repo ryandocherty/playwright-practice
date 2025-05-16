@@ -24,7 +24,7 @@ test("Udemy: Handling Calenders", async ({ browser }) => {
   //Declare the desired calender date:
   const desiredDay: any = `09`;
   const desiredMonth: any = `1`;
-  const desiredYear: any = `2040`;
+  const desiredYear: any = `2027`;
 
   //Remove leading zeros if present:
   let desiredDay_noZeros = desiredDay;
@@ -40,6 +40,7 @@ test("Udemy: Handling Calenders", async ({ browser }) => {
     `Desired delivery date (m/d/y): ${Number(desiredMonth) + `/` + Number(desiredDay) + `/` + Number(desiredYear)}`
   );
 
+  await page.pause();
   const calender_OpenButton: any = page_TopDeals.locator(`.react-date-picker__button__icon`).nth(1);
   const calender_nextButton: any = page_TopDeals.locator(`.react-calendar__navigation__next-button`);
   const calender_yearLabel: any = page_TopDeals.locator(`.react-calendar__navigation__label`);
