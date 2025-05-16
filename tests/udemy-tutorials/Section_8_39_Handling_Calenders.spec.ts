@@ -21,6 +21,64 @@ test("Udemy: Handling Calenders", async ({ browser }) => {
   await page_TopDeals.locator(`.brand`).first().waitFor();
   await expect(page_TopDeals).toHaveURL(`https://rahulshettyacademy.com/seleniumPractise/#/offers`);
 
+  //Declare the desired calender date:
+  const desiredDay: any = `12`;
+  const desiredMonth: any = `7`;
+  const desiredYear: any = `2027`;
+
+  //Remove leading zeros if present:
+  let desiredDay_noZeros = desiredDay;
+  let desiredMonth_noZeros = desiredMonth;
+  if (desiredDay.startsWith(`0`)) {
+    desiredDay_noZeros = desiredDay.slice(1);
+  } else if (desiredMonth.startsWith(`0`)) {
+    desiredMonth_noZeros = desiredMonth.slice(1);
+  }
+
+  console.log(
+    `Desired delivery date (m/d/y): ${Number(desiredMonth) + `/` + Number(desiredDay) + `/` + Number(desiredYear)}`
+  );
+
+  const calender_OpenButton: any = page_TopDeals.locator(`.react-date-picker__button__icon`).nth(1);
+  const calender_nextButton: any = page_TopDeals.locator(`.react-calendar__navigation__next-button`);
+  const calender_yearLabel: any = page_TopDeals.locator(`.react-calendar__navigation__label`);
+
+  //Open the calender selection window, then the year selector window:
+  await calender_OpenButton.click();
+  await calender_yearLabel.click();
+  //await page.pause();
+
+  //Select the desired date:
+  for (let i = 0; i < 100; i++) {
+    if ((await calender_yearLabel?.textContent()) === desiredYear) {
+      await page_TopDeals
+        .locator(`.react-calendar__year-view__months__month`)
+        .nth(Number(desiredMonth - 1))
+        .click();
+      await page_TopDeals.locator(`//abbr[text()='${desiredDay_noZeros}']`).click();
+      break;
+    } else {
+      await calender_nextButton.click();
+    }
+  }
+
+  /*--------------------------------Top Deals Page - Calender Assertions-------------------------*/
+  /*---------------------------------------------------------------------------------------------*/
+
+  //For dates withleading zeros, I'm just grabbing the number after for the assertions:
+  //e.g. They might display as "02", but I'm just grabbing the "2"
+
+  const displayedMonth = await page_TopDeals.locator(`.react-date-picker__inputGroup__month`).getAttribute(`value`);
+  expect(Number(displayedMonth)).toEqual(Number(desiredMonth));
+
+  const displayedDay = await page_TopDeals.locator(`.react-date-picker__inputGroup__day`).getAttribute(`value`);
+  expect(Number(displayedDay)).toEqual(Number(desiredDay));
+
+  const displayedYear = await page_TopDeals.locator(`.react-date-picker__inputGroup__year`).getAttribute(`value`);
+  expect(Number(displayedYear)).toEqual(Number(desiredYear));
+
+  console.log(`Selected delivery date (m/d/y): ${displayedMonth}/${displayedDay}/${displayedYear}`);
+
   /*------------------------------------Close Browser--------------------------------------------*/
   /*---------------------------------------------------------------------------------------------*/
 
