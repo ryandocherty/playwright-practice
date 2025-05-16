@@ -22,9 +22,9 @@ test("Udemy: Handling Calenders", async ({ browser }) => {
   await expect(page_TopDeals).toHaveURL(`https://rahulshettyacademy.com/seleniumPractise/#/offers`);
 
   //Declare the desired calender date:
-  const desiredDay: any = `12`;
-  const desiredMonth: any = `7`;
-  const desiredYear: any = `2027`;
+  const desiredDay: any = `09`;
+  const desiredMonth: any = `01`;
+  const desiredYear: any = `2040`;
 
   //Remove leading zeros if present:
   let desiredDay_noZeros = desiredDay;
@@ -53,7 +53,7 @@ test("Udemy: Handling Calenders", async ({ browser }) => {
     if ((await calender_yearLabel?.textContent()) === desiredYear) {
       await page_TopDeals
         .locator(`.react-calendar__year-view__months__month`)
-        .nth(Number(desiredMonth - 1))
+        .nth(Number(desiredMonth_noZeros - 1))
         .click();
       await page_TopDeals.locator(`//abbr[text()='${desiredDay_noZeros}']`).click();
       break;
@@ -62,11 +62,11 @@ test("Udemy: Handling Calenders", async ({ browser }) => {
     }
   }
 
-  /*--------------------------------Top Deals Page - Calender Assertions-------------------------*/
+  /*-----------------------Top Deals Page - Calender Assertions - My Method----------------------*/
   /*---------------------------------------------------------------------------------------------*/
 
-  //For dates withleading zeros, I'm just grabbing the number after for the assertions:
-  //e.g. They might display as "02", but I'm just grabbing the "2"
+  //For dates with leading zeros, I'm just grabbing the number after for the assertions:
+  //e.g. They might display as "02", but I'm just grabbing the "2".
 
   const displayedMonth = await page_TopDeals.locator(`.react-date-picker__inputGroup__month`).getAttribute(`value`);
   expect(Number(displayedMonth)).toEqual(Number(desiredMonth));
@@ -79,6 +79,21 @@ test("Udemy: Handling Calenders", async ({ browser }) => {
 
   console.log(`Selected delivery date (m/d/y): ${displayedMonth}/${displayedDay}/${displayedYear}`);
 
+  /*---------------------Top Deals Page - Calender Assertions - Using a Loop---------------------*/
+  /*---------------------------------------------------------------------------------------------*/
+
+  //1. Create an array "expectedDate" with the desired month, day, and year
+  //2. Return an array "inputs" of <input> tags which correspond to the month, day, year displayed on the webpage
+  //3. Loop through the "inputs" array and extract the "value" attribute (m/d/y numbers)
+  //4. Then check the desired date matches "expectedDate" at each index
+
+  const desiredDate = [desiredMonth, desiredDay, desiredYear];
+  const inputs: any = page_TopDeals.locator(`.react-date-picker__inputGroup input`); //an array of <input> tags
+
+  for (let i = 0; i < inputs.length; i++) {
+    const date = await inputs[i].getAttribute(`value`);
+    expect(date).toEqual(desiredDate[i]);
+  }
   /*------------------------------------Close Browser--------------------------------------------*/
   /*---------------------------------------------------------------------------------------------*/
 
