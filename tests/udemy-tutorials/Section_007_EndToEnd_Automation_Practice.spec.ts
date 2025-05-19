@@ -11,7 +11,7 @@ import dotenv from "dotenv";
 //Load hidden environment variables:
 dotenv.config({ path: ".env" });
 
-test("Udemy: Client Item Purchase Test", async ({ browser }) => {
+test("Udemy: Client Item Purchase Test", async ({ page }) => {
   /*
   For this test I want to:
   1. Log in to a website
@@ -20,8 +20,6 @@ test("Udemy: Client Item Purchase Test", async ({ browser }) => {
   4. Assert some information (correct product added, correct price etc.)
   */
 
-  const context = await browser.newContext();
-  const page = await context.newPage();
   await page.goto("https://rahulshettyacademy.com/client");
 
   /*----------------------------Import email address and password--------------------------------*/
@@ -296,8 +294,4 @@ test("Udemy: Client Item Purchase Test", async ({ browser }) => {
   expect(deliveryEmailOnSummary?.trim()).toBe(loginEmail);
   expect(billingCountryOnSummary?.trim()).toContain(targetCountry);
   expect(deliveryCountryOnSummary?.trim()).toContain(targetCountry);
-
-  /*------------------------------------Close Context--------------------------------------------*/
-  /*---------------------------------------------------------------------------------------------*/
-  await context.close();
 });

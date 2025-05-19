@@ -7,12 +7,10 @@ import dotenv from "dotenv";
 //Load hidden environment variables:
 dotenv.config({ path: ".env" });
 
-test("Udemy: e2e Practice Rewrite", async ({ browser }) => {
+test("Udemy: e2e Practice Rewrite", async ({ page }) => {
   //For this test I want to:
   //Rewrite "Section_7_EndToEnd_Automation_Practice.spec.ts" to use getBy locators.
 
-  const context = await browser.newContext();
-  const page = await context.newPage();
   await page.goto("https://rahulshettyacademy.com/client");
 
   /*----------------------------Import email address and password--------------------------------*/
@@ -239,9 +237,4 @@ test("Udemy: e2e Practice Rewrite", async ({ browser }) => {
   expect(page.getByText(targetProductName).first()).toBeVisible();
   expect(page.getByText(targetCountry).first()).toBeVisible();
   expect(page.getByText(price_ProductsPage).first()).toBeVisible();
-
-  /*------------------------------------Close Context--------------------------------------------*/
-  /*---------------------------------------------------------------------------------------------*/
-
-  await context.close();
 });

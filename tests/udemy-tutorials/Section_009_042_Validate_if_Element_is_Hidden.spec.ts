@@ -1,11 +1,8 @@
-//Section 8.39: Strategy on handling Calendars automation using Playwright
+//Section 8.42: How to validate if element is hidden, displayed mode with Expect assertions
 
 import { test, expect } from "@playwright/test";
 
-test("Udemy: Validate if Elements are Hidden", async ({ browser }) => {
-  const context = await browser.newContext();
-  const page = await context.newPage();
-
+test("Udemy: Validate if Elements are Hidden", async ({ page }) => {
   await page.goto("https://rahulshettyacademy.com/AutomationPractice/");
 
   //await page.goto("https://www.google.com/");
@@ -32,9 +29,4 @@ test("Udemy: Validate if Elements are Hidden", async ({ browser }) => {
   //Click "Show" to show the textbox again:
   await elementDisplayed_ShowButton.click();
   await expect(elementDisplayed_Textbox).toBeVisible();
-
-  /*------------------------------------Close Context--------------------------------------------*/
-  /*---------------------------------------------------------------------------------------------*/
-
-  await context.close();
 });

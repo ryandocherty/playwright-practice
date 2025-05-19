@@ -58,9 +58,7 @@ test("Udemy: getBy locators", async ({ page }) => {
   There's also getByText() which is scan the webpage for the given text.
   Here we're just checking that the text appears after pressing submit:
   */
-  expect(
-    await page.getByText("Success! The Form has been submitted successfully!.").isVisible()
-  ).toBeTruthy();
+  expect(await page.getByText("Success! The Form has been submitted successfully!.").isVisible()).toBeTruthy();
 
   /*
   We can also use getByRole() to find links on a webpage.
