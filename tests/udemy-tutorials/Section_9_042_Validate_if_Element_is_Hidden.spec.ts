@@ -2,11 +2,11 @@
 
 import { test, expect } from "@playwright/test";
 
-test("Udemy: Handling Calenders", async ({ browser }) => {
+test("Udemy: Validate if Elements are Hidden", async ({ browser }) => {
   const context = await browser.newContext();
   const page = await context.newPage();
 
-  await page.goto("https://rahulshettyacademy.com/seleniumPractise");
+  await page.goto("https://www.rahulshettyacademy.com/AutomationPractice/");
 
   /*------------------------------------Close Context--------------------------------------------*/
   /*---------------------------------------------------------------------------------------------*/
