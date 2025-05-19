@@ -63,7 +63,6 @@ test("Udemy: Handling Calenders", async ({ browser }) => {
   //e.g. They might display as "02", but I'm just grabbing the "2".
   //Anything without a leading zero can be grabbed more easily.
 
-  await page.pause();
   const displayedMonth = await page_TopDeals.locator(`.react-date-picker__inputGroup__month`).getAttribute(`value`);
   expect(Number(displayedMonth)).toEqual(randomDesiredMonth);
 
