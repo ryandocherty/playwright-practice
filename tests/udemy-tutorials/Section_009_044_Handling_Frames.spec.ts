@@ -52,4 +52,6 @@ test("Udemy: Handling Frames", async ({ page }) => {
   //3. Return index[1] ("13,522"), but also trim whitespace:
   const extractedNumber: any = headerText?.split(` `)[1].trim();
   console.log(extractedNumber);
+
+  //hello
 });
