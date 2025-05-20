@@ -1,4 +1,4 @@
-//Section 8.42: How to validate if element is hidden, displayed mode with Expect assertions
+//Section 9.42: How to validate if element is hidden, displayed mode with Expect assertions
 
 import { test, expect } from "@playwright/test";
 

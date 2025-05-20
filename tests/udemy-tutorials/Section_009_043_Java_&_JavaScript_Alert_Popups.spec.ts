@@ -1,4 +1,4 @@
-//Section 8.43: How to automate Java/JavaScript Alert popups with Playwright
+//Section 9.43: How to automate Java/JavaScript Alert popups with Playwright
 
 import { test, expect } from "@playwright/test";
 
@@ -39,5 +39,8 @@ test("Udemy: Java Alert Popups", async ({ page }) => {
   await page.locator(`#alertbtn`).click();
 
   //Quick demo of mouse hover:
-  await page.locator(`#mousehover`).hover();
+  await Promise.all([
+    await page.locator(`#mousehover`).hover(),
+    await page.locator(`.mouse-hover-content a`).first().click(),
+  ]);
 });
