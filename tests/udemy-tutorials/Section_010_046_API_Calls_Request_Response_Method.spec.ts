@@ -1,5 +1,7 @@
 //Section 10.46: Playwright request method to make API calls and grab response - Example
 //Section 10.47: Parsing API response & passing token to browser local storage with Playwright
+//Section 10.48: Place order API to create order and bypass the flow in UI with mix of web/API
+//Section 10.49: End to end validation with mix of API & Web concepts - Reduce test time
 
 //For this test I want to:
 //Rewrite "Section_008_037_EndToEnd_Rewrite_getBy.spec.ts" to introduce a login API.
@@ -11,15 +13,18 @@ import dotenv from "dotenv";
 //Load hidden environment variables:
 dotenv.config({ path: ".env" });
 
-//Still loading the email/password from .env file:
+//Still loading the email/password from the .env file:
 const loginEmail = process.env.LOGIN_EMAIL ?? "";
 const loginPassword = process.env.LOGIN_PASSWORD ?? "";
 
-//Storing loginToken outside test blocks so it's shared:
+//Global variables:
 let loginToken: any;
+let orderID: any;
+const loginPayload = { userEmail: loginEmail, userPassword: loginPassword };
+const placeOrderPayload = { orders: [{ country: "United Kingdom", productOrderedId: "67a8dde5c0d3e6622a297cc8" }] };
 
 test.beforeAll(async () => {
-  //test.beforeAll() - this code block will get executed once before all subsequent tests.
+  //test.beforeAll() - this code block will get executed once before all subsequent test blocks.
 
   //The "request.newContext()" method allows you to create a new context for making API requests.
   //This is similar to using "browser.newContext()" to create a new instance of the "browser" fixture.
@@ -32,7 +37,6 @@ test.beforeAll(async () => {
   //We then provide the data needed to make this call:
   //1. The URL/endpoint (the API URL, not the normal one).
   //2. The payload data (email & password), which we can store as a variable.
-  const loginPayload = { userEmail: loginEmail, userPassword: loginPassword };
   const loginResponse = await APIContext.post(`https://rahulshettyacademy.com/api/ecom/auth/login`, {
     data: loginPayload,
   });
@@ -45,15 +49,96 @@ test.beforeAll(async () => {
   //Now we need to grab the JSON response (loginResponse) to be able to retrieve the session token.
   //Using loginResponse.json() returns the JSON representation of response body.
   //You can see the format of this in Inspect > Network > Response.
-  const loginResponseJSON = await loginResponse.json();
+  const loginResponse_JSON = await loginResponse.json();
+  console.log(loginResponse_JSON);
 
   //The "loginResponseJSON" object now contains 3 objects:
-  //1. token
-  //2. userID
-  //3. message
+  //[0] token
+  //[1] userID
+  //[2] message
   //We then just need to grab the token, which we can store in a variable.
-  loginToken = loginResponseJSON.token;
-  console.log(loginToken);
+  loginToken = loginResponse_JSON.token;
+
+  /*
+  -------------Test Case------------------------------
+  Goal: Verify if an order shows up in the order history page.
+
+  What prerequisite data will we need?
+  We need the data from creating an order, then the orderID data.
+  Can we use APIs to create the order and thus create an orderID?
+  This ultimately depends on how the website developer has set up the website (modern websites tend to be driven by APIs).
+  You can ask the developer if are there any API calls for creating an order, or use browser tools to check.
+  If yes, then we can use APIs to make an order with this API call and retreive an orderID very quickly.
+  Then we can use this orderID to then verify if it appears on the history page.
+
+  If our goal is just to "Verify if an order shows up in the order history page",
+  then we can use APIs to skip the automation of clicking buttons etc. to create the order,
+  then jump straight to the order history page and run the tests there.
+
+  Using the browser's Network tools, you can manually place an order while monitoring
+  the Network tab to see if there was an API call made, to help determine
+  if using an API is possible with whatever website you're working with.
+
+  -------------Potential Problems---------------------
+  If we monitor the Network tab while creating an order on "https://rahulshettyacademy.com/client",
+  we see that there is indeed an API call made to create the order.
+
+  Request URL: https://rahulshettyacademy.com/api/ecom/order/create-order
+  Request Method: POST
+
+  There's a potential problem here - how do you tell the API call to create the order just for the account that's logged in?
+  We need to specify that the order should only be created on behalf of the currently logged in account.
+  To do this we need to "authorise" the order, and only this way will it appear in the correct order history page.
+
+  In Network > Headers, you can see "Request Headers" by scrolling down.
+  In Request Headers, you can see a key-value pair "Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfa...".
+
+  The value here is the loginToken from earlier, which corresponds to the currently logged in account.
+  The Request Header is sending "Authorization" as the key, and "loginToken" as the value.
+
+  -------------Method---------------------------------
+  Earlier when we called the API for the "login" call, the only data passed was "loginPayload".
+  This time we need to pass a Header with the loginToken.
+  Hopefully we will then get a JSON Response that contains an orderID.
+  We can then grab the orderID from the JSON response and use it to perform our assertions on the order history page.
+
+  -------------API Advantages-------------------------
+  By using API calls here, we're just focusing on the core goal to "Verify if an order shows up in the order history page".
+  We'll be able to skip the website UI, which can be unstable due to slow internet, rendering issues etc.
+  API calls are much faster and very stable as they communicate directly with the back-end server.
+  As APIs are more direct, they're less prone to errors caused by UI changes (e.g., layout changes) and can lead to steadier test results.
+  Normal UI automation involves interacting with rendered elements, handling animations, waiting for visible elements etc.
+  With API calls, you can often finish tasks in a fraction of the time it would take using UI automation.
+  In some cases, you might even see a reduction of operations down to 1/10th to 1/2 of the time taken by UI automation.
+  For example, processes that take several seconds (say 5-10 seconds of UI automation) might only take ~200-800ms with API calls.
+  */
+
+  //Similarly to how you use "context.newPage()", we need to use "newContext()" for a new API POST call.
+  //We already declared "const APIContext = await request.newContext()", so we can use "APIContext".
+  //We then need to pass the correct endpoint for creating an order, alongside the required data.
+  //The date we need can be seen in the Payload tab, or in the specific product's URL.
+  //Example - "https://rahulshettyacademy.com/client/dashboard/product-details/67a8dde5c0d3e6622a297cc8"
+  //OrderID - "67a8dde5c0d3e6622a297cc8"
+  //The data required to place an order on this website: "country" and "productOrderedId".
+  //We then need to pass the Header "Authorization" for the order.
+  //We'll also pass the Header "Content-Type" to ensure the response is in JSON format (not essential though).
+  const placeOrderResponse = await APIContext.post(`https://rahulshettyacademy.com/api/ecom/order/create-order`, {
+    data: placeOrderPayload,
+    headers: { Authorization: loginToken, "Content-Type": "application/json" },
+  });
+
+  const placeOrderResponse_JSON = await placeOrderResponse.json();
+  console.log(placeOrderResponse_JSON);
+
+  //The "placeOrderResponse_JSON" object contains:
+  //[0] orders
+  //[1] productOrderID
+  //[2] message
+  //"orders" & "productOrderID" are arrays.
+  //"orders" is the ID that'll appear in Order History (1 order can contain several products).
+  //"productOrderID" is the ID of a specific product.
+  //Out goal is to check the Order History page, so we need index[0] of "orders":
+  orderID = placeOrderResponse_JSON.orders[0];
 });
 
 test("Udemy: Login using API", async ({ page }) => {
@@ -63,8 +148,7 @@ test("Udemy: Login using API", async ({ page }) => {
   //By default, Playwright does not have the ability to insert the token into browser local storage.
   //However, general JavaScript DOES have this ability, and Playwright can execute any JS expressions.
   //To do this, we'll use "addInitScript()", which is an initialisation script.
-  //We can insert JavaScript code inside this script.
-  //We'll use this to store the login token/cookie.
+  //We can insert JavaScript code inside this script, which we'll use this to store the login token/cookie.
 
   //1. We call page.addInitScript() to inject a script into the page before any other scripts.
   //2. The browser runs the function "(value) => {window.localStorage.setItem(`token`, value);}".
@@ -76,168 +160,12 @@ test("Udemy: Login using API", async ({ page }) => {
   }, loginToken);
 
   //Previously we would go to this page and then manually login.
-  //But now that we've injected the loginToken, this page will direct to the dashboard/produtcs page.
+  //But now that we've injected the loginToken, this page will redirect straight to the dashboard/produtcs page.
   await page.goto("https://rahulshettyacademy.com/client");
 
-  /*-------------------------------------Products page-------------------------------------------*/
+  /*-------------------------------------Order History Page--------------------------------------*/
   /*---------------------------------------------------------------------------------------------*/
-  await page.waitForLoadState(`networkidle`); //without this, productTitles below weren't being grabbed.
-  const productTitles = await page.locator(`.card-body b`).allTextContents();
-  const productsTitles_count = await page.locator(`.card-body b`).count();
 
-  console.log(`Number of products found: ${productsTitles_count}`);
-  console.table(productTitles);
-
-  const targetProductName = `ZARA COAT 3`;
-  const targetCountry = `United Kingdom`;
-
-  console.log(`Target Product: ${targetProductName}`);
-  console.log(`Target Country: ${targetCountry}`);
-
-  //1. Locate "card-body" classes (each available product has this class).
-  //2. Filter these "card-body" classes down to one containing text "ZARA COAT 3".
-  //3. Then within this single "card-body" class, locate a button with name "Add to Cart".
-  //4. Click this "Add to Cart" button.
-  const addToCartButton_Element = page
-    .locator(`.card-body`)
-    .filter({ hasText: targetProductName })
-    .getByRole(`button`, { name: ` Add To Cart` });
-
-  expect(addToCartButton_Element).toBeVisible();
-  await addToCartButton_Element.click();
-  console.log(`Clicking 'Add to Cart' for ${targetProductName}...`);
-
-  const price_ProductsPage_Element = page
-    .locator(`.card-body`)
-    .filter({ hasText: targetProductName })
-    .locator(`.text-muted`);
-
-  expect(price_ProductsPage_Element).toBeVisible();
-  const price_ProductsPage: any = await price_ProductsPage_Element.textContent();
-
-  //Convert "price_ProductsPage" to purely numeric:
-  const price_ProductsPage_Numeric: number = parseFloat(price_ProductsPage?.replace(/[^0-9.-]+/g, ``));
-
-  console.log(`Price (products page): $${price_ProductsPage_Numeric}`);
-
-  //There are 3 buttons named "Add to Cart", the one I want is just the "Cart" button, so I need to:
-  //1. Locate element(s) with "listitem" parent (only the "Cart" button has this).
-  //2. Then within "listitem" parent, locate a button with name "Cart".
-  expect(page.getByRole(`listitem`).getByRole(`button`, { name: `  Cart ` })).toBeVisible();
-  await page.getByRole(`listitem`).getByRole(`button`, { name: `  Cart ` }).click();
-  console.log(`Clicking 'Cart'...`);
-
-  /*-------------------------------------Cart page-----------------------------------------------*/
-  /*---------------------------------------------------------------------------------------------*/
-  await page.getByRole(`button`).filter({ hasText: `Checkout` }).waitFor();
-
-  //Grabbing the element separately before extracting the text.
-  //This is so I can use toBeVisible() later on.
-  const productName_InCart_Element = page
-    .locator(`.cartSection`)
-    .filter({ hasText: targetProductName })
-    .getByRole(`heading`);
-
-  //Grab the name of the product once it's inside the cart:
-  const productName_InCart = await productName_InCart_Element.textContent();
-
-  const price_InCart_Element: any = page
-    .locator(`.cartSection`)
-    .filter({ hasText: targetProductName })
-    .getByRole(`paragraph`)
-    .filter({ hasText: `MRP` });
-
-  //Grab the price of the product once it's inside the cart:
-  const price_InCart = await price_InCart_Element.textContent();
-  //Convert "price_InCart" to purely numeric:
-  const price_InCart_Numeric: number = parseFloat(price_InCart?.replace(/[^0-9.-]+/g, ``));
-
-  console.log(`Price (in cart): $${price_InCart_Numeric}`);
-  console.log(`Name (in cart): ${productName_InCart?.trim()}`);
-
-  //Expect the product name & price to still be the same:
-  expect(page.getByText(targetProductName)).toBeVisible();
-  expect(productName_InCart_Element).toBeVisible();
-  expect(price_InCart_Element).toBeVisible();
-  expect(productName_InCart).toBe(targetProductName);
-  expect(price_InCart_Numeric).toEqual(price_ProductsPage_Numeric);
-
-  /*------------------------------------Checkout Page--------------------------------------------*/
-  /*---------------------------------------------------------------------------------------------*/
-  //Click the "Checkout" button:
-  const checkoutButton = page.getByRole(`button`, { name: `Checkout` });
-  expect(checkoutButton).toBeVisible();
-  await checkoutButton.click();
-  console.log(`Clicking 'Checkout'...`);
-
-  //Enter a credit cart number:
-  const creditCardNumberInput = page.getByRole(`textbox`).first();
-  expect(creditCardNumberInput).toBeEditable();
-  await creditCardNumberInput.clear();
-  await creditCardNumberInput.pressSequentially(`1234 5678 9012 3456`, { delay: 100 });
-
-  //Enter a CVV number:
-  const CVVCodeInput = page.getByRole(`textbox`).nth(1);
-  expect(CVVCodeInput).toBeEditable();
-  await CVVCodeInput.clear();
-  await CVVCodeInput.pressSequentially(`420`, { delay: 100 });
-
-  //Enter the name on the credit card:
-  const nameOnCardInput = page.getByRole(`textbox`).nth(2);
-  expect(nameOnCardInput).toBeEditable();
-  await nameOnCardInput.clear();
-  await nameOnCardInput.pressSequentially(`Duane Dibbley`, { delay: 100 });
-
-  //Enter a coupon code (optional):
-  const couponCodeInput = page.getByRole(`textbox`).nth(3);
-  const applyCouponButton = page.getByRole(`button`, { name: `Apply Coupon` });
-  expect(couponCodeInput).toBeEditable();
-  expect(applyCouponButton).toBeEnabled();
-  await couponCodeInput.pressSequentially(`420`, { delay: 100 });
-  await couponCodeInput.clear();
-
-  //Enter an credit card expiry month:
-  const expiryDate_Month = page.getByRole(`combobox`).first();
-  expect(expiryDate_Month).toBeEnabled();
-  await expiryDate_Month.selectOption(`12`);
-
-  //Enter an credit card expiry day:
-  const expiryDate_Day = page.getByRole(`combobox`).nth(1);
-  expect(expiryDate_Day).toBeEnabled();
-  await expiryDate_Day.selectOption(`21`);
-
-  //Email address is automatically entered, just need to assert it's visible:
-  const emailAddressDisplay = page.getByText(loginEmail);
-  expect(emailAddressDisplay).toBeVisible();
-
-  //Enter shipping country:
-  const selectCountryInput = page.getByPlaceholder(`Select Country`);
-  expect(selectCountryInput).toBeEnabled();
-  await selectCountryInput.pressSequentially(`United`);
-  await page.getByRole(`button`, { name: ` United Kingdom` }).click();
-  console.log(`Selecting Country: ${targetCountry}...`);
-
-  /*------------------------------------Order Confirmed Page-------------------------------------*/
-  /*---------------------------------------------------------------------------------------------*/
-  //Click the "Place Order" button:
-  await page.getByText(`Place Order `).click();
-  console.log(`Clicking 'Place Order'...`);
-
-  //Assert the correct product name and price is displayed:
-
-  expect(page.getByText(targetProductName)).toBeVisible();
-  expect(page.getByText(price_ProductsPage)).toBeVisible();
-
-  //Grab order ID displayed on the confirmation page.
-  //This regex matches text that starts and ends with "|" (the format of all order ID's):
-  const orderId_raw: any = await page.getByText(/^\s*\|.*\|\s*$/).textContent();
-
-  //Clean up the order ID (remove "|" symbols and trim it):
-  const orderId = orderId_raw?.replace(/\|/g, ``).trim();
-  console.log(`Order ID: ${orderId}`);
-
-  /*------------------------------------Order History Page---------------------------------------*/
-  /*---------------------------------------------------------------------------------------------*/
   //Click the "Orders" link:
   const ordersButton = page.getByRole(`button`, { name: `  ORDERS` });
   expect(ordersButton).toBeVisible();
@@ -247,28 +175,9 @@ test("Udemy: Login using API", async ({ page }) => {
   //For safety, wait for the "Your Orders" header to load before continuing to interact:
   await page.getByRole(`heading`, { name: `Your Orders` }).waitFor();
 
-  //Assert that the orderID, product name, and price are visible on the Order History page:
-  expect(page.getByText(orderId).first()).toBeVisible();
-  expect(page.getByText(targetProductName).first()).toBeVisible();
-  expect(page.getByText(price_ProductsPage).first()).toBeVisible();
+  //Assert that the "orderID" value is visible on the Order History page:
+  expect(page.getByText(orderID).first()).toBeVisible();
 
-  /*------------------------------------Order Summary Page-----------------------------------*/
-  /*-----------------------------------------------------------------------------------------*/
-  //1. Locate the table rows (max of 7 rows displayed)
-  //2. Filter the rows to the one that contains the recent orderID
-  //3. On this single row, locate the "View" button and click it
-  const viewButton = page.locator(`tr`).filter({ hasText: orderId }).getByRole(`button`, { name: `View` });
-  expect(viewButton).toBeVisible();
-  await viewButton.click();
-  console.log(`Clicking 'View'...`);
-
-  //Wait for the "Order Summary" title to load before continuing to interact:
-  await page.locator(`.email-title`).first().waitFor();
-
-  //Assert all of the correct information is visible on the "Order Summary" page:
-  expect(page.getByText(loginEmail).first()).toBeVisible();
-  expect(page.getByText(orderId)).toBeVisible();
-  expect(page.getByText(targetProductName).first()).toBeVisible();
-  expect(page.getByText(targetCountry).first()).toBeVisible();
-  expect(page.getByText(price_ProductsPage).first()).toBeVisible();
+  //If you wanted to assert the correct "Country" value (have to click "View Order" first though):
+  //expect(page.getByText(placeOrderPayload.orders[0].country)).toBeVisible();
 });
