@@ -9,6 +9,11 @@
     "strict": true /* Enable all strict type-checking options. */,
     "skipLibCheck": true /* Skip type checking all .d.ts files. */
   },
-  "include": ["tests/**/*.ts"],
+  "include": [
+    "tests/**/*.ts",
+    "tests/udemy-tutorials/utils/Udemy_APIUtils..js",
+    "tests/utils/Udemy_APIUtils.js",
+    "tests/udemy-tutorials/Section_010_051_API_Utils_Refactor.spec.js"
+  ],
   "exclude": ["node_modules"]
 }

@@ -1,7 +1,6 @@
 //Section 8.37: Rewrite end to end test with getByRole, getByText conjuction with Filter logic
 
 import { test, expect } from "@playwright/test";
-import { SELECTORS_CLIENT } from "./Udemy_Tutorials_Helpers";
 import dotenv from "dotenv";
 
 //Load hidden environment variables:

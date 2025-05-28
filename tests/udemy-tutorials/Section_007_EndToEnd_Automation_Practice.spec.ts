@@ -5,7 +5,6 @@
 //Section 7.31: Dynamically find the order from OrderHistory page using Playwright Script logic
 
 import { test, expect } from "@playwright/test";
-import { SELECTORS_CLIENT } from "./Udemy_Tutorials_Helpers";
 import dotenv from "dotenv";
 
 //Load hidden environment variables:
@@ -40,10 +39,10 @@ test("Udemy: Client Item Purchase Test", async ({ page }) => {
   /*---------------------------------------Login page--------------------------------------------*/
   /*---------------------------------------------------------------------------------------------*/
 
-  await page.fill(SELECTORS_CLIENT.userEmailInput, loginEmail);
-  await page.fill(SELECTORS_CLIENT.userPasswordInput, loginPassword);
-  expect(page.locator(SELECTORS_CLIENT.loginButton)).toBeVisible();
-  await page.locator(SELECTORS_CLIENT.loginButton).click();
+  await page.fill(`#userEmail`, loginEmail);
+  await page.fill(`#userPassword`, loginPassword);
+  expect(page.locator(`#login`)).toBeVisible();
+  await page.locator(`#login`).click();
   await expect(page).toHaveURL(`https://rahulshettyacademy.com/client/dashboard/dash`);
 
   /*-------------------------------------Products page-------------------------------------------*/

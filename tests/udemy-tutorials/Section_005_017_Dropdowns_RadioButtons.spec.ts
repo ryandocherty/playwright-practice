@@ -1,13 +1,12 @@
 //Section 5.17: Handling static Select dropdown options with Playwright
 
 import { test, expect } from "@playwright/test";
-import { SELECTORS_LOGINPRACTICE } from "./Udemy_Tutorials_Helpers";
 
 test("Udemy: Dropdowns and Radio Buttons", async ({ page }) => {
   await page.goto("https://rahulshettyacademy.com/loginpagePractise/");
 
-  await page.locator(SELECTORS_LOGINPRACTICE.userNameInputBox).clear();
-  await page.locator(SELECTORS_LOGINPRACTICE.passwordInputBox).clear();
+  await page.locator(`#username`).clear();
+  await page.locator(`[type="password"]`).clear();
 
   /*
   For this test I want to select "Consultant" in the dropdown box,
@@ -26,7 +25,7 @@ test("Udemy: Dropdowns and Radio Buttons", async ({ page }) => {
   to send one of those values to the drop down box.
   */
 
-  await page.locator(SELECTORS_LOGINPRACTICE.dropDownBox).selectOption(`consult`);
+  await page.locator(`select.form-control`).selectOption(`consult`);
 
   /*
   HTML for both Admin & User radio buttons is as follows:

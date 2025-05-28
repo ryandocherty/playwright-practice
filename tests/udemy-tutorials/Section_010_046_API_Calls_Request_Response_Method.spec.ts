@@ -135,8 +135,8 @@ test.beforeAll(async () => {
   //[1] productOrderID
   //[2] message
   //"orders" & "productOrderID" are arrays.
-  //"orders" is the ID that'll appear in Order History (1 order can contain several products).
-  //"productOrderID" is the ID of a specific product.
+  //"orders" contains the ID that'll appear in Order History (1 order can contain several products).
+  //"productOrderID" is the ID of a single specific product.
   //Out goal is to check the Order History page, so we need index[0] of "orders":
   orderID = placeOrderResponse_JSON.orders[0];
 });
@@ -178,6 +178,6 @@ test("Udemy: Login using API", async ({ page }) => {
   //Assert that the "orderID" value is visible on the Order History page:
   expect(page.getByText(orderID).first()).toBeVisible();
 
-  //If you wanted to assert the correct "Country" value (have to click "View Order" first though):
+  //If you wanted to assert the correct "Country" value (only visible on "Order Summary", not "Order History"):
   //expect(page.getByText(placeOrderPayload.orders[0].country)).toBeVisible();
 });

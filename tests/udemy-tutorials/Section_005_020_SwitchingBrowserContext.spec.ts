@@ -1,7 +1,6 @@
 //Section 5.20: Handling Child windows & Tabs with Playwright by switching browser context
 
 import { test, expect } from "@playwright/test";
-import { SELECTORS_LOGINPRACTICE } from "./Udemy_Tutorials_Helpers";
 
 test("Udemy: Child Windows", async ({ browser }) => {
   /*
@@ -62,10 +61,7 @@ test("Udemy: Child Windows", async ({ browser }) => {
   or reject when any Promise is rejected.
   */
 
-  const [newPage] = await Promise.all([
-    context.waitForEvent(`page`),
-    page.locator(SELECTORS_LOGINPRACTICE.blinkingTextLink).first().click(),
-  ]);
+  const [newPage] = await Promise.all([context.waitForEvent(`page`), page.locator(`.blinkingText`).first().click()]);
 
   /*
   This array will now keep iterating thorugh these steps as long as a Promise is not rejected.
