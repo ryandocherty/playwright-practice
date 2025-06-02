@@ -4,8 +4,8 @@
 /*
 For this test:
 1. The ultimate goal is still to "Verify if an order shows up in the order history page".
-2. I'm rewriting "Section_010_046_API_Calls_Request_Response_Method", but import a Utilties file.
-3. In this isolated Utils file "Udemy_APIUtils" I'll set up Classes to handle the API calls.
+2. I'm rewriting "Section_010_046_API_Calls_Request_Response_Method", but importing a Utilties file.
+3. In this isolated Utils file "Udemy_APIUtils" I'll set up a Class to handle the API calls.
 4. The API calls will be a "login" and "place order" call, which are prerequesites to obtain an orderID.
 5. I'll then perform normal UI automation to verify that the orderID appears on the order history page.
 */
@@ -43,7 +43,10 @@ test.beforeAll(async () => {
   prerequisiteData = await APIUtils.getOrderID(placeOrderPayload);
 });
 
-test("Udemy: Login using APIUtils", async ({ page }) => {
+test("Udemy: Verify Order using APIUtils", async ({ page }) => {
+  /*-------------------------------------Login Page----------------------------------------------*/
+  /*---------------------------------------------------------------------------------------------*/
+
   //Set the "loginToken" from our "prerequisiteData" object:
   await page.addInitScript((value) => {
     window.localStorage.setItem(`token`, value);
@@ -55,9 +58,7 @@ test("Udemy: Login using APIUtils", async ({ page }) => {
   /*---------------------------------------------------------------------------------------------*/
 
   //Click the "Orders" link:
-  const ordersButton = page.getByRole(`button`, { name: `  ORDERS` });
-  expect(ordersButton).toBeVisible();
-  await ordersButton.click();
+  await page.getByRole(`button`, { name: `  ORDERS` }).click();
   console.log(`Clicking 'Orders'...`);
 
   //For safety, wait for the "Your Orders" header to load before continuing to interact:
