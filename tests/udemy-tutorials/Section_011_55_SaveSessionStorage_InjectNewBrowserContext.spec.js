@@ -17,7 +17,7 @@ There is a workaround for this scenario:
 6. This way, the new browser context will open up in the desired "storage state".
 */
 
-import { test, expect, request } from "@playwright/test";
+import { test, expect } from "@playwright/test";
 import dotenv from "dotenv";
 
 //Load hidden environment variables:
@@ -28,7 +28,9 @@ const loginEmail = process.env.LOGIN_EMAIL ?? "";
 const loginPassword = process.env.LOGIN_PASSWORD ?? "";
 
 //Declare global variable to store a browser instance with injected session storage data:
-let context_SessionStorageData;
+let context_LoggedIn;
+//Declare "page" globally, so it can used inside test.beforeEach.
+let page;
 
 test.beforeAll(async ({ browser }) => {
   /*---------------------------------------Login page--------------------------------------------*/
@@ -52,53 +54,39 @@ test.beforeAll(async ({ browser }) => {
   await context.storageState({ path: "Udemy_storageState.json" });
 
   //Now we need to open a new browser context and inject the storage data.
-  //Now when we use "context_SessionStorageData", it'll behave like a logged-in user.
+  //Now when we use "context_LoggedIn", it'll behave like a logged-in user.
   //This way, each test in this file will not require you to login first.
-  //We just need to use "page = await context_SessionStorageData.newPage()".
-  context_SessionStorageData = await browser.newContext({ storageState: "Udemy_storageState.json" });
+  //We just need to use "page = await context_LoggedIn.newPage()".
+  context_LoggedIn = await browser.newContext({ storageState: "Udemy_storageState.json" });
 });
 
-test("Udemy: Verify product 'ZARA COAT 3' is present (using sessionStorage)", async () => {
-  /*-------------------------------------Products Page-------------------------------------------*/
-  /*---------------------------------------------------------------------------------------------*/
-  //NOTE - this "page" variable has been created dynamically, so we don't need the {page} fixture above.
+test.beforeEach(async () => {
+  //NOTE - this "page" variable has been created dynamically, so we don't need the {page} fixture.
   //The "page" variable now contains the session storage data:
-  const page = await context_SessionStorageData.newPage();
+  page = await context_LoggedIn.newPage();
 
   await page.goto("https://rahulshettyacademy.com/client");
   await page.waitForLoadState(`networkidle`);
-  const targetProductName = `ZARA COAT 3`;
+});
 
-  //Assert the target product is visible on the "products" page:
+test("Udemy: Verify product 'ZARA COAT 3' is present (using sessionStorage)", async () => {
+  const targetProductName = `ZARA COAT 3`;
   expect(page.getByText(targetProductName)).toBeVisible();
 });
 
 test("Udemy: Verify product 'ADIDAS ORIGINAL' is present (using sessionStorage)", async () => {
-  /*-------------------------------------Products Page-------------------------------------------*/
-  /*---------------------------------------------------------------------------------------------*/
-  //NOTE - this "page" variable has been created dynamically, so we don't need the {page} fixture above.
-  //The "page" variable now contains the session storage data:
-  const page = await context_SessionStorageData.newPage();
-
-  await page.goto("https://rahulshettyacademy.com/client");
-  await page.waitForLoadState(`networkidle`);
   const targetProductName = `ADIDAS ORIGINAL`;
-
-  //Assert the target product is visible on the "products" page:
   expect(page.getByText(targetProductName)).toBeVisible();
 });
 
 test("Udemy: Verify product 'IPHONE 13 PRO' is present (using sessionStorage)", async () => {
-  /*-------------------------------------Products Page-------------------------------------------*/
-  /*---------------------------------------------------------------------------------------------*/
-  //NOTE - this "page" variable has been created dynamically, so we don't need the {page} fixture above.
-  //The "page" variable now contains the session storage data:
-  const page = await context_SessionStorageData.newPage();
-
-  await page.goto("https://rahulshettyacademy.com/client");
-  await page.waitForLoadState(`networkidle`);
   const targetProductName = `IPHONE 13 PRO`;
-
-  //Assert the target product is visible on the "products" page:
   expect(page.getByText(targetProductName)).toBeVisible();
+});
+
+test("Udemy: Print all visible products names (using sessionStorage)", async () => {
+  const productTitles = await page.locator(`.card-body b`).allTextContents();
+  const productsTitles_count = await page.locator(`.card-body b`).count();
+  console.log(`Number of products found: ${productsTitles_count}`);
+  console.log(productTitles);
 });
