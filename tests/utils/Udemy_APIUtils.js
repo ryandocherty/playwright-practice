@@ -25,6 +25,8 @@ export class Udemy_APIUtils {
     this.loginPayload = loginPayload;
   }
 
+  //This method logs in via an API call
+  //Then returns a session/login token:
   async getLoginToken() {
     const loginResponse = await this.APIContext.post(`https://rahulshettyacademy.com/api/ecom/auth/login`, {
       data: this.loginPayload,
@@ -35,6 +37,8 @@ export class Udemy_APIUtils {
     return loginToken;
   }
 
+  //This method creates an order via an API call
+  //Then returns an orderID (and the login token):
   async getOrderID(placeOrderPayload) {
     //Initialise an empty object to eventually hold the values for "loginToken" and "orderID" properties:
     let prerequisiteData = {};

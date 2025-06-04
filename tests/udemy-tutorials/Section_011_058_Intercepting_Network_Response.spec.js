@@ -56,3 +56,72 @@ Let's say there's a real bug in the application that the "no orders found" messa
 Well this test will still catch that bug, because the error message only appears anyway if the API response is null.
 This website is driven by API calls, so the error message is exclusively dependent on the API response being null/empty.
 */
+
+/*
+For this test:
+The utimate goal is to verify whether a "no orders found" message appears on the "orders" tab, 
+on an account that does actually have orders, by intercepting and mocking the API response when loading the "orders" tab.
+
+1. Login and collect the session token by invoking the Class "Udemy_APIUtils.getLoginToken()".
+2. Place an order by invoking the Class "Udemy_APIUtils", using the session token.
+3. Load the "orders" tab.
+4. Intercept the API response to return a mock "no orders found" response using route() method.
+5. Finally test the "no orders found" message through normal UI automation.
+*/
+
+import { test, expect, request } from "@playwright/test";
+import { Udemy_APIUtils } from "../utils/Udemy_APIUtils";
+import dotenv from "dotenv";
+
+dotenv.config({ path: ".env" });
+const loginEmail = process.env.LOGIN_EMAIL ?? "";
+const loginPassword = process.env.LOGIN_PASSWORD ?? "";
+
+//Global variables:
+let prerequisiteData;
+const loginPayload = { userEmail: loginEmail, userPassword: loginPassword };
+const placeOrderPayload = { orders: [{ country: "United Kingdom", productOrderedId: "67a8dde5c0d3e6622a297cc8" }] };
+
+test.beforeAll(async () => {
+  const APIContext = await request.newContext();
+  const APIUtils = new Udemy_APIUtils(APIContext, loginPayload);
+
+  //getOrderID() returns an object containing both "loginToken" and "orderID":
+  prerequisiteData = await APIUtils.getOrderID(placeOrderPayload);
+});
+
+test("Udemy: Verify Order using APIUtils", async ({ page }) => {
+  /*-------------------------------------Login Page----------------------------------------------*/
+  /*---------------------------------------------------------------------------------------------*/
+  await page.addInitScript((value) => {
+    window.localStorage.setItem(`token`, value);
+  }, prerequisiteData.loginToken);
+
+  await page.goto("https://rahulshettyacademy.com/client");
+
+  /*-------------------------------------Order History Page--------------------------------------*/
+  /*---------------------------------------------------------------------------------------------*/
+
+  //Here is where we intercept the API response using the route() method.
+  //The term "route" is like a general term meaning "reroute this the way I want".
+  //1st argument: the URL/endpoint (in this case "get-orders-for-customer").
+  //2nd argument: how you want to route (in the form of an asynchronous function).
+  await page.route(
+    `//https://rahulshettyacademy.com/api/ecom/order/get-orders-for-customer/6819da1dfd2af1c99e1144c7`,
+    (route) => {
+      //The 2nd arg (route) contains the endpoint URL from the 1st arg.
+      //1. Fetch and intercept the response.
+      //2. Inject the mock response.
+      //3. Send mock response to browser.
+      //4. Browser then renders data from mock response.
+
+      //You can't get the API response from just "page", so we need to use "request" to switch to API mode.
+      //Here we're saying "fetch the response of this route (endpoint)".
+      //However, the endpoint response will contain lots of different data (cookies, headers etc.).
+      //So we explicitly say "route.request()"
+      const response = page.request.fetch(route.request());
+    }
+  );
+  await page.getByRole(`button`, { name: `  ORDERS` }).click();
+  console.log(`Clicking 'Orders'...`);
+});
