@@ -2,7 +2,9 @@
   "name": "playwright-test",
   "version": "1.0.0",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "test": "npx playwright test Section_010_051_API_Utils_Refactor.spec.js --headed"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",

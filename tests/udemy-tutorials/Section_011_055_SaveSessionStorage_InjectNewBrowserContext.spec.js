@@ -62,7 +62,7 @@ test.beforeAll(async ({ browser }) => {
 
 test.beforeEach(async () => {
   //NOTE - this "page" variable has been created dynamically, so we don't need the {page} fixture.
-  //The "page" variable now contains the session storage data:
+  //The "page" variable now contains the session storage data, and will bypass the login screen:
   page = await context_LoggedIn.newPage();
 
   await page.goto("https://rahulshettyacademy.com/client");
