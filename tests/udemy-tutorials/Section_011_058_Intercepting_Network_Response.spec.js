@@ -81,9 +81,6 @@ let prerequisiteData;
 const loginPayload = { userEmail: loginEmail, userPassword: loginPassword };
 const placeOrderPayload = { orders: [{ country: "United Kingdom", productOrderedId: "67a8dde5c0d3e6622a297cc8" }] };
 
-//The mock data to send to the browser:
-const mockPayload_NoOrders = { data: [], message: "No Orders" };
-
 test.beforeAll(async () => {
   const APIContext = await request.newContext();
   const APIUtils = new Udemy_APIUtils(APIContext, loginPayload);
@@ -119,30 +116,39 @@ test("Udemy: Verify No Orders error message", async ({ page }) => {
   //The term "route" is like a general term meaning "reroute this the way I want".
   //1st argument: the URL/endpoint (in this case "get-orders-for-customer").
   //2nd argument: the handler (how you want to route, in the form of an asynchronous function).
-  await page.route(
-    `//https://rahulshettyacademy.com/api/ecom/order/get-orders-for-customer/6819da1dfd2af1c99e1144c7`,
-    async (route) => {
-      //The 2nd arg contains the (route) object representing the intercepted route.
-      //You can't get the API response from just "page", so we need to use "request" to switch to API mode.
-      //Here we're saying "fetch the response of this route (endpoint)".
-      //However, just passing ".fetch(route)" will just pass the endpoint URL (Route object).
-      //We need to pass a Request object, NOT a Route object (fetch() is not designed to accept a Route instance as a parameter).
-      //So we explicitly say ".fetch(route.request())" to fetch the details about the request (like URL, headers, body etc.).
-      const response = page.request.fetch(route.request());
+  await page.route(`https://rahulshettyacademy.com/api/ecom/order/get-orders-for-customer/*`, async (route) => {
+    //The 2nd arg contains the (route) object representing the intercepted route.
+    //You can't get the API response from just "page", so we need to use "request" to switch to API mode.
+    //Here we're saying "fetch the response of this route (endpoint)".
+    //However, just passing ".fetch(route)" will just pass the endpoint URL (Route object).
+    //We need to pass a Request object, NOT a Route object (fetch() is not designed to accept a Route instance as a parameter).
+    //So we explicitly say ".fetch(route.request())" to fetch the details about the request (like URL, headers, body etc.).
+    const response = await page.request.fetch(route.request());
 
-      //Now we need to setup the mock data to be passed to the browser.
-      //We setup a "body" variable beause fullfil() expects a body (in JSON format as well).
-      let body = JSON.stringify(mockPayload_NoOrders);
+    //Now we need to setup the mock data to be passed to the browser.
+    //We setup a "body" variable beause fullfil() expects a body (in JSON format as well).
+    const mockPayload_NoOrders = { data: [], message: "No Orders" };
+    const body = JSON.stringify(mockPayload_NoOrders);
 
-      //We now provide the data of the mocked response using "route.fullfil()".
-      //Here we're sending back the same "get-orders-for-customer" response (arg 1), but injecting the mock data (arg 2).
-      route.fulfill({
-        response,
-        body,
-      });
-    }
-  );
+    //We now provide the data of the mocked response using "route.fullfil()".
+    //Here we're sending back the same "get-orders-for-customer" response (arg 1), but injecting the mock data (arg 2).
+    route.fulfill({
+      response,
+      body,
+    });
+  });
+  //await page.pause();
   await page.getByRole(`button`, { name: `  ORDERS` }).click();
   console.log(`Clicking 'Orders'...`);
-  await page.pause();
+
+  //Using waitForResponse():
+  //This is to overcome slight delays with receiving the real (unmodified) response.
+  //There is a possibility that you end up attempting to send the fake response,
+  //before the real response is actually retrieved.
+  await page.waitForResponse(`https://rahulshettyacademy.com/api/ecom/order/get-orders-for-customer/*`);
+
+  //Assert that a "no orders found" message appears on the "orders" tab:
+  const errorMessage_NoOrders = await page.locator(`.mt-4`).textContent();
+  console.log(errorMessage_NoOrders);
+  expect(errorMessage_NoOrders).toContain(`No Orders`);
 });
