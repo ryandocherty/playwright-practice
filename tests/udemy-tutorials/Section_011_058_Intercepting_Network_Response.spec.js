@@ -77,10 +77,12 @@ dotenv.config({ path: ".env" });
 const loginEmail = process.env.LOGIN_EMAIL ?? "";
 const loginPassword = process.env.LOGIN_PASSWORD ?? "";
 
-//Global variables:
 let prerequisiteData;
 const loginPayload = { userEmail: loginEmail, userPassword: loginPassword };
 const placeOrderPayload = { orders: [{ country: "United Kingdom", productOrderedId: "67a8dde5c0d3e6622a297cc8" }] };
+
+//The mock data to send to the browser:
+const mockPayload_NoOrders = { data: [], message: "No Orders" };
 
 test.beforeAll(async () => {
   const APIContext = await request.newContext();
@@ -90,7 +92,7 @@ test.beforeAll(async () => {
   prerequisiteData = await APIUtils.getOrderID(placeOrderPayload);
 });
 
-test("Udemy: Verify Order using APIUtils", async ({ page }) => {
+test("Udemy: Verify No Orders error message", async ({ page }) => {
   /*-------------------------------------Login Page----------------------------------------------*/
   /*---------------------------------------------------------------------------------------------*/
   await page.addInitScript((value) => {
@@ -101,27 +103,46 @@ test("Udemy: Verify Order using APIUtils", async ({ page }) => {
 
   /*-------------------------------------Order History Page--------------------------------------*/
   /*---------------------------------------------------------------------------------------------*/
+  //Basic method:
+  //1. Fetch and intercept the response.
+  //2. Inject the mock response.
+  //3. Send mock response to browser.
+  //4. Browser then renders data from mock response.
 
+  //route.request() — Returns the Request object that was intercepted.
+  //route.continue() — Continue with the normal request without change.
+  //route.fulfill() — Provide a mocked response.
+  //route.abort() — Abort the request.
+
+  //page.route(url, handler);
   //Here is where we intercept the API response using the route() method.
   //The term "route" is like a general term meaning "reroute this the way I want".
   //1st argument: the URL/endpoint (in this case "get-orders-for-customer").
-  //2nd argument: how you want to route (in the form of an asynchronous function).
+  //2nd argument: the handler (how you want to route, in the form of an asynchronous function).
   await page.route(
     `//https://rahulshettyacademy.com/api/ecom/order/get-orders-for-customer/6819da1dfd2af1c99e1144c7`,
-    (route) => {
-      //The 2nd arg (route) contains the endpoint URL from the 1st arg.
-      //1. Fetch and intercept the response.
-      //2. Inject the mock response.
-      //3. Send mock response to browser.
-      //4. Browser then renders data from mock response.
-
+    async (route) => {
+      //The 2nd arg contains the (route) object representing the intercepted route.
       //You can't get the API response from just "page", so we need to use "request" to switch to API mode.
       //Here we're saying "fetch the response of this route (endpoint)".
-      //However, the endpoint response will contain lots of different data (cookies, headers etc.).
-      //So we explicitly say "route.request()"
+      //However, just passing ".fetch(route)" will just pass the endpoint URL (Route object).
+      //We need to pass a Request object, NOT a Route object (fetch() is not designed to accept a Route instance as a parameter).
+      //So we explicitly say ".fetch(route.request())" to fetch the details about the request (like URL, headers, body etc.).
       const response = page.request.fetch(route.request());
+
+      //Now we need to setup the mock data to be passed to the browser.
+      //We setup a "body" variable beause fullfil() expects a body (in JSON format as well).
+      let body = JSON.stringify(mockPayload_NoOrders);
+
+      //We now provide the data of the mocked response using "route.fullfil()".
+      //Here we're sending back the same "get-orders-for-customer" response (arg 1), but injecting the mock data (arg 2).
+      route.fulfill({
+        response,
+        body,
+      });
     }
   );
   await page.getByRole(`button`, { name: `  ORDERS` }).click();
   console.log(`Clicking 'Orders'...`);
+  await page.pause();
 });
