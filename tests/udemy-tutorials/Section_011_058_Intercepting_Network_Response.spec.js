@@ -125,12 +125,14 @@ test("Udemy: Verify No Orders error message", async ({ page }) => {
     //So we explicitly say ".fetch(route.request())" to fetch the details about the request (like URL, headers, body etc.).
     const response = await page.request.fetch(route.request());
 
-    //Now we need to setup the mock data to be passed to the browser.
+    //Now we need to setup the mock payload data to be passed to the browser.
     //We setup a "body" variable beause fullfil() expects a body (in JSON format as well).
     const mockPayload_NoOrders = { data: [], message: "No Orders" };
     const body = JSON.stringify(mockPayload_NoOrders);
 
     //We now provide the data of the mocked response using "route.fullfil()".
+    //route.fullfil() aborts the ongoing request and sends a new one manually (potentially with mocked payload data).
+    //route.fulfill() intercepts the request and completely stops it from going to the original server.
     //Here we're sending back the same "get-orders-for-customer" response (arg 1), but injecting the mock data (arg 2).
     route.fulfill({
       response,

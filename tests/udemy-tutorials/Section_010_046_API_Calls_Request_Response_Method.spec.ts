@@ -35,7 +35,7 @@ test.beforeAll(async () => {
   //Note - "Inspect > Network > Headers/Payload/Response" displays the info/data required here.
   //The first API call/request we need to make is a "login" call, which is a type of "POST" call.
   //We then provide the data needed to make this call:
-  //1. The URL/endpoint (the API URL, not the normal one).
+  //1. The URL/endpoint (the API URL, not the browser URL).
   //2. The payload data (email & password), which we can store as a variable.
   const loginResponse = await APIContext.post(`https://rahulshettyacademy.com/api/ecom/auth/login`, {
     data: loginPayload,

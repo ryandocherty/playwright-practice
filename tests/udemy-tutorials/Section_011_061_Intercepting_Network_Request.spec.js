@@ -21,40 +21,58 @@ This should obviously not be allowed, and should instead respond with some kind 
 
 
 So the security testing scenario here could be:
-"Verify you get an Unauthorised/Forbidden error message when trying to access others' orders".
+"Verify you get an 'Unauthorised/Forbidden/Not found' error message when trying to access others' order information".
 
 Steps:
 1. Login to an account.
 2. Navigate to "Orders" > "View Order".
 3. Listen for and intercept the API call "get-orders-details".
 4. Inject mock data (an incorrect orderID) and send the response to the browser.
-5. Verify the "Unauthorised/Forbidden" error message appears and no secret information is shown.
-
-
+5. Verify an "Unauthorised/Forbidden/Not found" error message appears and no sensitive information is shown.
 */
 
 import { test, expect, request } from "@playwright/test";
 import { Udemy_APIUtils } from "../utils/Udemy_APIUtils";
 import dotenv from "dotenv";
 
-//Load hidden environment variables:
 dotenv.config({ path: ".env" });
-
-//Still loading the email/password from the .env file:
 const loginEmail = process.env.LOGIN_EMAIL ?? "";
 const loginPassword = process.env.LOGIN_PASSWORD ?? "";
 
-//Global variables:
-let prerequisiteData;
+let loginToken;
 const loginPayload = { userEmail: loginEmail, userPassword: loginPassword };
-const placeOrderPayload = { orders: [{ country: "United Kingdom", productOrderedId: "67a8dde5c0d3e6622a297cc8" }] };
 
 test.beforeAll(async () => {
-  /*---------------------------------------Invoke APIUtils Class---------------------------------*/
-  /*---------------------------------------------------------------------------------------------*/
-
+  //Get a loginToken by invoking the Udemy_APIUtils Class:
   const APIContext = await request.newContext();
   const APIUtils = new Udemy_APIUtils(APIContext, loginPayload);
   loginToken = await APIUtils.getLoginToken();
-  console.log(loginToken);
+});
+
+test("Udemy: Verify Unauthorised/Forbidden message", async ({ page }) => {
+  //Set the loginToken in the browser storage:
+  await page.addInitScript((value) => {
+    window.localStorage.setItem(`token`, value);
+  }, loginToken);
+
+  await page.goto(`https://rahulshettyacademy.com/client`);
+
+  //Using route.continue():
+  //This method's purpose is to let the intercepted request continue to the original destination/server "unmodified".
+  //route.continue() DOES allow you to modify certain parts of the request before it is sent onward.
+  //route.continue() doesn't send a new call (like route.fulfill() does), but modifies the original network request "in-flight".
+  //You CAN modify Headers, URL, and Method with route.continue().
+  //You CANNOT modify the Payload with route.continue().
+  await page.route(`https://rahulshettyacademy.com/api/ecom/order/get-orders-details?id=*`, (route) =>
+    route.continue({
+      url: `https://rahulshettyacademy.com/api/ecom/order/get-orders-details?id=621661f884b053f6765465b6`,
+    })
+  );
+
+  //Navigate to "Orders" > "View Order".
+  //Assert the Unauthorised/Forbidden message apppears:
+  await page.locator(`[routerlink$='/dashboard/myorders']`).click();
+  await page.getByRole(`button`, { name: `View` }).first().click();
+  await page.waitForLoadState(`networkidle`);
+  expect(page.getByText(`You are not authorize to view this order`)).toBeVisible();
 });
