@@ -63,7 +63,7 @@ The utimate goal is to verify whether a "no orders found" message appears on the
 on an account that does actually have orders, by intercepting and mocking the API response when loading the "orders" tab.
 
 1. Login and collect the session token by invoking the Class "Udemy_APIUtils.getLoginToken()".
-2. Place an order by invoking the Class "Udemy_APIUtils", using the session token.
+2. Place an order by invoking the Class "Udemy_APIUtils.getOrderID()", using the session token.
 3. Load the "orders" tab.
 4. Intercept the API response to return a mock "no orders found" response using route() method.
 5. Finally test the "no orders found" message through normal UI automation.
