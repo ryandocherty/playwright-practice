@@ -121,7 +121,7 @@ test("Udemy: Verify No Orders error message", async ({ page }) => {
     //You can't get the API response from just "page", so we need to use "request" to switch to API mode.
     //Here we're saying "fetch the response of this route (endpoint)".
     //However, just passing ".fetch(route)" will just pass the endpoint URL (Route object).
-    //We need to pass a Request object, NOT a Route object (fetch() is not designed to accept a Route instance as a parameter).
+    //We need to pass a Request object, NOT a Route object ("fetch()" is not designed to accept a Route object as a parameter).
     //So we explicitly say ".fetch(route.request())" to fetch the details about the request (like URL, headers, body etc.).
     const response = await page.request.fetch(route.request());
 

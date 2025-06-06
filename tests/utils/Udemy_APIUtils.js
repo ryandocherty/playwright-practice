@@ -55,7 +55,7 @@ export class Udemy_APIUtils {
     const placeOrderResponse_JSON = await placeOrderResponse.json();
     console.log(placeOrderResponse_JSON);
     const orderID = await placeOrderResponse_JSON.orders[0];
-    console.log(orderID);
+    console.log(`OrderID: ${orderID}`);
 
     //Add a "orderID" property and assign it the value received from the above "orderID":
     prerequisiteData.orderID = orderID;
