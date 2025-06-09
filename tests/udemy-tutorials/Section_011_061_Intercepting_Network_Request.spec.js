@@ -27,7 +27,7 @@ Steps:
 1. Login to an account.
 2. Navigate to "Orders" > "View Order".
 3. Listen for and intercept the API call "get-orders-details".
-4. Inject mock data (an incorrect orderID) and send the response to the browser.
+4. Reroute the API call to attempt to show an unauthorised order, send the response to the browser.
 5. Verify an "Unauthorised/Forbidden/Not found" error message appears and no sensitive information is shown.
 */
 
@@ -65,6 +65,7 @@ test("Udemy: Verify Unauthorised/Forbidden message", async ({ page }) => {
   //You CANNOT modify the Payload with route.continue().
   await page.route(`https://rahulshettyacademy.com/api/ecom/order/get-orders-details?id=*`, (route) =>
     route.continue({
+      //Reroute the API call to attempt to show an order that doesn't belong to the current user:
       url: `https://rahulshettyacademy.com/api/ecom/order/get-orders-details?id=621661f884b053f6765465b6`,
     })
   );
