@@ -18,8 +18,7 @@ test("Udemy: Dynamic Waiting", async ({ page }) => {
 
   /*
   On a website, data is loaded by calls.
-  There are multiple different "wait" methods to make sure the calls are finished
-  before interacting with the webpage.
+  There are multiple different "wait" methods to make sure the calls are finished before interacting with the webpage.
 
   We can include this method:
 
@@ -70,9 +69,7 @@ test("Udemy: Dynamic Waiting", async ({ page }) => {
   for (let i = 0; i < expectedProductTitles.length; i++) {
     expect(expectedProductTitles).toHaveLength(allCardTitles2.length);
     expect(expectedProductTitles[i]).toBe(allCardTitles2[i]);
-    console.log(
-      `\nExpected Name: ${expectedProductTitles[i]} \nReceived Name: ${allCardTitles2[i]}`
-    );
+    console.log(`\nExpected Name: ${expectedProductTitles[i]} \nReceived Name: ${allCardTitles2[i]}`);
   }
   //------------------------------------------------------------
 });
