@@ -1,5 +1,5 @@
 /* 
-----------Dummy websites for automation practice----------
+---------------Dummy websites for automation practice----------------
 
 https://automationexercise.com/
 https://www.saucedemo.com/v1/
@@ -22,7 +22,7 @@ A service that allows you to practice form submission, including receiving respo
 You can specify a temporary email address and see how the process works without using your own email.
 
 
-----------Fake Email Providers----------
+---------------Fake Email Providers----------------------------------
 
 Mailinator:
 You can use any email address ending with @mailinator.com. 

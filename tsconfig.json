@@ -13,7 +13,8 @@
     "tests/**/*.ts",
     "tests/udemy-tutorials/utils/Udemy_APIUtils..js",
     "tests/utils/Udemy_APIUtils.js",
-    "tests/udemy-tutorials/Section_010_051_API_Utils_Refactor.spec.js"
+    "tests/udemy-tutorials/Section_010_051_API_Utils_Refactor.spec.js",
+    "tests/list_devices.js"
   ],
   "exclude": ["node_modules"]
 }
