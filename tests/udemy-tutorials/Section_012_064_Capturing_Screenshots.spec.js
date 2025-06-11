@@ -7,7 +7,7 @@ The test demonstrates capturing whole-page screenshots, and partial element scre
 
 import { test, expect } from "@playwright/test";
 
-test.only("Udemy: Capturing Screenshots", async ({ page }) => {
+test("Udemy: Capturing Screenshots", async ({ page }) => {
   await page.goto("https://rahulshettyacademy.com/AutomationPractice/");
 
   const textbox = page.locator(`#displayed-text`);
@@ -23,19 +23,19 @@ test.only("Udemy: Capturing Screenshots", async ({ page }) => {
   await textbox.pressSequentially(`Hello`, { delay: 100 });
 
   //Here I'm taking a whole-page screenshot before clicking the "Hide" button:
-  await page.screenshot({ path: `Screenshots/Before_Hidden.png` });
+  await page.screenshot({ path: `screenshots/Before_Hidden.png` });
 
   //Click "Hide" to hide the textbox.
   await hideTextbox_Button.click();
   await expect(textbox).toBeHidden();
 
   //Here I'm taking a whole-page screenshot after clicking the "Hide" button.
-  await page.screenshot({ path: `Screenshots/After_Hidden.png` });
+  await page.screenshot({ path: `screenshots/After_Hidden.png` });
 
   //Click "Show" to show the textbox again:
   await showTextbox_Button.click();
   await expect(textbox).toBeVisible();
 
   //Here I'm taking a partial screenshot of the texbox element:
-  await textbox.screenshot({ path: `Screenshots/PartialScreenshot_Textbox.png` });
+  await textbox.screenshot({ path: `screenshots/PartialScreenshot_Textbox.png` });
 });
