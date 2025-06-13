@@ -1,4 +1,4 @@
-//Section 10.61: How to intercept Network request calls with Playwright - Example demo
+//Section 11.61: How to intercept Network request calls with Playwright - Example demo
 
 /*
 -----Example Security Scenario with https://rahulshettyacademy.com/client:

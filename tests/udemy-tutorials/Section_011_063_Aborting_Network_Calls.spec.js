@@ -1,4 +1,4 @@
-//Section 10.63: How to abort the Network calls with Playwright - Examples
+//Section 11.63: How to abort the Network calls with Playwright - Examples
 
 /*
 ----Example Scenarios using abort():

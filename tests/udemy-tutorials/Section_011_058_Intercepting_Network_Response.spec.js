@@ -1,4 +1,4 @@
-//Section 10.58: How to intercept Network response calls with Playwright route method
+//Section 11.58: How to intercept Network response calls with Playwright route method
 
 /*
 Most modern websites are driven by API calls.
