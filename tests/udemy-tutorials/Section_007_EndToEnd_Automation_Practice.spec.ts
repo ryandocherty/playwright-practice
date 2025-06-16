@@ -95,7 +95,6 @@ test("Udemy: Client Item Purchase Test", async ({ page }) => {
   await page.locator(`[routerlink='/dashboard/cart']`).click();
   await page.locator(`h1`).first().waitFor();
 
-  await page.pause();
   //Assert that the item added to the cart (ZARA COAT 3) is visible:
   expect(page.getByText(targetProduct)).toBeVisible();
 

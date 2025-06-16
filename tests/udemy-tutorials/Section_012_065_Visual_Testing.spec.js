@@ -36,7 +36,7 @@ Google's search engine landing page doesn't visually change very often.
 
 import { test, expect } from "@playwright/test";
 
-test.only("Udemy: Visual Testing", async ({ page }) => {
+test("Udemy: Visual Testing", async ({ page }) => {
   await page.goto("https://google.com");
 
   //Here we're saying "take a fresh screenshot, then compare it to the specified screenshot"
