@@ -1,4 +1,4 @@
-//Section 13.67: Introduction to excelJS node module and setting up JS Project
+//Section 13.66: Introduction to excelJS node module and setting up JS Project
 
 import { test, expect } from "@playwright/test";
 
