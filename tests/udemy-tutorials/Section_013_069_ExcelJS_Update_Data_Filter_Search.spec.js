@@ -67,4 +67,8 @@ async function getCellCoordinates(worksheet, searchText) {
 //1st arg: accepts "searchText" (the text value of a cell you want to locate).
 //2nd arg: accepts "replacementText" (the text value that you want to be the replacement).
 //3rd arg: accepts the "filePath" of the Excel file.
-replaceCellValue("Clementine", "Mango", "C:/Users/Roscoe/Desktop/Projects/playwright-practice");
+replaceCellValue(
+  "Clementine",
+  "Mango",
+  "C:/Users/Roscoe/Desktop/Projects/playwright-practice/excel_download_test.xlsx"
+);
