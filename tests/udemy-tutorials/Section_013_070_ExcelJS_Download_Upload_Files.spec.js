@@ -14,10 +14,10 @@ Finally we want to validate that the data appears correctly on the website.
 */
 
 import { test, expect } from "@playwright/test";
-import { Workbook } from "exceljs";
+import ExcelJS from "exceljs";
 
 async function readExcelFile(filePath) {
-  const workbook = new Workbook();
+  const workbook = new ExcelJS.Workbook();
   await workbook.xlsx.readFile(filePath);
   const worksheet = workbook.getWorksheet(`Sheet1`);
   return { workbook, worksheet };
