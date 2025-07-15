@@ -98,11 +98,17 @@ test("Udemy: Excel upload download validation", async ({ page }) => {
   const download = await downloadPromise;
   await download.saveAs("C:/Users/Roscoe/Downloads/download.xlsx");
 
+  //Parameters to send to replaceCellValue():
+  const searchText = "Mango";
+  const replacementText = "420";
+  const coordModifier = { rowChange: 0, colChange: 2 };
+  const filePath = "C:/Users/Roscoe/Downloads/download.xlsx";
+
   //1st arg: accepts "searchText" (the text value of a cell you want to locate).
   //2nd arg: accepts "replacementText" (the text value that you want to be the replacement).
   //3rd arg: accepts an object "coordModifier" with desired modifications to the cell row & column numbers (to allow traversal).
   //4th arg: accepts the "filePath" of the Excel file.
-  await replaceCellValue("Mango", 420, { rowChange: 0, colChange: 2 }, "C:/Users/Roscoe/Downloads/download.xlsx");
+  await replaceCellValue(searchText, replacementText, coordModifier, filePath);
 
   //Click the "Choose File" button,
   //then use "setInputFiles()" to upload the modified .xlsx file.
@@ -110,4 +116,9 @@ test("Udemy: Excel upload download validation", async ({ page }) => {
 
   await page.locator("#fileinput").click();
   await page.locator("#fileinput").setInputFiles("C:/Users/Roscoe/Downloads/download.xlsx");
+
+  //Assert that the text change appears correctly:
+  const textLocator = page.getByText(searchText);
+  const desiredRow = page.getByRole("row").filter({ has: textLocator });
+  await expect(desiredRow.locator("#cell-4-undefined")).toContainText(replacementText);
 });
