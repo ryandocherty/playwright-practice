@@ -9,8 +9,8 @@ export default defineConfig({
   workers: 3,
   reporter: "html",
   use: {
-    trace: "retain-on-failure",
-    screenshot: "only-on-failure",
+    trace: "on",
+    screenshot: "on",
   },
 
   projects: [
