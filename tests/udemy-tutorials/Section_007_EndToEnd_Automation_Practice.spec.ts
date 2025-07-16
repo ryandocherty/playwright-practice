@@ -43,7 +43,7 @@ test("Udemy: Client Item Purchase Test", async ({ page }) => {
   await page.fill(`#userPassword`, loginPassword);
   expect(page.locator(`#login`)).toBeVisible();
   await page.locator(`#login`).click();
-  await expect(page).toHaveURL(`https://rahulshettyacademy.com/client/dashboard/dash`);
+  await expect(page).toHaveURL(`https://rahulshettyacademy.com/client/#/dashboard/dash`);
 
   /*-------------------------------------Products page-------------------------------------------*/
   /*---------------------------------------------------------------------------------------------*/
@@ -250,7 +250,7 @@ test("Udemy: Client Item Purchase Test", async ({ page }) => {
 
   //Wait for the order summary page to load:
   await page.locator(`.tagline`).waitFor();
-  await expect(page).toHaveURL(`https://rahulshettyacademy.com/client/dashboard/order-details/` + orderId);
+  await expect(page).toHaveURL(`https://rahulshettyacademy.com/client/#/dashboard/order-details` + orderId);
 
   //Assert the correct order Id is displayed on the "Order Summary" page:
   const orderIdOnSummary_raw = await page.locator(`.col-text`).textContent();
