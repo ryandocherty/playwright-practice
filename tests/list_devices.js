@@ -1,5 +1,5 @@
-//Simple script to log each emulatable device to the console
-//Use "node list_devices.js" in the terminal to display
+//Simple script to log each emulatable device to the console.
+//Use "node list_devices.js" in the terminal to run this code.
 
 import { devices } from "@playwright/test";
 

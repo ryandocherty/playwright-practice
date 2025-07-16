@@ -11,7 +11,7 @@ For this test:
 */
 
 import { test, expect, request } from "@playwright/test";
-import { Udemy_APIUtils } from "../utils/Udemy_APIUtils";
+import { Udemy_APIUtils } from "../udemy_utils/Udemy_APIUtils";
 import dotenv from "dotenv";
 
 //Load hidden environment variables:
