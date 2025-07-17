@@ -138,9 +138,4 @@ test("Udemy: Page Object Pattern", async ({ page }) => {
   expect(billingCountryInOrderSummary && deliveryCountryInOrderSummary).toBe(desiredCountryName);
   expect(productNameInOrderSummary).toBe(itemNameInCart);
   expect(productPriceInOrderSummary_Numeric).toBe(priceInCart_Numeric);
-
-  //EmailAddress - this can be compared with "loginEmail" (variable in this file)
-  //Country - this can be compared with "desiredCountryName" (variable in this file)
-  //ProductName - this can be compared with "itemNameInCart" (returned from CartPage.js)
-  //ProductPrice - this can be compared with "priceInCart_Numeric" (returned from CartPage.js)
 });
