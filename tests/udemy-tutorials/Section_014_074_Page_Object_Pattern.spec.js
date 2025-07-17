@@ -45,6 +45,8 @@ import { LoginPage } from "../../udemy_page_objects/LoginPage";
 import { DashboardPage } from "../../udemy_page_objects/DashboardPage";
 import { CartPage } from "../../udemy_page_objects/CartPage";
 import { CheckoutPage } from "../../udemy_page_objects/CheckoutPage";
+import { OrderConfirmedPage } from "../../udemy_page_objects/OrderConfirmedPage";
+import { OrderHistoryPage } from "../../udemy_page_objects/OrderHistoryPage";
 import dotenv from "dotenv";
 dotenv.config({ path: ".env" });
 
@@ -65,109 +67,58 @@ test("Udemy: Page Object Pattern", async ({ page }) => {
   const loginPage = new LoginPage(page);
   await loginPage.goToLoginPage();
   await loginPage.validLogin(loginEmail, loginPassword);
-
   await expect(page).toHaveURL(`https://rahulshettyacademy.com/client/#/dashboard/dash`);
 
   /*-------------------------------------Dashboard page------------------------------------------*/
   /*---------------------------------------------------------------------------------------------*/
 
   const desiredProductName = `ZARA COAT 3`;
-  const desiredCountryName = `United Kingdom`;
 
   const dashboardPage = new DashboardPage(page);
   await dashboardPage.searchProduct_addToCart(desiredProductName);
   await dashboardPage.navigateToCartPage();
-
   await expect(page).toHaveURL(`https://rahulshettyacademy.com/client/#/dashboard/cart`);
 
   /*-------------------------------------Cart page-----------------------------------------------*/
   /*---------------------------------------------------------------------------------------------*/
 
   const cartPage = new CartPage(page);
+  const orderInfo = await cartPage.getOrderInfoInCart();
   await cartPage.navigateToCheckoutPage();
-
   expect(page.url()).toContain(`https://rahulshettyacademy.com/client/#/dashboard/order?`);
 
   /*------------------------------------Checkout Page--------------------------------------------*/
   /*---------------------------------------------------------------------------------------------*/
 
+  const desiredCountryName = `United Kingdom`;
+
   const checkoutPage = new CheckoutPage(page);
   await checkoutPage.enterPaymentDetails(creditCardNumber, CCVCode, nameOnCard, cardExpiryMonthDate, cardExpiryDayDate);
   await checkoutPage.enterDeliveryDetails(desiredCountryName);
   await checkoutPage.placeOrder();
-
   expect(page.url()).toContain(`https://rahulshettyacademy.com/client/#/dashboard/thanks?`);
 
   /*------------------------------------Order Confirmed Page---------------------------------*/
   /*-----------------------------------------------------------------------------------------*/
 
-  //Assert that the "Thank you" message appears:
-  const orderPlacedMessage = await page.locator(`.hero-primary`).textContent();
-  expect(orderPlacedMessage?.trim()).toBe(`Thankyou for the order.`);
-
-  //Grab the item name displayed on the confirmation page:
-  const itemInOrderConfirmed = await page.locator(`div[class="title"]`).first().textContent();
-  console.log(`Item name (order confirmed): ${itemInOrderConfirmed}`);
-  //Assert the correct item appears on the confirmation page:
-  expect(itemInOrderConfirmed).toBe(itemInCart);
-
-  //Grab the price displayed on the confirmation page:
-  const priceInOrderConfirmed = await page.locator(`.title`).nth(1).textContent();
-  //Convert the price to purely numeric:
-  const priceInOrderConfirmed_Numeric = parseFloat(priceInOrderConfirmed?.replace(/[^0-9]+/g, ""));
-  console.log(`Item price (order confirmed): $${priceInOrderConfirmed_Numeric}`);
-  //Assert the correct price is displayed on the confirmation page:
-  expect(priceInOrderConfirmed_Numeric).toEqual(priceInCart_Numeric);
-
-  //Grab order ID displayed on the confirmation page:
-  const orderId_raw = await page.locator(`.em-spacer-1 .ng-star-inserted`).textContent();
-  //Clean up the order ID (remove symbols and trim it):
-  const orderId = orderId_raw?.replace(/\|/g, ``).trim();
-  console.log(`orderID: ${orderId}`);
+  const orderConfirmedPage = new OrderConfirmedPage(page);
+  const orderInfoInOrderConfirmed = await orderConfirmedPage.getOrderInfoInOrderConfirmed();
+  await orderConfirmedPage.navigateToOrderHistoryPage();
+  expect(page).toHaveURL(`https://rahulshettyacademy.com/client/#/dashboard/myorders`);
 
   /*------------------------------------Order History Page-----------------------------------*/
   /*-----------------------------------------------------------------------------------------*/
 
-  //Click the "Order History" link:
-  const orderhistoryLink = page.locator(`[routerlink="/dashboard/myorders"]`).first();
-  expect(orderhistoryLink).toBeVisible();
-  await orderhistoryLink.click();
-  console.log(`Clicked 'Order history'`);
-
-  const viewOrderButton = page.locator(`button:has-text('View')`);
-
-  //Locate the order ID column, assert it to be visible:
-  const orderIdColumn = page.locator(`th[scope="row"]`);
-  await expect(orderIdColumn.first()).toBeVisible(); //without this, orderIdColumn_count is 0
-
-  //Count the number of order Id's found:
-  const orderIdColumn_count = await orderIdColumn.count();
-  console.log(`Number of Order Id's found: ${orderIdColumn_count}`);
-
-  //Output the order Id strings:
-  const orderIdColumnText = await orderIdColumn.allTextContents();
-  console.log(orderIdColumnText);
-
-  //A loop to dynamically find the order Id of the recently placed order,
-  //then output its position in the list and click the "view" button:
-  for (let i = 0; i < orderIdColumn_count; i++) {
-    if ((await orderIdColumn.nth(i).textContent()) === orderId) {
-      console.log(`Order Id "${orderId}" found at position ${i + 1} in the list`);
-      expect(viewOrderButton.nth(i)).toBeVisible();
-      await viewOrderButton.nth(i).click();
-      console.log(`Clicked 'View order'`);
-      break;
-    } else {
-      console.log(`Order Id not found`);
-    }
-  }
+  const orderHistoryPage = new OrderHistoryPage(page);
+  const orderID = await orderInfoInOrderConfirmed.orderID;
+  await orderHistoryPage.navigateToOrderSummaryPage(orderID);
+  await expect(page).toHaveURL(`https://rahulshettyacademy.com/client/#/dashboard/order-details/` + orderID);
 
   /*------------------------------------Order Summary Page-----------------------------------*/
   /*-----------------------------------------------------------------------------------------*/
 
   //Wait for the order summary page to load:
   await page.locator(`.tagline`).waitFor();
-  await expect(page).toHaveURL(`https://rahulshettyacademy.com/client/dashboard/order-details/` + orderId);
 
   //Assert the correct order Id is displayed on the "Order Summary" page:
   const orderIdOnSummary_raw = await page.locator(`.col-text`).textContent();
