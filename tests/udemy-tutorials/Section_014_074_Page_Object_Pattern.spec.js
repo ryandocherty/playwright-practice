@@ -47,6 +47,8 @@ import { CartPage } from "../../udemy_page_objects/CartPage";
 import { CheckoutPage } from "../../udemy_page_objects/CheckoutPage";
 import { OrderConfirmedPage } from "../../udemy_page_objects/OrderConfirmedPage";
 import { OrderHistoryPage } from "../../udemy_page_objects/OrderHistoryPage";
+import { OrderSummaryPage } from "../../udemy_page_objects/OrderSummaryPage";
+
 import dotenv from "dotenv";
 dotenv.config({ path: ".env" });
 
@@ -83,7 +85,8 @@ test("Udemy: Page Object Pattern", async ({ page }) => {
   /*---------------------------------------------------------------------------------------------*/
 
   const cartPage = new CartPage(page);
-  const orderInfo = await cartPage.getOrderInfoInCart();
+  const orderInfoInCart = await cartPage.getOrderInfoInCart();
+  const { itemNameInCart, priceInCart_Numeric } = orderInfoInCart;
   await cartPage.navigateToCheckoutPage();
   expect(page.url()).toContain(`https://rahulshettyacademy.com/client/#/dashboard/order?`);
 
@@ -110,54 +113,34 @@ test("Udemy: Page Object Pattern", async ({ page }) => {
   /*-----------------------------------------------------------------------------------------*/
 
   const orderHistoryPage = new OrderHistoryPage(page);
-  const orderID = await orderInfoInOrderConfirmed.orderID;
+  const orderID = await orderInfoInOrderConfirmed.orderIDInOrderConfirmed;
   await orderHistoryPage.navigateToOrderSummaryPage(orderID);
   await expect(page).toHaveURL(`https://rahulshettyacademy.com/client/#/dashboard/order-details/` + orderID);
 
   /*------------------------------------Order Summary Page-----------------------------------*/
   /*-----------------------------------------------------------------------------------------*/
 
-  //Wait for the order summary page to load:
-  await page.locator(`.tagline`).waitFor();
+  const orderSummaryPage = new OrderSummaryPage(page);
+  const allOrderInfo = await orderSummaryPage.getOrderInfoInOrderSummary();
 
-  //Assert the correct order Id is displayed on the "Order Summary" page:
-  const orderIdOnSummary_raw = await page.locator(`.col-text`).textContent();
-  const orderIdOnSummary = orderIdOnSummary_raw?.trim();
-  console.log(`Order Id (on summary): ${orderIdOnSummary}`);
-  expect(orderIdOnSummary).toBe(orderId);
+  const {
+    orderIDInOrderSummary,
+    billingEmailInOrderSummary,
+    billingCountryInOrderSummary,
+    deliveryEmailInOrderSummary,
+    deliveryCountryInOrderSummary,
+    productNameInOrderSummary,
+    productPriceInOrderSummary_Numeric,
+  } = allOrderInfo;
 
-  //Assert the correct item is displayed on the "Order Summary" page:
-  const productNameOnSummary_raw = await page.locator(`.title`).textContent();
-  const productNameOnSummary = productNameOnSummary_raw?.trim();
-  console.log(`Item name (on summary): ${productNameOnSummary}`);
-  expect(productNameOnSummary).toBe(desiredProductName);
+  expect(orderIDInOrderSummary).toBe(orderID);
+  expect(billingEmailInOrderSummary && deliveryEmailInOrderSummary).toBe(loginEmail);
+  expect(billingCountryInOrderSummary && deliveryCountryInOrderSummary).toBe(desiredCountryName);
+  expect(productNameInOrderSummary).toBe(itemNameInCart);
+  expect(productPriceInOrderSummary_Numeric).toBe(priceInCart_Numeric);
 
-  //Assert the correct price is displayed on the "Order Summary" page:
-  const priceOnSummary_raw = await page.locator(`.price`).textContent();
-  const priceOnSummary_Numeric = parseFloat(priceOnSummary_raw?.replace(/[^0-9]+/g, ""));
-  console.log(`Item price (on summary): $${priceOnSummary_Numeric}`);
-  expect(priceOnSummary_Numeric).toEqual(
-    priceBeforeCart_Numeric && priceInCart_Numeric && priceInOrderConfirmed_Numeric
-  );
-
-  //Order summary is split into 2 sections: "Billing Address" & "Delivery Address"
-  //Both sections display the email address and country for the order,
-  //so I'm grabbing these strings separately (however, they are the same in this test):
-  const billingAddressSection = page.locator(`div[class="address"]`).first();
-  const billingEmailOnSummary = await billingAddressSection.locator(`.text`).first().textContent();
-  const billingCountryOnSummary = await billingAddressSection.locator(`.text`).last().textContent();
-  const deliveryAddressSection = page.locator(`div[class="address"]`).last();
-  const deliveryEmailOnSummary = await deliveryAddressSection.locator(`.text`).first().textContent();
-  const deliveryCountryOnSummary = await deliveryAddressSection.locator(`.text`).last().textContent();
-
-  console.log(`Billing email (on summary): ${billingEmailOnSummary}`);
-  console.log(`Billing country (on summary): ${billingCountryOnSummary}`);
-  console.log(`Delivery email (on summary): ${deliveryEmailOnSummary}`);
-  console.log(`Delivery country (on summary): ${deliveryCountryOnSummary}`);
-
-  //Assert the correct billing & delivery information is displayed:
-  expect(billingEmailOnSummary?.trim()).toBe(loginEmail);
-  expect(deliveryEmailOnSummary?.trim()).toBe(loginEmail);
-  expect(billingCountryOnSummary?.trim()).toContain(desiredCountryName);
-  expect(deliveryCountryOnSummary?.trim()).toContain(desiredCountryName);
+  //EmailAddress - this can be compared with "loginEmail" (variable in this file)
+  //Country - this can be compared with "desiredCountryName" (variable in this file)
+  //ProductName - this can be compared with "itemNameInCart" (returned from CartPage.js)
+  //ProductPrice - this can be compared with "priceInCart_Numeric" (returned from CartPage.js)
 });

@@ -19,9 +19,13 @@ export class OrderConfirmedPage {
 
     const productNameInOrderConfirmed = productNameInOrderConfirmed_Text.trim();
     const priceInOrderConfirmed = parseFloat(priceInOrderConfirmed_Text?.replace(/[^0-9.]+/g, ""));
-    const orderID = orderIDInOrderConfirmed_Text?.replace(/\|/g, ``).trim();
+    const orderIDInOrderConfirmed = orderIDInOrderConfirmed_Text?.replace(/\|/g, ``).trim();
 
-    const orderInfoInOrderConfirmed = { productNameInOrderConfirmed, priceInOrderConfirmed, orderID };
+    const orderInfoInOrderConfirmed = {
+      productNameInOrderConfirmed,
+      priceInOrderConfirmed,
+      orderIDInOrderConfirmed,
+    };
     return orderInfoInOrderConfirmed;
   }
 
