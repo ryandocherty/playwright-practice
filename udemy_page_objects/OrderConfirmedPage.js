@@ -18,12 +18,12 @@ export class OrderConfirmedPage {
     const orderIDInOrderConfirmed_Text = await this.orderIDInOrderConfirmed_Locator.textContent();
 
     const productNameInOrderConfirmed = productNameInOrderConfirmed_Text.trim();
-    const priceInOrderConfirmed = parseFloat(priceInOrderConfirmed_Text?.replace(/[^0-9.]+/g, ""));
+    const priceInOrderConfirmed_Numeric = parseFloat(priceInOrderConfirmed_Text?.replace(/[^0-9.]+/g, ""));
     const orderIDInOrderConfirmed = orderIDInOrderConfirmed_Text?.replace(/\|/g, ``).trim();
 
     const orderInfoInOrderConfirmed = {
       productNameInOrderConfirmed,
-      priceInOrderConfirmed,
+      priceInOrderConfirmed_Numeric,
       orderIDInOrderConfirmed,
     };
     return orderInfoInOrderConfirmed;

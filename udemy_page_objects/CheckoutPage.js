@@ -39,7 +39,7 @@ export class CheckoutPage {
     for (let i = 0; i < selectCountryListOptions_count; i++) {
       let countryListText = await this.selectCountryListOptions.nth(i).textContent();
       if (countryListText?.trim() === desiredCountryName) {
-        console.log(`Selecting country: ${countryListText.trim()}`);
+        console.log(`Selecting country "${countryListText.trim()}"`);
         await this.selectCountryListOptions.nth(i).click();
         break;
       }

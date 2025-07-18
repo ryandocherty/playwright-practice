@@ -22,7 +22,7 @@ export class OrderHistoryPage {
       if ((await this.orderIDColumn_Locator.nth(i).textContent()) === orderID) {
         console.log(`OrderID "${orderID}" located at position ${i + 1} in the list`);
         await this.viewOrder_Button.nth(i).click();
-        console.log(`Clicking 'View Order'...`);
+        console.log(`Clicking 'View Order' for OrderID "${orderID}"`);
         break;
       } else {
         console.log(`OrderID not found`);

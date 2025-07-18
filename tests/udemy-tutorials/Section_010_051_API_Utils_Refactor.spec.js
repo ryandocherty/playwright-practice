@@ -11,7 +11,7 @@ For this test:
 */
 
 import { test, expect, request } from "@playwright/test";
-import { Udemy_APIUtils } from "../udemy_utils/Udemy_APIUtils";
+import { Udemy_APIUtils } from "../../udemy_utils/Udemy_APIUtils";
 import dotenv from "dotenv";
 
 //Load hidden environment variables:
@@ -25,6 +25,10 @@ const loginPassword = process.env.LOGIN_PASSWORD ?? "";
 let prerequisiteData;
 const loginPayload = { userEmail: loginEmail, userPassword: loginPassword };
 const placeOrderPayload = { orders: [{ country: "United Kingdom", productOrderedId: "67a8dde5c0d3e6622a297cc8" }] };
+
+//productOrderedId for "ZARA COAT 4": 67a8dde5c0d3e6622a297cc8
+//productOrderedId for "ADIDAS ORIGINAL": 67a8df1ac0d3e6622a297ccb
+//productOrderedId for "IPHONE 13 PRO": 67a8df56c0d3e6622a297ccd
 
 test.beforeAll(async () => {
   /*---------------------------------------Invoke APIUtils Class---------------------------------*/

@@ -28,4 +28,6 @@ Mailinator:
 You can use any email address ending with @mailinator.com. 
 Emails can be accessed via their website without needing to sign up.
 
+Fakemail.net
+
 */

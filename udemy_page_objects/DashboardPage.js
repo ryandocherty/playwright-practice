@@ -10,6 +10,7 @@ export class DashboardPage {
     this.allProductTitles = page.locator(`.card-body b`);
     this.addToCart_Button = page.locator(`.w-10`);
     this.cartLink = page.locator(`[routerlink='/dashboard/cart']`);
+    this.orderHistory_Button = page.locator(`button[routerlink='/dashboard/myorders']`);
   }
 
   async searchProduct_addToCart(desiredProductName) {
@@ -22,7 +23,7 @@ export class DashboardPage {
     for (let i = 0; i < productTitlesCount; ++i) {
       if ((await this.allProducts.nth(i).locator(`b`).textContent()) === desiredProductName) {
         await this.allProducts.nth(i).locator(`.w-10`).click();
-        console.log(`Clicking 'Add To Cart'...`);
+        console.log(`Clicking 'Add To Cart' for product "${desiredProductName}"`);
         break;
       }
     }
@@ -31,6 +32,11 @@ export class DashboardPage {
 
   async navigateToCartPage() {
     await this.cartLink.click();
+    await this.page.waitForLoadState(`networkidle`);
+  }
+
+  async navigateToOrderSummaryPage_UsingOrderID(orderID) {
+    await this.page.goto(`https://rahulshettyacademy.com/client/#/dashboard/order-details/` + orderID);
     await this.page.waitForLoadState(`networkidle`);
   }
 }

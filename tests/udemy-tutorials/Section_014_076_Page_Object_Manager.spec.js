@@ -13,17 +13,16 @@ import { POManager } from "../../udemy_page_objects/POManager";
 import dotenv from "dotenv";
 dotenv.config({ path: ".env" });
 
-test("Udemy: Page Object Manager", async ({ page }) => {
-  /*----------------------------Import credentials-----------------------------------------------*/
-  /*---------------------------------------------------------------------------------------------*/
-  const loginEmail = process.env.LOGIN_EMAIL ?? "";
-  const loginPassword = process.env.LOGIN_PASSWORD ?? "";
-  const creditCardNumber = process.env.CREDIT_CARD_NUMBER ?? "";
-  const CCVCode = process.env.CCV_CODE ?? "";
-  const nameOnCard = process.env.NAME_ON_CARD ?? "";
-  const cardExpiryMonthDate = process.env.CARD_EXPIRY_MONTH ?? "";
-  const cardExpiryDayDate = process.env.CARD_EXPIRY_DAY ?? "";
+//Global variables:
+const loginEmail = process.env.LOGIN_EMAIL ?? "";
+const loginPassword = process.env.LOGIN_PASSWORD ?? "";
+const creditCardNumber = process.env.CREDIT_CARD_NUMBER ?? "";
+const CCVCode = process.env.CCV_CODE ?? "";
+const nameOnCard = process.env.NAME_ON_CARD ?? "";
+const cardExpiryMonthDate = process.env.CARD_EXPIRY_MONTH ?? "";
+const cardExpiryDayDate = process.env.CARD_EXPIRY_DAY ?? "";
 
+test("Udemy: Page Object Manager", async ({ page }) => {
   /*---------------------------------------Login page--------------------------------------------*/
   /*---------------------------------------------------------------------------------------------*/
 
@@ -37,7 +36,7 @@ test("Udemy: Page Object Manager", async ({ page }) => {
   /*-------------------------------------Dashboard page------------------------------------------*/
   /*---------------------------------------------------------------------------------------------*/
 
-  const desiredProductName = `ZARA COAT 3`;
+  const desiredProductName = `IPHONE 13 PRO`;
 
   const dashboardPage = poManager.getDashboardPage();
   await dashboardPage.searchProduct_addToCart(desiredProductName);
@@ -69,6 +68,7 @@ test("Udemy: Page Object Manager", async ({ page }) => {
 
   const orderConfirmedPage = poManager.getOrderConfirmedPage();
   const orderInfoInOrderConfirmed = await orderConfirmedPage.getOrderInfoInOrderConfirmed();
+  const { productNameInOrderConfirmed, priceInOrderConfirmed_Numeric, orderIDInOrderConfirmed } = orderInfoInOrderConfirmed;
   await orderConfirmedPage.navigateToOrderHistoryPage();
   expect(page).toHaveURL(`https://rahulshettyacademy.com/client/#/dashboard/myorders`);
 
@@ -76,9 +76,8 @@ test("Udemy: Page Object Manager", async ({ page }) => {
   /*-----------------------------------------------------------------------------------------*/
 
   const orderHistoryPage = poManager.getOrderHistoryPage();
-  const orderID = await orderInfoInOrderConfirmed.orderIDInOrderConfirmed;
-  await orderHistoryPage.navigateToOrderSummaryPage(orderID);
-  await expect(page).toHaveURL(`https://rahulshettyacademy.com/client/#/dashboard/order-details/` + orderID);
+  await orderHistoryPage.navigateToOrderSummaryPage(orderIDInOrderConfirmed);
+  await expect(page).toHaveURL(`https://rahulshettyacademy.com/client/#/dashboard/order-details/` + orderIDInOrderConfirmed);
 
   /*------------------------------------Order Summary Page-----------------------------------*/
   /*-----------------------------------------------------------------------------------------*/
@@ -96,9 +95,9 @@ test("Udemy: Page Object Manager", async ({ page }) => {
     productPriceInOrderSummary_Numeric,
   } = allOrderInfo;
 
-  expect(orderIDInOrderSummary).toBe(orderID);
+  expect(orderIDInOrderSummary).toBe(orderIDInOrderConfirmed);
   expect(billingEmailInOrderSummary && deliveryEmailInOrderSummary).toBe(loginEmail);
   expect(billingCountryInOrderSummary && deliveryCountryInOrderSummary).toBe(desiredCountryName);
-  expect(productNameInOrderSummary).toBe(itemNameInCart);
-  expect(productPriceInOrderSummary_Numeric).toBe(priceInCart_Numeric);
+  expect(productNameInOrderSummary).toBe(itemNameInCart && productNameInOrderConfirmed);
+  expect(productPriceInOrderSummary_Numeric).toBe(priceInCart_Numeric && priceInOrderConfirmed_Numeric);
 });

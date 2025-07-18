@@ -28,10 +28,14 @@ export class Udemy_APIUtils {
   //This method logs in via an API call
   //Then returns a session/login token:
   async getLoginToken() {
+    console.log(`\nSending loginPayload:`);
+    console.log(this.loginPayload);
+
     const loginResponse = await this.APIContext.post(`https://rahulshettyacademy.com/api/ecom/auth/login`, {
       data: this.loginPayload,
     });
     const loginResponse_JSON = await loginResponse.json();
+    console.log(`\nloginResponse_JSON:`);
     console.log(loginResponse_JSON);
     const loginToken = await loginResponse_JSON.token;
     return loginToken;
@@ -40,22 +44,23 @@ export class Udemy_APIUtils {
   //This method creates an order via an API call
   //Then returns an orderID (and the login token):
   async getOrderID(placeOrderPayload) {
+    console.log(`\nSending placeOrderPayload:`);
+    console.log(placeOrderPayload);
+
     //Initialise an empty object to eventually hold the values for "loginToken" and "orderID" properties:
     let prerequisiteData = {};
     //Add a "loginToken" property and assign it the value received from the getLoginToken() method:
     prerequisiteData.loginToken = await this.getLoginToken();
 
-    const placeOrderResponse = await this.APIContext.post(
-      `https://rahulshettyacademy.com/api/ecom/order/create-order`,
-      {
-        data: placeOrderPayload,
-        headers: { Authorization: prerequisiteData.loginToken, "Content-Type": "application/json" },
-      }
-    );
+    const placeOrderResponse = await this.APIContext.post(`https://rahulshettyacademy.com/api/ecom/order/create-order`, {
+      data: placeOrderPayload,
+      headers: { Authorization: prerequisiteData.loginToken, "Content-Type": "application/json" },
+    });
     const placeOrderResponse_JSON = await placeOrderResponse.json();
+    console.log(`\nplaceOrderResponse_JSON:`);
     console.log(placeOrderResponse_JSON);
     const orderID = await placeOrderResponse_JSON.orders[0];
-    console.log(`OrderID: ${orderID}`);
+    console.log(`\nOrderID: ${orderID}`);
 
     //Add a "orderID" property and assign it the value received from the above "orderID":
     prerequisiteData.orderID = orderID;
