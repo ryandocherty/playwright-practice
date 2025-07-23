@@ -1,5 +1,5 @@
 //This file isn't part of any Udemy tutorial.
-//This is just an idea I had to mix Page Objects with API calls.
+//This is just an idea I had to mix the previous tutorials on Page Objects and API calls.
 
 //Goal of this test:
 //1. Place an order using an API call.
