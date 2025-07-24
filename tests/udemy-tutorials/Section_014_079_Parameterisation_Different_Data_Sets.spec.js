@@ -1,0 +1,105 @@
+//Section 14.79: Implementing Parameterization in running tests with different data sets
+//Related file: "udemy_utils\PlaceOrder_SeveralDataSets.json"
+//Related file: "udemy_utils\Udemy_APIUtils.js"
+
+/*
+For this test I'll build on the last test of using external data to drive the test.
+However, this time I'll "Parameterise" the test.
+
+Goal:
+Let's say this time, I'm required to run the same test to place an order, but with multiple different credentials.
+I might also want to purchase a different product per credential.
+
+Originally in the .json testData file, I just had 1 data set to place an order (1 x loginEmail, 1 x loginPassword etc.).
+This time the .json testData file will contain an array of different data sets.
+So the .json file will become an array with > 1 data set (multiple loginEmails and loginPasswords etc.).
+*/
+
+import { test, expect, request } from "@playwright/test";
+import { Udemy_APIUtils } from "../../udemy_utils/Udemy_APIUtils";
+import { POManager } from "../../udemy_page_objects/POManager";
+import PlaceOrder_SeveralDataSets from "../../udemy_utils/PlaceOrder_SeveralDataSets.json" assert { type: "json" };
+
+//testData is an array of different data sets:
+const testData = JSON.parse(JSON.stringify(PlaceOrder_SeveralDataSets));
+
+let prerequisiteData, APIContext, APIUtils;
+
+test.beforeAll(async () => {
+  APIContext = await request.newContext();
+  //Not invoking the "Udemy_APIUtils" Class here anymore because loginPayload depends on each data set.
+});
+
+//The whole test block is now in a for loop.
+//It loops through the testData array, pulled from "PlaceOrder_SeveralDataSets.json".
+//It will use the data from each index iteration (loginEmail, loginPassword etc.).
+//The data from each index will then be placed into loginPayload and placeOrderPayload.
+for (const data of testData) {
+  test(`Udemy: Placing order for: ${getProductInfo(data.productID).name}, account: ${data.loginEmail}`, async ({ page }) => {
+    //Properties for loginPayload and placeOrderPayload are now dynamically created.
+    //The credentials are read from the .json file  based on the current data set:
+    const loginPayload = { userEmail: data.loginEmail, userPassword: data.loginPassword };
+    const placeOrderPayload = {
+      orders: [{ country: data.desiredDeliveryCountry, productOrderedId: data.productID }],
+    };
+
+    //Invoking a fresh APIUtils inside the test block.
+    //This will dynamically pass the current credentials at each loop index:
+    APIUtils = new Udemy_APIUtils(APIContext, loginPayload);
+    prerequisiteData = await APIUtils.getOrderID(placeOrderPayload);
+
+    //Injecting the login/auth token into the browser's localStorage.
+    //This simulates a logged-in state:
+    await page.addInitScript((value) => {
+      window.localStorage.setItem(`token`, value);
+    }, prerequisiteData.loginToken);
+
+    await page.goto("https://rahulshettyacademy.com/client");
+    const poManager = new POManager(page);
+    const dashboardPage = poManager.getDashboardPage();
+    await dashboardPage.navigateToOrderSummaryPage_UsingOrderID(prerequisiteData.orderID);
+    const orderSummaryPage = poManager.getOrderSummaryPage();
+    const orderSummaryInfo = await orderSummaryPage.getOrderInfoInOrderSummary();
+
+    const {
+      orderIDInOrderSummary,
+      billingEmailInOrderSummary,
+      billingCountryInOrderSummary,
+      deliveryEmailInOrderSummary,
+      deliveryCountryInOrderSummary,
+      productNameInOrderSummary,
+      productPriceInOrderSummary_Numeric,
+    } = orderSummaryInfo;
+
+    //Retreive the product information via the "productID" from each loop "data":
+    const productNameAndPrice = getProductInfo(data.productID);
+
+    console.log(`Product Ordered Name: ${productNameAndPrice.name}`);
+    console.log(`Product Ordered Price: $${productNameAndPrice.price}`);
+
+    expect(orderIDInOrderSummary).toBe(prerequisiteData.orderID);
+    expect(billingEmailInOrderSummary).toBe(loginPayload.userEmail);
+    expect(deliveryEmailInOrderSummary).toBe(loginPayload.userEmail);
+    expect(billingCountryInOrderSummary).toBe(placeOrderPayload.orders[0].country);
+    expect(deliveryCountryInOrderSummary).toBe(placeOrderPayload.orders[0].country);
+    expect(productNameInOrderSummary).toBe(productNameAndPrice.name);
+    expect(productPriceInOrderSummary_Numeric).toBe(productNameAndPrice.price);
+  });
+}
+
+function getProductInfo(productID) {
+  //This function will dynamically help with the UI assertions at the end of the test.
+  //It will return the productName and productPrice, based on the "productID" in "PlaceOrderTestData.json"
+  //I can then use these variables to perform the UI assertions.
+
+  switch (productID) {
+    case "67a8dde5c0d3e6622a297cc8":
+      return { name: "ZARA COAT 3", price: 31500 };
+    case "67a8df1ac0d3e6622a297ccb":
+      return { name: "ADIDAS ORIGINAL", price: 31500 };
+    case "67a8df56c0d3e6622a297ccd":
+      return { name: "IPHONE 13 PRO", price: 231500 };
+    default:
+      return { name: "PRODUCT NOT FOUND", price: 0 };
+  }
+}

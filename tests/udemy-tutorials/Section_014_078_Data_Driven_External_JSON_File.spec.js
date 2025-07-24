@@ -1,5 +1,6 @@
 //Section 14.78: How to drive the data from external json files to playwright tests
-//Related file: "udemy_utils\PlaceOrderTestData.json"
+//Related file: "udemy_utils\PlaceOrder_SingleDataSet.json"
+//Related file: "udemy_utils\Udemy_APIUtils.js"
 
 /*
 For this test we'll see how to perform data-driven testing.
@@ -20,9 +21,9 @@ The best way to import .json data and avoid errors is to convert to String, then
 import { test, expect, request } from "@playwright/test";
 import { Udemy_APIUtils } from "../../udemy_utils/Udemy_APIUtils";
 import { POManager } from "../../udemy_page_objects/POManager";
-import PlaceOrderTestData from "../../udemy_utils/PlaceOrderTestData.json" assert { type: "json" };
+import PlaceOrder_SingleDataSet from "../../udemy_utils/PlaceOrder_SingleDataSet.json" assert { type: "json" };
 
-const testData = JSON.parse(JSON.stringify(PlaceOrderTestData));
+const testData = JSON.parse(JSON.stringify(PlaceOrder_SingleDataSet));
 
 let prerequisiteData, APIContext, APIUtils;
 const loginPayload = { userEmail: testData.loginEmail, userPassword: testData.loginPassword };
@@ -40,7 +41,7 @@ test.beforeAll(async () => {
   }
 });
 
-test("Udemy: Page Object Manager and API", async ({ page }) => {
+test("Udemy: Place order using data from an external file (single data set)", async ({ page }) => {
   //Injecting the login/auth token into the browser's localStorage.
   //This simulates a logged-in state:
   await page.addInitScript((value) => {
@@ -64,6 +65,7 @@ test("Udemy: Page Object Manager and API", async ({ page }) => {
     productPriceInOrderSummary_Numeric,
   } = orderSummaryInfo;
 
+  //Retreive the product information via the "productOrderedId" in "placeOrderPayload":
   const productNameAndPrice = getSelectedProductInfo(placeOrderPayload.orders[0].productOrderedId);
 
   console.log(`Product Ordered Name: ${productNameAndPrice.name}`);
@@ -80,7 +82,7 @@ test("Udemy: Page Object Manager and API", async ({ page }) => {
 
 function getSelectedProductInfo(productOrderedId) {
   //This function will dynamically help with the UI assertions at the end of the test.
-  //Based on the "productOrderedId" in "PlaceOrderTestData.json", it will return the productName and productPrice.
+  //Based on the "productOrderedId" in "PlaceOrderTestData_Single.json", it will return the productName and productPrice.
 
   switch (productOrderedId) {
     case testData.productOrderedId_ZARA:

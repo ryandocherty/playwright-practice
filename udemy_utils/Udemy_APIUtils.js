@@ -35,8 +35,7 @@ export class Udemy_APIUtils {
       data: this.loginPayload,
     });
     const loginResponse_JSON = await loginResponse.json();
-    console.log(`\nloginResponse_JSON:`);
-    console.log(loginResponse_JSON);
+    console.log(`\nloginResponse: ${loginResponse_JSON.message}`);
     const loginToken = await loginResponse_JSON.token;
     return loginToken;
   }
@@ -57,8 +56,7 @@ export class Udemy_APIUtils {
       headers: { Authorization: prerequisiteData.loginToken, "Content-Type": "application/json" },
     });
     const placeOrderResponse_JSON = await placeOrderResponse.json();
-    console.log(`\nplaceOrderResponse_JSON:`);
-    console.log(placeOrderResponse_JSON);
+    console.log(`\nplaceOrderResponse: ${placeOrderResponse_JSON.message}`);
     const orderID = await placeOrderResponse_JSON.orders[0];
     console.log(`\nOrderID: ${orderID}`);
 
