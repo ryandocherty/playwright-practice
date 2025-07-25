@@ -1,5 +1,6 @@
 //Section 10.51: Refactor API calls from utils folder and isolate from Web test logic
 //Section 10.52: Part 2 - Refactor API calls from utils folder and isolate from Web test logic
+//Related file: "udemy_utils\Udemy_APIUtils.js"
 
 /*
 For this test:
@@ -11,7 +12,7 @@ For this test:
 */
 
 import { test, expect, request } from "@playwright/test";
-import { Udemy_APIUtils } from "../../udemy_utils/Udemy_APIUtils";
+import { APIUtils } from "../../udemy_utils/APIUtils";
 import dotenv from "dotenv";
 
 //Load hidden environment variables:
@@ -40,11 +41,11 @@ test.beforeAll(async () => {
 
   //Each instance of this whole test requires you to login first,
   //so we create an object of "Udemy_APIUtils", and then pass "APIContext" and "loginPayload" to the Constructor:
-  const APIUtils = new Udemy_APIUtils(APIContext, loginPayload);
+  const apiUtils = new APIUtils(APIContext, loginPayload);
 
   //We'll then use the "APIUtils" Class instance to call getOrderID() and pass it the "placeOrderPayload".
   //getOrderID() returns an object "prerequisiteData" which contains the values of "loginToken" and "orderID":
-  prerequisiteData = await APIUtils.getOrderID(placeOrderPayload);
+  prerequisiteData = await apiUtils.getOrderID(placeOrderPayload);
 });
 
 test("Udemy: Verify Order using APIUtils", async ({ page }) => {

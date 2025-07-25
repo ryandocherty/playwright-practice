@@ -32,7 +32,7 @@ Steps:
 */
 
 import { test, expect, request } from "@playwright/test";
-import { Udemy_APIUtils } from "../utils/Udemy_APIUtils";
+import { APIUtils } from "../../udemy_utils/APIUtils";
 import dotenv from "dotenv";
 
 dotenv.config({ path: ".env" });
@@ -44,9 +44,9 @@ const loginPayload = { userEmail: loginEmail, userPassword: loginPassword };
 
 test.beforeAll(async () => {
   //Get a loginToken by invoking the Udemy_APIUtils Class:
-  const APIContext = await request.newContext();
-  const APIUtils = new Udemy_APIUtils(APIContext, loginPayload);
-  loginToken = await APIUtils.getLoginToken();
+  const apiContext = await request.newContext();
+  const apiUtils = new APIUtils(apiContext, loginPayload);
+  loginToken = await apiUtils.getLoginToken();
 });
 
 test("Udemy: Verify Unauthorised/Forbidden message", async ({ page }) => {

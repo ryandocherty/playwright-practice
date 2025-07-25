@@ -8,7 +8,7 @@
 //4. Perform assertions to check correct: product name, price, address, country, orderID.
 
 import { test, expect, request } from "@playwright/test";
-import { Udemy_APIUtils } from "../../udemy_utils/Udemy_APIUtils";
+import { APIUtils } from "../../udemy_utils/APIUtils";
 import { POManager } from "../../udemy_page_objects/POManager";
 
 import dotenv from "dotenv";
@@ -22,9 +22,9 @@ const loginPayload = { userEmail: loginEmail, userPassword: loginPassword };
 const placeOrderPayload = { orders: [{ country: "United Kingdom", productOrderedId: "67a8dde5c0d3e6622a297cc8" }] };
 
 test.beforeAll(async () => {
-  const APIContext = await request.newContext();
-  const APIUtils = new Udemy_APIUtils(APIContext, loginPayload);
-  prerequisiteData = await APIUtils.getOrderID(placeOrderPayload);
+  const apiContext = await request.newContext();
+  const apiUtils = new APIUtils(apiContext, loginPayload);
+  prerequisiteData = await apiUtils.getOrderID(placeOrderPayload);
 });
 
 test("Udemy: Page Object Manager and API", async ({ page }) => {

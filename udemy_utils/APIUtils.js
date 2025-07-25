@@ -9,7 +9,7 @@ This Utils file contains a Class to:
 4. Return an object ("prerequisiteData") which contains both "loginToken" and "orderID" properties/values.
 */
 
-export class Udemy_APIUtils {
+export class APIUtils {
   //Constructors are automatically invoked when a new instance of an object is created using a Class.
   constructor(APIContext, loginPayload) {
     //The "this" keyword acts as a dynamic reference that changes based on the object we're currently interacting with.

@@ -16,18 +16,18 @@ So the .json file will become an array with > 1 data set (multiple loginEmails a
 */
 
 import { test, expect, request } from "@playwright/test";
-import { Udemy_APIUtils } from "../../udemy_utils/Udemy_APIUtils";
+import { APIUtils } from "../../udemy_utils/APIUtils";
 import { POManager } from "../../udemy_page_objects/POManager";
 import PlaceOrder_SeveralDataSets from "../../udemy_utils/PlaceOrder_SeveralDataSets.json" assert { type: "json" };
 
 //testData is an array of different data sets:
 const testData = JSON.parse(JSON.stringify(PlaceOrder_SeveralDataSets));
 
-let prerequisiteData, APIContext, APIUtils;
+let prerequisiteData, apiContext, apiUtils;
 
 test.beforeAll(async () => {
-  APIContext = await request.newContext();
-  //Not invoking the "Udemy_APIUtils" Class here anymore because loginPayload depends on each data set.
+  apiContext = await request.newContext();
+  //Not invoking the "APIUtils" Class here anymore because loginPayload/placeOrderPayload depends on each data set.
 });
 
 //The whole test block is now in a for loop.
@@ -45,8 +45,8 @@ for (const data of testData) {
 
     //Invoking a fresh APIUtils inside the test block.
     //This will dynamically pass the current credentials at each loop index:
-    APIUtils = new Udemy_APIUtils(APIContext, loginPayload);
-    prerequisiteData = await APIUtils.getOrderID(placeOrderPayload);
+    apiUtils = new APIUtils(apiContext, loginPayload);
+    prerequisiteData = await apiUtils.getOrderID(placeOrderPayload);
 
     //Injecting the login/auth token into the browser's localStorage.
     //This simulates a logged-in state:

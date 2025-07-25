@@ -70,7 +70,7 @@ on an account that does actually have orders, by intercepting and mocking the AP
 */
 
 import { test, expect, request } from "@playwright/test";
-import { Udemy_APIUtils } from "../utils/Udemy_APIUtils";
+import { APIUtils } from "../../udemy_utils/APIUtils";
 import dotenv from "dotenv";
 
 dotenv.config({ path: ".env" });
@@ -82,11 +82,11 @@ const loginPayload = { userEmail: loginEmail, userPassword: loginPassword };
 const placeOrderPayload = { orders: [{ country: "United Kingdom", productOrderedId: "67a8dde5c0d3e6622a297cc8" }] };
 
 test.beforeAll(async () => {
-  const APIContext = await request.newContext();
-  const APIUtils = new Udemy_APIUtils(APIContext, loginPayload);
+  const apiContext = await request.newContext();
+  const apiUtils = new APIUtils(apiContext, loginPayload);
 
   //getOrderID() returns an object containing both "loginToken" and "orderID":
-  prerequisiteData = await APIUtils.getOrderID(placeOrderPayload);
+  prerequisiteData = await apiUtils.getOrderID(placeOrderPayload);
 });
 
 test("Udemy: Verify No Orders error message", async ({ page }) => {

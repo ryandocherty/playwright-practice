@@ -19,13 +19,13 @@ The best way to import .json data and avoid errors is to convert to String, then
 */
 
 import { test, expect, request } from "@playwright/test";
-import { Udemy_APIUtils } from "../../udemy_utils/Udemy_APIUtils";
+import { APIUtils } from "../../udemy_utils/APIUtils";
 import { POManager } from "../../udemy_page_objects/POManager";
 import PlaceOrder_SingleDataSet from "../../udemy_utils/PlaceOrder_SingleDataSet.json" assert { type: "json" };
 
 const testData = JSON.parse(JSON.stringify(PlaceOrder_SingleDataSet));
 
-let prerequisiteData, APIContext, APIUtils;
+let prerequisiteData, apiContext, apiUtils;
 const loginPayload = { userEmail: testData.loginEmail, userPassword: testData.loginPassword };
 const placeOrderPayload = {
   orders: [{ country: testData.desiredDeliveryCountry, productOrderedId: testData.productOrderedId_ZARA }],
@@ -33,9 +33,9 @@ const placeOrderPayload = {
 
 test.beforeAll(async () => {
   try {
-    APIContext = await request.newContext();
-    APIUtils = new Udemy_APIUtils(APIContext, loginPayload);
-    prerequisiteData = await APIUtils.getOrderID(placeOrderPayload);
+    apiContext = await request.newContext();
+    apiUtils = new APIUtils(apiContext, loginPayload);
+    prerequisiteData = await apiUtils.getOrderID(placeOrderPayload);
   } catch (error) {
     console.error(`Error during API setup: ${error}`);
   }
