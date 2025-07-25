@@ -5,7 +5,7 @@ node_modules/
 /playwright-report/
 /blob-report/
 /playwright/.cache/
-udemy_utils\PlaceOrder_SingleDataSet.json
-udemy_utils\PlaceOrder_SeveralDataSets.json
-Udemy_storageState.json
+/udemy_utils/PlaceOrder_SingleDataSet.json
+/udemy_utils/PlaceOrder_SeveralDataSets.json
+/Udemy_storageState.json
 .env
