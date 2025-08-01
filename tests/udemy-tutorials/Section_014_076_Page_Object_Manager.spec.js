@@ -13,16 +13,17 @@ import { POManager } from "../../udemy_page_objects/POManager";
 import dotenv from "dotenv";
 dotenv.config({ path: ".env" });
 
-//Global variables:
-const loginEmail = process.env.LOGIN_EMAIL ?? "";
-const loginPassword = process.env.LOGIN_PASSWORD ?? "";
-const creditCardNumber = process.env.CREDIT_CARD_NUMBER ?? "";
-const CCVCode = process.env.CCV_CODE ?? "";
-const nameOnCard = process.env.NAME_ON_CARD ?? "";
-const cardExpiryMonthDate = process.env.CARD_EXPIRY_MONTH ?? "";
-const cardExpiryDayDate = process.env.CARD_EXPIRY_DAY ?? "";
-
 test("Udemy: Page Object Manager", async ({ page }) => {
+  /*---------------------------------------Import Credentials------------------------------------*/
+  /*---------------------------------------------------------------------------------------------*/
+  const loginEmail = process.env.LOGIN_EMAIL ?? "";
+  const loginPassword = process.env.LOGIN_PASSWORD ?? "";
+  const creditCardNumber = process.env.CREDIT_CARD_NUMBER ?? "";
+  const CCVCode = process.env.CCV_CODE ?? "";
+  const nameOnCard = process.env.NAME_ON_CARD ?? "";
+  const cardExpiryMonthDate = process.env.CARD_EXPIRY_MONTH ?? "";
+  const cardExpiryDayDate = process.env.CARD_EXPIRY_DAY ?? "";
+
   /*---------------------------------------Login page--------------------------------------------*/
   /*---------------------------------------------------------------------------------------------*/
 

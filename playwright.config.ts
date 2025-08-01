@@ -1,3 +1,8 @@
+//Section 15.82: Various options in use property & setting up Project configurations
+//Section 15.83: View port Property on emulating browser to mobile devices with playwright
+//Section 15.84: Screenshots, Videos, Traces & SSL certification options setting in Config file
+//Section 16.85: How to fix flaky tests with test retry option in playwright config file
+
 import { defineConfig, devices } from "@playwright/test";
 
 export default defineConfig({
@@ -5,7 +10,7 @@ export default defineConfig({
   timeout: 30 * 1000,
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
-  retries: 0,
+  retries: 1,
   workers: 1,
   reporter: "html",
   use: {
