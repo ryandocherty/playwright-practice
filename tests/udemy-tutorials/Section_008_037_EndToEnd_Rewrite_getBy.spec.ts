@@ -36,7 +36,7 @@ test("Udemy: e2e Practice Rewrite", async ({ page }) => {
   await page.getByPlaceholder(`enter your passsword`).fill(loginPassword);
   expect(page.getByRole(`button`, { name: `login` })).toBeVisible();
   await page.getByRole(`button`, { name: `login` }).click();
-  await expect(page).toHaveURL(`https://rahulshettyacademy.com/client/dashboard/dash`);
+  await expect(page).toHaveURL(`https://rahulshettyacademy.com/client/#/dashboard/dash`);
 
   //==================================================
   //                  Products Page

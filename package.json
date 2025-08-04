@@ -2,9 +2,7 @@
   "name": "playwright-test",
   "version": "1.0.0",
   "main": "index.js",
-  "scripts": {
-    "test": "npx playwright test Section_010_051_API_Utils_Refactor.spec.js --headed"
-  },
+  "scripts": {},
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -13,6 +11,7 @@
   "devDependencies": {
     "@playwright/test": "^1.54.1",
     "@types/node": "^22.13.10",
+    "allure-playwright": "^3.3.2",
     "typescript": "^5.8.2"
   },
   "dependencies": {

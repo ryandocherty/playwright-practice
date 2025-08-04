@@ -25,7 +25,7 @@ npx playwright test --grep="@UI"
 -----What is "grep"?-----
 The term "grep" is a command-line utility used in Unix/Linux systems.
 It searches text or output for lines matching a given pattern (usually a regular expression).
-It stands for "Global Regular Expression Print". 
+It stands for "Global Regular Expression Print".
 
 */
 
@@ -79,7 +79,6 @@ test("@UI Udemy: Test Tagging Demo for UI", async ({ page }) => {
   //                  Checkout Page
   //==================================================
   const desiredCountryName = `United Kingdom`;
-
   const checkoutPage = poManager.getCheckoutPage();
   await checkoutPage.enterPaymentDetails(creditCardNumber, CCVCode, nameOnCard, cardExpiryMonthDate, cardExpiryDayDate);
   await checkoutPage.enterDeliveryDetails(desiredCountryName);
