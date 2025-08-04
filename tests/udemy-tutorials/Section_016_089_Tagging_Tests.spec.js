@@ -1,19 +1,40 @@
-//Section 14.76: Creating Page objects and action methods for end to end Script - Part 2
+//Section 16.89: How to tag tests and control the execution from the command line parameters
 
 /*
-This test is a rewrite of the previous test "Section_014_074_Page_Object_Pattern.spec.js".
-This test includes a "Page Object Manager" to handle the multiple different Page Objects.
-This way, I won't have to import several Page Objects into the test file (which looks cumbersome).
-I'll only have to import the POManager, which then handles the Page Objects.
+In this test file we have 2 tests.
+The first test is a typical test that utilises web UI automation to make a purchase.
+The second test utilises API calls to make the purchase rather than UI automation.
+You can tag tests so that you can control test execution, e.g. you only want API tests to run.
+
+In the test name, use "@" to tag the test.
+For example:
+test('@webUI Login returns token', () => {...});
+test('@API Form validation works', () => {...});
+test('@smoke Login returns token', () => {...});
+test('@regression Form validation works', () => {...});
+
+At the commandline, you can then use these tags to control which tests execute.
+So for the 2 tests in this file:
+I've assigned "@web" for the test that just uses API calls.
+I've assigned "@UI" for the test that uses UI automation.
+
+In the terminal, use:
+npx playwright test --grep="@web"
+npx playwright test --grep="@UI"
+
+-----What is "grep"?-----
+The term "grep" is a command-line utility used in Unix/Linux systems.
+It searches text or output for lines matching a given pattern (usually a regular expression).
+It stands for "Global Regular Expression Print". 
+
 */
 
-import { test, expect } from "@playwright/test";
+import { test, expect, request } from "@playwright/test";
 import { POManager } from "../../udemy_page_objects/POManager";
-
 import dotenv from "dotenv";
 dotenv.config({ path: ".env" });
 
-test("Udemy: Page Object Manager", async ({ page }) => {
+test("@UI Udemy: Test Tagging Demo for UI", async ({ page }) => {
   //==================================================
   //               Import Credentials
   //==================================================
@@ -102,4 +123,30 @@ test("Udemy: Page Object Manager", async ({ page }) => {
   expect(billingCountryInOrderSummary && deliveryCountryInOrderSummary).toBe(desiredCountryName);
   expect(productNameInOrderSummary).toBe(itemNameInCart && productNameInOrderConfirmed);
   expect(productPriceInOrderSummary_Numeric).toBe(priceInCart_Numeric && priceInOrderConfirmed_Numeric);
+});
+
+test("@web Udemy: Test Tagging Demo for Web", async () => {
+  const loginEmail = process.env.LOGIN_EMAIL ?? "";
+  const loginPassword = process.env.LOGIN_PASSWORD ?? "";
+  const apiContext = await request.newContext();
+
+  const loginPayload = { userEmail: loginEmail, userPassword: loginPassword };
+  const placeOrderPayload = { orders: [{ country: "United Kingdom", productOrderedId: "67a8dde5c0d3e6622a297cc8" }] };
+
+  const loginResponse = await apiContext.post(`https://rahulshettyacademy.com/api/ecom/auth/login`, {
+    data: loginPayload,
+  });
+  expect(loginResponse.ok()).toBeTruthy();
+  const loginResponse_JSON = await loginResponse.json();
+  const loginToken = loginResponse_JSON.token;
+
+  const placeOrderResponse = await apiContext.post(`https://rahulshettyacademy.com/api/ecom/order/create-order`, {
+    data: placeOrderPayload,
+    headers: { Authorization: loginToken, "Content-Type": "application/json" },
+  });
+  expect(placeOrderResponse.ok()).toBeTruthy();
+  const placeOrderResponse_JSON = await placeOrderResponse.json();
+
+  console.log(`\nplaceOrderResponse: ${placeOrderResponse_JSON.message}`);
+  expect(placeOrderResponse_JSON.message).toBe("Order Placed Successfully");
 });

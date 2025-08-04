@@ -53,8 +53,9 @@ import dotenv from "dotenv";
 dotenv.config({ path: ".env" });
 
 test("Udemy: Page Object Pattern", async ({ page }) => {
-  /*----------------------------Import credentials-----------------------------------------------*/
-  /*---------------------------------------------------------------------------------------------*/
+  //==================================================
+  //               Import Credentials
+  //==================================================
   const loginEmail = process.env.LOGIN_EMAIL ?? "";
   const loginPassword = process.env.LOGIN_PASSWORD ?? "";
   const creditCardNumber = process.env.CREDIT_CARD_NUMBER ?? "";
@@ -63,17 +64,17 @@ test("Udemy: Page Object Pattern", async ({ page }) => {
   const cardExpiryMonthDate = process.env.CARD_EXPIRY_MONTH ?? "";
   const cardExpiryDayDate = process.env.CARD_EXPIRY_DAY ?? "";
 
-  /*---------------------------------------Login page--------------------------------------------*/
-  /*---------------------------------------------------------------------------------------------*/
-
+  //==================================================
+  //                  Login Page
+  //==================================================
   const loginPage = new LoginPage(page);
   await loginPage.goToLoginPage();
   await loginPage.validLogin(loginEmail, loginPassword);
   await expect(page).toHaveURL(`https://rahulshettyacademy.com/client/#/dashboard/dash`);
 
-  /*-------------------------------------Dashboard page------------------------------------------*/
-  /*---------------------------------------------------------------------------------------------*/
-
+  //==================================================
+  //                  Dashboard Page
+  //==================================================
   const desiredProductName = `ZARA COAT 3`;
 
   const dashboardPage = new DashboardPage(page);
@@ -81,18 +82,18 @@ test("Udemy: Page Object Pattern", async ({ page }) => {
   await dashboardPage.navigateToCartPage();
   await expect(page).toHaveURL(`https://rahulshettyacademy.com/client/#/dashboard/cart`);
 
-  /*-------------------------------------Cart page-----------------------------------------------*/
-  /*---------------------------------------------------------------------------------------------*/
-
+  //==================================================
+  //                  Cart Page
+  //==================================================
   const cartPage = new CartPage(page);
   const orderInfoInCart = await cartPage.getOrderInfoInCart();
   const { itemNameInCart, priceInCart_Numeric } = orderInfoInCart;
   await cartPage.navigateToCheckoutPage();
   expect(page.url()).toContain(`https://rahulshettyacademy.com/client/#/dashboard/order?`);
 
-  /*------------------------------------Checkout Page--------------------------------------------*/
-  /*---------------------------------------------------------------------------------------------*/
-
+  //==================================================
+  //                  Checkout Page
+  //==================================================
   const desiredCountryName = `United Kingdom`;
 
   const checkoutPage = new CheckoutPage(page);
@@ -101,25 +102,25 @@ test("Udemy: Page Object Pattern", async ({ page }) => {
   await checkoutPage.placeOrder();
   expect(page.url()).toContain(`https://rahulshettyacademy.com/client/#/dashboard/thanks?`);
 
-  /*------------------------------------Order Confirmed Page---------------------------------*/
-  /*-----------------------------------------------------------------------------------------*/
-
+  //==================================================
+  //               Order Confirmed Page
+  //==================================================
   const orderConfirmedPage = new OrderConfirmedPage(page);
   const orderInfoInOrderConfirmed = await orderConfirmedPage.getOrderInfoInOrderConfirmed();
   await orderConfirmedPage.navigateToOrderHistoryPage();
   expect(page).toHaveURL(`https://rahulshettyacademy.com/client/#/dashboard/myorders`);
 
-  /*------------------------------------Order History Page-----------------------------------*/
-  /*-----------------------------------------------------------------------------------------*/
-
+  //==================================================
+  //               Order History Page
+  //==================================================
   const orderHistoryPage = new OrderHistoryPage(page);
   const orderID = await orderInfoInOrderConfirmed.orderIDInOrderConfirmed;
   await orderHistoryPage.navigateToOrderSummaryPage(orderID);
   await expect(page).toHaveURL(`https://rahulshettyacademy.com/client/#/dashboard/order-details/` + orderID);
 
-  /*------------------------------------Order Summary Page-----------------------------------*/
-  /*-----------------------------------------------------------------------------------------*/
-
+  //==================================================
+  //               Order Summary Page
+  //==================================================
   const orderSummaryPage = new OrderSummaryPage(page);
   const allOrderInfo = await orderSummaryPage.getOrderInfoInOrderSummary();
 

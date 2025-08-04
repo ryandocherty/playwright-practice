@@ -12,8 +12,9 @@ test("Udemy: e2e Practice Rewrite", async ({ page }) => {
 
   await page.goto("https://rahulshettyacademy.com/client");
 
-  /*----------------------------Import email address and password--------------------------------*/
-  /*---------------------------------------------------------------------------------------------*/
+  //==================================================
+  //        Import Email Address and Password
+  //==================================================
 
   //Assign the email and password to a variable.
   //Using the nullish coalescing operator "??" to provide a fallback/default value,
@@ -27,8 +28,9 @@ test("Udemy: e2e Practice Rewrite", async ({ page }) => {
     console.log(`LOGIN_PASSWORD: ${loginPassword}`);
   }
 
-  /*---------------------------------------Login page--------------------------------------------*/
-  /*---------------------------------------------------------------------------------------------*/
+  //==================================================
+  //                  Login Page
+  //==================================================
 
   await page.getByPlaceholder(`email@example.com`).fill(loginEmail);
   await page.getByPlaceholder(`enter your passsword`).fill(loginPassword);
@@ -36,8 +38,9 @@ test("Udemy: e2e Practice Rewrite", async ({ page }) => {
   await page.getByRole(`button`, { name: `login` }).click();
   await expect(page).toHaveURL(`https://rahulshettyacademy.com/client/dashboard/dash`);
 
-  /*-------------------------------------Products page-------------------------------------------*/
-  /*---------------------------------------------------------------------------------------------*/
+  //==================================================
+  //                  Products Page
+  //==================================================
 
   const products = page.locator(`.card-body`); //no getBy locator available for div elements (yet)
   await page.waitForLoadState(`networkidle`); //without this, productTitles below weren't being grabbed.
@@ -66,10 +69,7 @@ test("Udemy: e2e Practice Rewrite", async ({ page }) => {
   await addToCartButton_Element.click();
   console.log(`Clicking 'Add to Cart' for ${targetProductName}...`);
 
-  const price_ProductsPage_Element = page
-    .locator(`.card-body`)
-    .filter({ hasText: targetProductName })
-    .locator(`.text-muted`);
+  const price_ProductsPage_Element = page.locator(`.card-body`).filter({ hasText: targetProductName }).locator(`.text-muted`);
 
   expect(price_ProductsPage_Element).toBeVisible();
   const price_ProductsPage: any = await price_ProductsPage_Element.textContent();
@@ -86,8 +86,9 @@ test("Udemy: e2e Practice Rewrite", async ({ page }) => {
   await page.getByRole(`listitem`).getByRole(`button`, { name: `  Cart ` }).click();
   console.log(`Clicking 'Cart'...`);
 
-  /*-------------------------------------Cart page-----------------------------------------------*/
-  /*---------------------------------------------------------------------------------------------*/
+  //==================================================
+  //                  Cart Page
+  //==================================================
 
   //For safety, wait for the "Checkout" button to load before continuing to interact:
   await page.getByRole(`button`).filter({ hasText: `Checkout` }).waitFor();
@@ -123,8 +124,9 @@ test("Udemy: e2e Practice Rewrite", async ({ page }) => {
   expect(productName_InCart).toBe(targetProductName);
   expect(price_InCart_Numeric).toEqual(price_ProductsPage_Numeric);
 
-  /*------------------------------------Checkout Page--------------------------------------------*/
-  /*---------------------------------------------------------------------------------------------*/
+  //==================================================
+  //                  Checkout Page
+  //==================================================
 
   //Click the "Checkout" button:
   const checkoutButton = page.getByRole(`button`, { name: `Checkout` });
@@ -179,8 +181,9 @@ test("Udemy: e2e Practice Rewrite", async ({ page }) => {
   await page.getByRole(`button`, { name: ` United Kingdom` }).click();
   console.log(`Selecting Country: ${targetCountry}...`);
 
-  /*------------------------------------Order Confirmed Page-------------------------------------*/
-  /*---------------------------------------------------------------------------------------------*/
+  //==================================================
+  //               Order Confirmed Page
+  //==================================================
 
   //Click the "Place Order" button:
   await page.getByText(`Place Order `).click();
@@ -199,8 +202,9 @@ test("Udemy: e2e Practice Rewrite", async ({ page }) => {
   const orderId = orderId_raw?.replace(/\|/g, ``).trim();
   console.log(`Order ID: ${orderId}`);
 
-  /*------------------------------------Order History Page---------------------------------------*/
-  /*---------------------------------------------------------------------------------------------*/
+  //==================================================
+  //               Order History Page
+  //==================================================
 
   //Click the "Orders" link:
   const ordersButton = page.getByRole(`button`, { name: `  ORDERS` });
@@ -216,8 +220,9 @@ test("Udemy: e2e Practice Rewrite", async ({ page }) => {
   expect(page.getByText(targetProductName).first()).toBeVisible();
   expect(page.getByText(price_ProductsPage).first()).toBeVisible();
 
-  /*------------------------------------Order Summary Page-----------------------------------*/
-  /*-----------------------------------------------------------------------------------------*/
+  //==================================================
+  //               Order Summary Page
+  //==================================================
 
   //1. Locate the table rows (max of 7 rows displayed)
   //2. Filter the rows to the one that contains the recent orderID

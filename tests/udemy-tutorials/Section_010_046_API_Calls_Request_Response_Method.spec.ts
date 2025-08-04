@@ -46,7 +46,7 @@ test.beforeAll(async () => {
   //which is a boolean stating whether the response was successful (status in the range 200-299) or not.
   expect(loginResponse.ok()).toBeTruthy();
 
-  //Now we need to grab the JSON response (loginResponse) to be able to retrieve the session token.
+  //Now we need to grab the JSON response (from loginResponse) to be able to retrieve the session token.
   //Using loginResponse.json() returns the JSON representation of response body.
   //You can see the format of this in Inspect > Network > Response.
   const loginResponse_JSON = await loginResponse.json();
