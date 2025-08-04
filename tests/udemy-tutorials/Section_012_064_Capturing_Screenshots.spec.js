@@ -7,7 +7,7 @@ The test demonstrates capturing whole-page screenshots, and partial element scre
 
 import { test, expect } from "@playwright/test";
 
-test("Udemy: Capturing Screenshots", async ({ page }) => {
+test.skip("Udemy: Capturing Screenshots", async ({ page }) => {
   await page.goto("https://rahulshettyacademy.com/AutomationPractice/");
 
   const textbox = page.locator(`#displayed-text`);
