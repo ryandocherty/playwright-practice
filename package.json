@@ -2,7 +2,11 @@
   "name": "playwright-test",
   "version": "1.0.0",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "ui-tests": "npx playwright test --grep=@UI --project=chromium",
+    "web-tests": "npx playwright test --grep=@Web --project=chromium",
+    "regression-tests": "npx playwright test"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",

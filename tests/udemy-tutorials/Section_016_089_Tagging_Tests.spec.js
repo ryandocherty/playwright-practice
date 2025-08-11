@@ -19,8 +19,13 @@ I've assigned "@web" for the test that just uses API calls.
 I've assigned "@UI" for the test that uses UI automation.
 
 In the terminal, use:
-npx playwright test --grep="@web"
+npx playwright test --grep="@Web"
 npx playwright test --grep="@UI"
+
+OR:
+npx playwright test --grep '@Web'
+npx playwright test --grep '@UI'
+
 
 -----What is "grep"?-----
 The term "grep" is a command-line utility used in Unix/Linux systems.
@@ -34,7 +39,7 @@ import { POManager } from "../../udemy_page_objects/POManager";
 import dotenv from "dotenv";
 dotenv.config({ path: ".env" });
 
-test("@UI Udemy: Test Tagging Demo for UI", async ({ page }) => {
+test(`@UI Udemy: Test Tagging Demo for UI`, async ({ page }) => {
   //==================================================
   //               Import Credentials
   //==================================================
@@ -124,7 +129,7 @@ test("@UI Udemy: Test Tagging Demo for UI", async ({ page }) => {
   expect(productPriceInOrderSummary_Numeric).toBe(priceInCart_Numeric && priceInOrderConfirmed_Numeric);
 });
 
-test("@web Udemy: Test Tagging Demo for Web", async () => {
+test(`@Web Udemy: Test Tagging Demo for Web`, async () => {
   const loginEmail = process.env.LOGIN_EMAIL ?? "";
   const loginPassword = process.env.LOGIN_PASSWORD ?? "";
   const apiContext = await request.newContext();

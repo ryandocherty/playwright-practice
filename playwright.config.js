@@ -28,14 +28,14 @@ export default defineConfig({
 
     {
       name: "firefox",
-      use: { browserName: "firefox", headless: false, screenshot: "on", trace: "retain-on-failure" },
+      use: { browserName: "firefox", headless: true, screenshot: "on", trace: "retain-on-failure" },
     },
 
     {
       name: "webkit",
       use: {
         browserName: "webkit",
-        headless: false,
+        headless: true,
         screenshot: "on",
         trace: "retain-on-failure",
 
@@ -65,7 +65,7 @@ export default defineConfig({
       name: "iPhone11",
       use: {
         browserName: "webkit",
-        headless: false,
+        headless: true,
         screenshot: "on",
         trace: "on",
         ...devices["iPhone 11"],
