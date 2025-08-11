@@ -52,7 +52,7 @@ This way, we can dynamically tell Jenkins which script to execute at runtime.
 5. Enter the desired `Choices`.
 
 The `Choices` here are our custom scripts in package.json, which are currently:
-`scripts`: {
+"scripts": {
     "ui-tests": "npx playwright test --grep=@UI --project=chromium",
     "web-tests": "npx playwright test --grep=@Web --project=chromium",
     "regression-tests": "npx playwright test"
@@ -74,4 +74,23 @@ Now on the dashboard page we see "Build with Parameters" (instead of "Build Now"
 10. Select "Build".
 
 We can now dynamically choose which custom script from package.json is executed by Jenkins.
+
+
+----Extra: Allure Reporting-----
+
+We can add to our custom scripts:
+
+"scripts": {
+    "ui-tests": "npx playwright test --grep=@UI --project=chromium",
+    "web-tests": "npx playwright test --grep=@Web --project=chromium",
+    "regression-tests": "npx playwright test"
+},
+
+To include Allure reporting:
+
+"scripts": {
+    "ui-tests": "npx playwright test --grep=@UI --project=chromium --reporter=line,allure-playwright",
+    "web-tests": "npx playwright test --grep=@Web --project=chromium --reporter=line,allure-playwright",
+    "regression-tests": "npx playwright test --reporter=line,allure-playwright"
+},
 */
