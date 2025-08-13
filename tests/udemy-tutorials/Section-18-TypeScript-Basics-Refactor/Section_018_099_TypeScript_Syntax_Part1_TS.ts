@@ -48,7 +48,7 @@ let isActive1: boolean = false;
 //However, you need to also specify that it's an array by using "[]":
 let numbers1: number[] = [2, 4, 6, 8, 10];
 
-//Sometimes you might not know the data type but you still want TypeScript coding standards.
+//Sometimes you might not know the data type but you still want to practice TypeScript coding standards.
 //In this case, you can use "any" when declaring a variable.
 //It will then perform just how JavaScript performs at runtime:
 let data1: any = "This could be any data type";

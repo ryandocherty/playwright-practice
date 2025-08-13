@@ -19,8 +19,8 @@ JavaScript is dynamically typed, meaning type errors only surface at runtime.
 In TypeScript, you need to explicitly specify the data type prior to running the code.
 
 Static Typing helps catch errors before the code is run.
-In JavaScript, you might accidentally attempt to reassign a variable to a different data type.
-But this error won't surface until you run the code, at which point it'll throw a syntax error.
+In JavaScript, you might accidentally reassign a variable to a different data type (which is allowed).
+But this error won't surface until you run the code, at which point it might throw a syntax error.
 The code might actually run without throwing any error, but your logic could still be wrong and produce an unexpected result.
 TypeScript will catch these syntax errors as you write the code.
 */
