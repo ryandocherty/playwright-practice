@@ -30,6 +30,7 @@ Once converted, Node or browsers run the generated JavaScript code.
 TypeScript Code (.ts) --> compile --> Plain JavaScript --> Run on Node/Browsers.
 
 The ultimate goal of TypeScript is to catch errors during development, BEFORE executing any code.
+TypeScript's goal is to prevent these errors from making it to runtime.
 
 
 -----Key Features of TypeScript-----

@@ -1,10 +1,7 @@
 //Section 10.45: understanding the importance of API integration calls for Web tests
 //Rahul Shetty's in-depth video on APIs - https://www.youtube.com/watch?v=bdHeDZPrYec
 
-import { test, expect } from "@playwright/test";
-
-test("Udemy: API Integration", async ({ page }) => {
-  /*
+/*
   In this section, we'll see how to integrate API testing into web cases.
 
   We're NOT exclusively talking about performing API testing here, this section is
@@ -48,6 +45,3 @@ test("Udemy: API Integration", async ({ page }) => {
 
   We can use this session token to avoid loggin in for every test.
   */
-
-  await page.goto("https://rahulshettyacademy.com/client");
-});
