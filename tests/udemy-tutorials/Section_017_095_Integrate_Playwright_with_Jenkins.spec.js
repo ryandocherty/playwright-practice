@@ -78,19 +78,12 @@ We can now dynamically choose which custom script from package.json is executed 
 
 ----Extra: Allure Reporting-----
 
-We can add to our custom scripts:
-
-"scripts": {
-    "ui-tests": "npx playwright test --grep=@UI --project=chromium",
-    "web-tests": "npx playwright test --grep=@Web --project=chromium",
-    "regression-tests": "npx playwright test"
-},
-
-To include Allure reporting:
+We can also add to our custom scripts to include Allure reporting::
 
 "scripts": {
     "ui-tests": "npx playwright test --grep=@UI --project=chromium --reporter=line,allure-playwright",
     "web-tests": "npx playwright test --grep=@Web --project=chromium --reporter=line,allure-playwright",
     "regression-tests": "npx playwright test --reporter=line,allure-playwright"
 },
+
 */
