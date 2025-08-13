@@ -70,7 +70,7 @@ on an account that does actually have orders, by intercepting and mocking the AP
 */
 
 import { test, expect, request } from "@playwright/test";
-import { APIUtils } from "../../udemy_utils/APIUtils";
+import { APIUtils } from "../../../udemy_utils/APIUtils";
 import dotenv from "dotenv";
 
 dotenv.config({ path: ".env" });

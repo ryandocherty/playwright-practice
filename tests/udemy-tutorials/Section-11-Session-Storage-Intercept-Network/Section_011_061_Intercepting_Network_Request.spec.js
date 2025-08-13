@@ -32,7 +32,7 @@ Steps:
 */
 
 import { test, expect, request } from "@playwright/test";
-import { APIUtils } from "../../udemy_utils/APIUtils";
+import { APIUtils } from "../../../udemy_utils/APIUtils";
 import dotenv from "dotenv";
 
 dotenv.config({ path: ".env" });

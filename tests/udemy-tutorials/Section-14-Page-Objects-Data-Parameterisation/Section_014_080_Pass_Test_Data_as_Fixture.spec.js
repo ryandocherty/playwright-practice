@@ -23,11 +23,11 @@ Why extend "test"?
 */
 
 //We import the customised test from our TestBase file:
-import { customtest } from "../../udemy_utils/PlaceOrder_TestBase";
+import { customtest } from "../../../udemy_utils/PlaceOrder_TestBase";
 
 import { expect, request } from "@playwright/test";
-import { APIUtils } from "../../udemy_utils/APIUtils";
-import { POManager } from "../../udemy_page_objects/POManager";
+import { APIUtils } from "../../../udemy_utils/APIUtils";
+import { POManager } from "../../../udemy_page_objects/POManager";
 
 //Here we pass our "customtest" and pass the fixture "testDataForOrder":
 customtest("Udemy: Place order using custom fixture", async ({ page, testDataForOrder }) => {

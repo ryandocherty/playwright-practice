@@ -35,7 +35,7 @@ It stands for "Global Regular Expression Print".
 */
 
 import { test, expect, request } from "@playwright/test";
-import { POManager } from "../../udemy_page_objects/POManager";
+import { POManager } from "../../../udemy_page_objects/POManager";
 import dotenv from "dotenv";
 dotenv.config({ path: ".env" });
 

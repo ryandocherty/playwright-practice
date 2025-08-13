@@ -32,12 +32,12 @@ This can be due to:
     Sometimes tests in different files depend on global state or external systems that aren’t fully isolated.
 */
 
-import { customtest } from "../../udemy_utils/PlaceOrder_TestBase";
+import { customtest } from "../../../udemy_utils/PlaceOrder_TestBase";
 import { test, expect, request } from "@playwright/test";
-import { APIUtils } from "../../udemy_utils/APIUtils";
-import { POManager } from "../../udemy_page_objects/POManager";
+import { APIUtils } from "../../../udemy_utils/APIUtils";
+import { POManager } from "../../../udemy_page_objects/POManager";
 
-import PlaceOrder_SeveralDataSets from "../../udemy_utils/PlaceOrder_SeveralDataSets.json" assert { type: "json" };
+import PlaceOrder_SeveralDataSets from "../../../udemy_utils/PlaceOrder_SeveralDataSets.json" assert { type: "json" };
 const testData = JSON.parse(JSON.stringify(PlaceOrder_SeveralDataSets));
 
 for (const data of testData) {

@@ -12,7 +12,7 @@ For this test:
 */
 
 import { test, expect, request } from "@playwright/test";
-import { APIUtils } from "../../udemy_utils/APIUtils";
+import { APIUtils } from "../../../udemy_utils/APIUtils";
 import dotenv from "dotenv";
 
 //Load hidden environment variables:

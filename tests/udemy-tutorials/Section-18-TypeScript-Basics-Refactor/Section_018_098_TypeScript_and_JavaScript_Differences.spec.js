@@ -1,4 +1,4 @@
-//Section 18.97: Understand the differences between TypeScript & JavaScript
+//Section 18.98: Understand the differences between TypeScript & JavaScript
 
 /*
 -----What is TypeScript?-----

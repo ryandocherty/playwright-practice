@@ -19,9 +19,9 @@ The best way to import .json data and avoid errors is to convert to String, then
 */
 
 import { test, expect, request } from "@playwright/test";
-import { APIUtils } from "../../udemy_utils/APIUtils";
-import { POManager } from "../../udemy_page_objects/POManager";
-import PlaceOrder_SingleDataSet from "../../udemy_utils/PlaceOrder_SingleDataSet.json" assert { type: "json" };
+import { APIUtils } from "../../../udemy_utils/APIUtils";
+import { POManager } from "../../../udemy_page_objects/POManager";
+import PlaceOrder_SingleDataSet from "../../../udemy_utils/PlaceOrder_SingleDataSet.json" assert { type: "json" };
 
 const testData = JSON.parse(JSON.stringify(PlaceOrder_SingleDataSet));
 

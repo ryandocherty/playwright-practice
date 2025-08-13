@@ -4,6 +4,8 @@
 
 import { Workbook } from "exceljs";
 
+//await page.goto(`https://rahulshettyacademy.com/upload-download-test/`);
+
 async function readExcelFile(filePath) {
   const workbook = new Workbook();
   await workbook.xlsx.readFile(filePath);
@@ -29,9 +31,7 @@ async function replaceCellValue(searchText, replacementText, filePath) {
   cellToReplace.value = replacementText;
 
   //Output a detailed message:
-  console.log(
-    `"${searchText}" replaced with "${replacementText}" at row ${coordinates.row}, column ${coordinates.column}`
-  );
+  console.log(`"${searchText}" replaced with "${replacementText}" at row ${coordinates.row}, column ${coordinates.column}`);
 
   //Call "saveExcelFile" after making the modifications.
   //1st arg: the "workbook" object property, taken from the top of this function.
@@ -69,8 +69,4 @@ async function getCellCoordinates(worksheet, searchText) {
 //1st arg: accepts "searchText" (the text value of a cell you want to locate).
 //2nd arg: accepts "replacementText" (the text value that you want to be the replacement).
 //3rd arg: accepts the "filePath" of the Excel file.
-replaceCellValue(
-  "Clementine",
-  "Mango",
-  "C:/Users/Roscoe/Desktop/Projects/playwright-practice/excel_download_test.xlsx"
-);
+replaceCellValue("Clementine", "Mango", "C:/Users/Roscoe/Desktop/Projects/playwright-practice/excel_download_test.xlsx");

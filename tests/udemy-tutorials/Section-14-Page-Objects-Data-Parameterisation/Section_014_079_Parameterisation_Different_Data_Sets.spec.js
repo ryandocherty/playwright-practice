@@ -16,9 +16,9 @@ So the .json file will become an array with > 1 data set (multiple loginEmails a
 */
 
 import { test, expect, request } from "@playwright/test";
-import { APIUtils } from "../../udemy_utils/APIUtils";
-import { POManager } from "../../udemy_page_objects/POManager";
-import PlaceOrder_SeveralDataSets from "../../udemy_utils/PlaceOrder_SeveralDataSets.json" assert { type: "json" };
+import { APIUtils } from "../../../udemy_utils/APIUtils";
+import { POManager } from "../../../udemy_page_objects/POManager";
+import PlaceOrder_SeveralDataSets from "../../../udemy_utils/PlaceOrder_SeveralDataSets.json" assert { type: "json" };
 
 //testData is an array of different data sets:
 const testData = JSON.parse(JSON.stringify(PlaceOrder_SeveralDataSets));
