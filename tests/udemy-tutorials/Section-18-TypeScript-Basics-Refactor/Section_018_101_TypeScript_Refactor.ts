@@ -1,8 +1,8 @@
 //Section 18.101: Build Playwright Pageobject TypeScript files and enforce the typing standards
 
 /*
-We'll just be refactoring our E2E tests and our Utility files.
-We'll not disturb the original .js files, instead we'll create new .ts files.
+I'm refactoring my E2E tests and Utility files.
+I don't want to disturb the original .js files, instead I'll create new .ts files.
 
 
 =======================================

@@ -1,6 +1,8 @@
 //Section 18.101: Build Playwright Pageobject TypeScript files and enforce the typing standards
 //Section 18.102: Build Playwright Utility TypeScript files with enforcing the typing standards
 
+//This file is a TypeScript refactor of "udemy_page_objects\OrderHistoryPage.js"
+
 //Page Object implementation for the "Order History" page of "https://rahulshettyacademy.com/client"
 //https://rahulshettyacademy.com/client/#/dashboard/myorders
 
