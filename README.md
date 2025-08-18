@@ -7,7 +7,7 @@ Here you will find various tests and scripts that I've created based on tutorial
 ## Contents
 
 - **Tests**: A collection of tests covering different use cases and scenarios using Playwright.
-- **Tutorials**: Notes and examples from YouTube tutorials, documentation on [playwright.dev](https://playwright.dev/), but mostly courses from Udemy.
+- **Tutorials**: The bulk of this project contains tests from Udemy courses, along with some notes and examples from YouTube tutorials, and documentation on [playwright.dev](https://playwright.dev/).
 - **Languages**: JavaScript, TypeScript.
 
 ## Udemy Courses
