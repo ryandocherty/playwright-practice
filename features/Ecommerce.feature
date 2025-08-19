@@ -1,7 +1,7 @@
 Feature: Product Purchase
 
     Scenario: Successful Product Purchase
-        Given the user logs in with "username" and "password"
+        Given the user logs in with "emailaddress@email.com" and "Password1!"
         When the user adds "ZARA COAT 3" to cart
         Then the product "ZARA COAT 3" is displayed in the cart
         Given the user enters valid billing information
