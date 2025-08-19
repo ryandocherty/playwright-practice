@@ -28,4 +28,19 @@ udemy_page_objects_ts\OrderConfirmedPage.ts
 udemy_page_objects_ts\OrderHistoryPage.ts
 udemy_page_objects_ts\OrderSummaryPage.ts
 udemy_page_objects_ts\POManager.ts
+
+=======================================
+    Refactor: udemy_utils
+=======================================
+
+Refactoring:
+udemy_utils\APIUtils.js
+udemy_utils\PlaceOrder_TestBase.js
+
+Refactored to:
+udemy_utils_ts\APIUtils.ts
+udemy_utils_ts\PlaceOrder_TestBase.ts
+
+New file:
+udemy_utils_ts\API_Types.ts
 */
