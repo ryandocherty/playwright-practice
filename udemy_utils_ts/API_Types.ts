@@ -1,4 +1,6 @@
 //This file contains type declarations for my API tests.
+//Related file: "Section_018_103_2_API_Utils_Class_Refactor.spec.ts"
+//Related file: "udemy_utils_ts\APIUtils.ts"
 
 //==================================================
 //                  Interfaces

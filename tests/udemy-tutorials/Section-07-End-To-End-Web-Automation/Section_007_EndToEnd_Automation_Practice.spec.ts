@@ -21,8 +21,9 @@ test("Udemy: Client Item Purchase Test", async ({ page }) => {
 
   await page.goto("https://rahulshettyacademy.com/client");
 
-  /*----------------------------Import email address and password--------------------------------*/
-  /*---------------------------------------------------------------------------------------------*/
+  //==================================================
+  //               Import Credentials
+  //==================================================
 
   //Assign the email and password to a variable.
   //Using the nullish coalescing operator "??" to provide a fallback/default value,
@@ -36,8 +37,9 @@ test("Udemy: Client Item Purchase Test", async ({ page }) => {
     console.log(`LOGIN_PASSWORD: ${loginPassword}`);
   }
 
-  /*---------------------------------------Login page--------------------------------------------*/
-  /*---------------------------------------------------------------------------------------------*/
+  //==================================================
+  //                  Login Page
+  //==================================================
 
   await page.fill(`#userEmail`, loginEmail);
   await page.fill(`#userPassword`, loginPassword);
@@ -45,8 +47,9 @@ test("Udemy: Client Item Purchase Test", async ({ page }) => {
   await page.locator(`#login`).click();
   await expect(page).toHaveURL(`https://rahulshettyacademy.com/client/#/dashboard/dash`);
 
-  /*-------------------------------------Products page-------------------------------------------*/
-  /*---------------------------------------------------------------------------------------------*/
+  //==================================================
+  //             Dashboard/Products Page
+  //==================================================
 
   const products = page.locator(`.card-body`); //returns an array.
   await page.waitForLoadState(`networkidle`); //without this, productTitles below weren't being grabbed.
@@ -88,8 +91,9 @@ test("Udemy: Client Item Purchase Test", async ({ page }) => {
   const isCartLinkVisible = await page.locator(`[routerlink='/dashboard/cart']`).isVisible();
   expect(isCartLinkVisible).toBeTruthy();
 
-  /*-------------------------------------Cart page-----------------------------------------------*/
-  /*---------------------------------------------------------------------------------------------*/
+  //==================================================
+  //                  Cart Page
+  //==================================================
 
   //Click the 'Cart' link, then wait for the cart items to load (they all have a "div li" attribute):
   await page.locator(`[routerlink='/dashboard/cart']`).click();
@@ -119,8 +123,9 @@ test("Udemy: Client Item Purchase Test", async ({ page }) => {
     console.log(`priceBeforeCart_Numeric or priceInCart_Numeric is null`);
   }
 
-  /*------------------------------------Checkout Page--------------------------------------------*/
-  /*---------------------------------------------------------------------------------------------*/
+  //==================================================
+  //                  Checkout Page
+  //==================================================
 
   //Click the 'checkout' button, wait for payment page to load (has a bunch of ".input" attributes):
   await page.locator(`button:has-text("Checkout")`).click();
@@ -177,8 +182,9 @@ test("Udemy: Client Item Purchase Test", async ({ page }) => {
     }
   }
 
-  /*------------------------------------Order Confirmed Page---------------------------------*/
-  /*-----------------------------------------------------------------------------------------*/
+  //==================================================
+  //               Order Confirmed Page
+  //==================================================
 
   //Click the "Place Order" button:
   const placeOrderButton = page.locator(`.action__submit`);
@@ -208,8 +214,9 @@ test("Udemy: Client Item Purchase Test", async ({ page }) => {
   const orderId = orderId_raw?.replace(/\|/g, ``).trim();
   console.log(`orderID: ${orderId}`);
 
-  /*------------------------------------Order History Page-----------------------------------*/
-  /*-----------------------------------------------------------------------------------------*/
+  //==================================================
+  //               Order History Page
+  //==================================================
 
   //Click the "Order History" link:
   const orderhistoryLink = page.locator(`[routerlink="/dashboard/myorders"]`).first();
@@ -245,8 +252,9 @@ test("Udemy: Client Item Purchase Test", async ({ page }) => {
     }
   }
 
-  /*------------------------------------Order Summary Page-----------------------------------*/
-  /*-----------------------------------------------------------------------------------------*/
+  //==================================================
+  //               Order Summary Page
+  //==================================================
 
   //Wait for the order summary page to load:
   await page.locator(`.tagline`).waitFor();
@@ -268,9 +276,7 @@ test("Udemy: Client Item Purchase Test", async ({ page }) => {
   const priceOnSummary_raw: any = await page.locator(`.price`).textContent();
   const priceOnSummary_Numeric: number = parseFloat(priceOnSummary_raw?.replace(/[^0-9]+/g, ""));
   console.log(`Item price (on summary): $${priceOnSummary_Numeric}`);
-  expect(priceOnSummary_Numeric).toEqual(
-    priceBeforeCart_Numeric && priceInCart_Numeric && priceInOrderConfirmed_Numeric
-  );
+  expect(priceOnSummary_Numeric).toEqual(priceBeforeCart_Numeric && priceInCart_Numeric && priceInOrderConfirmed_Numeric);
 
   //Order summary is split into 2 sections: "Billing Address" & "Delivery Address"
   //Both sections display the email address and country for the order,
