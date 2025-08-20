@@ -8,8 +8,8 @@
 //4. Perform assertions to check correct: product name, price, address, country, orderID.
 
 import { test, expect, request } from "@playwright/test";
-import { APIUtils } from "../../../udemy_utils/APIUtils";
-import { POManager } from "../../../udemy_page_objects/POManager";
+import { APIUtils } from "../../../udemy_utils/APIUtils.js";
+import { POManager } from "../../../udemy_page_objects/POManager.js";
 
 import dotenv from "dotenv";
 dotenv.config({ path: ".env" });

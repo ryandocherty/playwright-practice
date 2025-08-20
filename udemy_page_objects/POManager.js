@@ -3,13 +3,13 @@
 //This file contains a Page Object Manager for my udemy_page_objects.
 //This is to help the readability of the actual test file (Section_014_076_Page_Object_Manager.spec.js).
 
-import { CartPage } from "./CartPage";
-import { CheckoutPage } from "./CheckoutPage";
-import { DashboardPage } from "./DashboardPage";
-import { LoginPage } from "./LoginPage";
-import { OrderConfirmedPage } from "./OrderConfirmedPage";
-import { OrderHistoryPage } from "./OrderHistoryPage";
-import { OrderSummaryPage } from "./OrderSummaryPage";
+import { CartPage } from "./CartPage.js";
+import { CheckoutPage } from "./CheckoutPage.js";
+import { DashboardPage } from "./DashboardPage.js";
+import { LoginPage } from "./LoginPage.js";
+import { OrderConfirmedPage } from "./OrderConfirmedPage.js";
+import { OrderHistoryPage } from "./OrderHistoryPage.js";
+import { OrderSummaryPage } from "./OrderSummaryPage.js";
 
 export class POManager {
   constructor(page) {

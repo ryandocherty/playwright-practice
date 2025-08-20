@@ -1,9 +1,9 @@
 Feature: Product Purchase
 
     Scenario: Successful Product Purchase
-        Given the user logs in with "emailaddress@email.com" and "Password1!"
-        When the user adds "ZARA COAT 3" to cart
-        Then the product "ZARA COAT 3" is displayed in the cart
-        Given the user enters valid billing information
+        Given the user logs in with a valid email address and password
+        When the user adds a product to the cart
+        Then the product is displayed in the cart
+        Given the user enters valid billing information, delivery country "United Kingdom"
         When the user places the order
-        Then verify "ZARA COAT 3" is present in the Order History page
+        Then verify the product is present in the Order History page

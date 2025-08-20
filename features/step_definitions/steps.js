@@ -4,58 +4,54 @@
 
 import { Given, When, Then } from "@cucumber/cucumber";
 import { expect } from "@playwright/test";
-import { POManager } from "../../udemy_page_objects/POManager";
 
-//Import "Playwright" object to allow the use of the "chromium.launch()" method.
-//You can then use this to create a new browser context, and thus a new page.
-import { playwright } from "@playwright/test";
-
-Given("the user logs in with {string} and {string}", async function (loginEmail, loginPassword) {
-  //Here we use the imported "playwright" keyword to get the "browser" object back.
-  //We can then get a newContext() from the browser object.
-  //This allows you to derive "page" as you usually would in Playwright:
-  const browser = await playwright.chromium.launch();
-  const context = await browser.newContext();
-  const page = context.newPage();
-
-  //Using "this" means the World constructor gets activated.
-  //This means "this.poManager" is stored in this World's constructor.
-  //Now "this.poManager" is available throughout this scenario's World.
-  this.poManager = new POManager(page);
+Given("the user logs in with a valid email address and password", async function () {
   const loginPage = this.poManager.getLoginPage();
   await loginPage.goToLoginPage();
-  await loginPage.validLogin(loginEmail, loginPassword);
+  await loginPage.validLogin(this.loginEmail, this.loginPassword);
 });
 
-When("the user adds {string} to cart", async function (desiredProductName) {
+When("the user adds a product to the cart", async function () {
   const dashboardPage = this.poManager.getDashboardPage();
-  await dashboardPage.searchProduct_addToCart(desiredProductName);
+  await dashboardPage.searchProduct_addToCart(this.desiredProductName_1);
   await dashboardPage.navigateToCartPage();
 });
 
-Then("the product {string} is displayed in the cart", async function (desiredProductName) {
+Then("the product is displayed in the cart", async function () {
   const cartPage = this.poManager.getCartPage();
   const orderInfoInCart = await cartPage.getOrderInfoInCart();
   const { itemNameInCart } = orderInfoInCart;
-  expect(itemNameInCart).toBe(desiredProductName);
+  expect(itemNameInCart).toBe(this.desiredProductName_1);
   await cartPage.navigateToCheckoutPage();
 });
 
-Given("the user enters valid billing information", { timeout: 10 * 1000 }, async function () {
-  const checkoutPage = this.poManager.getCheckoutPage();
-  await checkoutPage.enterPaymentDetails(creditCardNumber, CCVCode, nameOnCard, cardExpiryMonthDate, cardExpiryDayDate);
-  await checkoutPage.enterDeliveryDetails(desiredCountryName);
-});
+Given(
+  "the user enters valid billing information, delivery country {string}",
+  { timeout: 15 * 1000 },
+  async function (desiredCountryName) {
+    const checkoutPage = this.poManager.getCheckoutPage();
+    await checkoutPage.enterPaymentDetails(
+      this.creditCardNumber,
+      this.CCVCode,
+      this.nameOnCard,
+      this.cardExpiryMonthDate,
+      this.cardExpiryDayDate
+    );
+
+    //desiredCountryName is coming directly from the .feature file (for demo purposes):
+    await checkoutPage.enterDeliveryDetails(desiredCountryName);
+  }
+);
 
 When("the user places the order", async function () {
   const checkoutPage = this.poManager.getCheckoutPage();
   await checkoutPage.placeOrder();
 });
 
-Then("verify {string} is present in the Order History page", async function (string) {
+Then("verify the product is present in the Order History page", async function () {
   const orderConfirmedPage = this.poManager.getOrderConfirmedPage();
   const orderInfoInOrderConfirmed = await orderConfirmedPage.getOrderInfoInOrderConfirmed();
-  const { productNameInOrderConfirmed, priceInOrderConfirmed_Numeric, orderIDInOrderConfirmed } = orderInfoInOrderConfirmed;
+  const { orderIDInOrderConfirmed } = orderInfoInOrderConfirmed;
   await orderConfirmedPage.navigateToOrderHistoryPage();
   const orderHistoryPage = this.poManager.getOrderHistoryPage();
   await orderHistoryPage.navigateToOrderSummaryPage(orderIDInOrderConfirmed);
@@ -63,5 +59,5 @@ Then("verify {string} is present in the Order History page", async function (str
   const allOrderInfo = await orderSummaryPage.getOrderInfoInOrderSummary();
 
   const { productNameInOrderSummary } = allOrderInfo;
-  expect(productNameInOrderSummary).toBe(desiredProductName);
+  expect(productNameInOrderSummary).toBe(this.desiredProductName_1);
 });

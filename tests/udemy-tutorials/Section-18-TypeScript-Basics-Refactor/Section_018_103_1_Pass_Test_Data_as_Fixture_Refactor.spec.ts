@@ -6,9 +6,6 @@ import { expect } from "@playwright/test";
 import { POManager } from "../../../udemy_page_objects_ts/POManager";
 import { customTest } from "../../../udemy_utils_ts/PlaceOrder_TestBase";
 
-import dotenv from "dotenv";
-dotenv.config({ path: ".env" });
-
 customTest("Udemy: Place order using custom fixtures (TS Refactor)", async ({ page, testDataForOrder }) => {
   //==================================================
   //               Import Credentials

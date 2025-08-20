@@ -41,13 +41,13 @@ We can also store any methods used within these Page Object files.
 */
 
 import { test, expect } from "@playwright/test";
-import { LoginPage } from "../../../udemy_page_objects/LoginPage";
-import { DashboardPage } from "../../../udemy_page_objects/DashboardPage";
-import { CartPage } from "../../../udemy_page_objects/CartPage";
-import { CheckoutPage } from "../../../udemy_page_objects/CheckoutPage";
-import { OrderConfirmedPage } from "../../../udemy_page_objects/OrderConfirmedPage";
-import { OrderHistoryPage } from "../../../udemy_page_objects/OrderHistoryPage";
-import { OrderSummaryPage } from "../../../udemy_page_objects/OrderSummaryPage";
+import { LoginPage } from "../../../udemy_page_objects/LoginPage.js";
+import { DashboardPage } from "../../../udemy_page_objects/DashboardPage.js";
+import { CartPage } from "../../../udemy_page_objects/CartPage.js";
+import { CheckoutPage } from "../../../udemy_page_objects/CheckoutPage.js";
+import { OrderConfirmedPage } from "../../../udemy_page_objects/OrderConfirmedPage.js";
+import { OrderHistoryPage } from "../../../udemy_page_objects/OrderHistoryPage.js";
+import { OrderSummaryPage } from "../../../udemy_page_objects/OrderSummaryPage.js";
 
 import dotenv from "dotenv";
 dotenv.config({ path: ".env" });

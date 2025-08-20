@@ -8,7 +8,7 @@ I'll only have to import the POManager, which then handles the Page Objects.
 */
 
 import { test, expect } from "@playwright/test";
-import { POManager } from "../../../udemy_page_objects/POManager";
+import { POManager } from "../../../udemy_page_objects/POManager.js";
 
 import dotenv from "dotenv";
 dotenv.config({ path: ".env" });
