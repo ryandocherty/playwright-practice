@@ -18,7 +18,7 @@ We have a slight problem here. We have this line of code:
 `const poManager = new POManager(page);`
 
 We're passing "page", because it's a fixture that's automatically exported by Playwright (when using "test()").
-But "page" has no life here now we're using Cucumber syntax.
+But "page" has no life here now that we're using Cucumber syntax.
 
 A solution to this is to import the "Playwright" keyword.
 The "Playwright" keyword has a method called "launch()".
@@ -28,24 +28,4 @@ We can then use "launch()" to create a new browser context, and thus a new page.
     const browser = await playwright.chromium.launch();
     const context = await browser.newContext();
     const page = await context.newPage();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 */
