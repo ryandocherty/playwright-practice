@@ -2,13 +2,16 @@
 
 import { Before, After, BeforeStep, AfterStep, Status } from "@cucumber/cucumber";
 import { POManager } from "../../udemy_page_objects/POManager.js";
+import { setDefaultTimeout } from "@cucumber/cucumber";
 
-//Import "Playwright" object to allow the use of the "chromium.launch()" method.
+//Import "chromium" object to allow the use of the "chromium.launch()" method.
 //You can then use this to create a new browser context, and thus a new page.
 import { chromium } from "@playwright/test";
 
 import dotenv from "dotenv";
 dotenv.config({ path: ".env" });
+
+setDefaultTimeout(30 * 1000);
 
 Before(async function () {
   //==================================================
@@ -24,7 +27,7 @@ Before(async function () {
   this.desiredProductName_1 = process.env.DESIRED_PRODUCT_NAME_1 ?? "";
   //==================================================
 
-  //Here we use the imported "playwright" keyword to get the "browser" object back.
+  //Here we use the imported "chromium" keyword to get the "browser" object back.
   //We can then get a newContext() from the browser object.
   //This allows you to derive "page" as you usually would in Playwright:
   this.browser = await chromium.launch();
@@ -51,5 +54,4 @@ AfterStep(async function ({ result }) {
 After(async function () {
   //Playwright closes the browser(s) automatically.
   //But this is where you can tear down any test data if required.
-  console.log(`I am the last to execute`);
 });

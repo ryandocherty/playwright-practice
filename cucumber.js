@@ -1,3 +1,3 @@
 export default {
-  default: "--publish-quiet",
+  default: "--publish-quiet --timeout 30s",
 };
