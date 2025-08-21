@@ -21,11 +21,11 @@ export class LoginPage {
     this.userPassword_Input = page.locator(`#userPassword`);
   }
 
-  async goToLoginPage() {
+  async navigateToLoginPage() {
     await this.page.goto("https://rahulshettyacademy.com/client");
   }
 
-  async validLogin(loginEmail: string, loginPassword: string) {
+  async enterLoginDetails(loginEmail: string, loginPassword: string) {
     await this.userEmail_Input.fill(loginEmail);
     await this.userPassword_Input.fill(loginPassword);
     await this.signIn_Button.click();

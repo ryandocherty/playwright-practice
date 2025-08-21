@@ -1,6 +1,6 @@
 //Section 19.109: Understand Cucumber Hooks and its implementation process in framework
 
-import { Before, After, BeforeStep, AfterStep, Status } from "@cucumber/cucumber";
+import { Before, After, BeforeStep, AfterStep, BeforeAll, AfterAll, Status } from "@cucumber/cucumber";
 import { POManager } from "../../udemy_page_objects/POManager.js";
 import { setDefaultTimeout } from "@cucumber/cucumber";
 
@@ -30,7 +30,7 @@ Before(async function () {
   //Here we use the imported "chromium" keyword to get the "browser" object back.
   //We can then get a newContext() from the browser object.
   //This allows you to derive "page" as you usually would in Playwright:
-  this.browser = await chromium.launch();
+  this.browser = await chromium.launch({ headless: false });
   this.context = await this.browser.newContext();
   this.page = await this.context.newPage();
 
@@ -45,13 +45,19 @@ BeforeStep(function () {
 });
 
 AfterStep(async function ({ result }) {
-  //This hook will be executed after all steps, and take a screenshot on step failure.
+  //This hook will be executed after all steps.
+  //Takes a screenshot on step failure.
   if (result.status === Status.FAILED) {
     await this.page.screenshot({ path: "screenshots/screenshotGherkin.png" });
   }
 });
 
 After(async function () {
-  //Playwright closes the browser(s) automatically.
-  //But this is where you can tear down any test data if required.
+  //This hook will be executed after each scenario.
+  if (this.page) await this.page.close();
+  if (this.context) await this.context.close();
+});
+
+AfterAll(async function () {
+  if (this.browser) await this.browser.close();
 });

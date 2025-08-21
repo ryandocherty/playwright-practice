@@ -14,15 +14,18 @@ export class LoginPage {
     this.signIn_Button = page.locator(`#login`);
     this.userEmail_Input = page.locator(`#userEmail`);
     this.userPassword_Input = page.locator(`#userPassword`);
+    this.emailError_Label = page.locator(`div[class='form-group'] div[class='invalid-feedback'] div`);
+    this.passwordError_Label = page.locator(`div[class='form-group mb-4'] div[class='invalid-feedback'] div`);
+    this.errorMessage_Toast = page.locator(`.toast-bottom-right`);
   }
 
-  async goToLoginPage() {
+  async navigateToLoginPage() {
     //This is why we have "this.page = page;" in the Constructor, instead of only passing "page" as a param.
     //We can now use "this.page" whenever we need to use the Page object.
     await this.page.goto("https://rahulshettyacademy.com/client");
   }
 
-  async validLogin(loginEmail, loginPassword) {
+  async enterLoginDetails(loginEmail, loginPassword) {
     await this.userEmail_Input.fill(loginEmail);
     await this.userPassword_Input.fill(loginPassword);
     await this.signIn_Button.click();

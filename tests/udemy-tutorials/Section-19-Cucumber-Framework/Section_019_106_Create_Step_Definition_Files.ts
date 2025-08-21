@@ -35,18 +35,18 @@ When this file is run using "npx cucumber-js", it scans your entire project for 
 If the "features" file is found, it will enter the folder and look for .feature files.
 If it finds .feature files, it will blindly execute these files.
 
-After running the command, Cucumber will complain and generate basic code for you in the Terminal.
+Initially after running the command, Cucumber will complain and generate basic code for you in the Terminal.
 After this, go ahead and create another folder within "features" called something like "step_definitions".
 So now we have "playwright-practice\features\step_definitions".
 Within this folder, create a "steps.js" file, which will contain our actual code.
 
 Created:
-features\step_definitions\steps.js
+features\step_definitions\productPurchaseSteps.js
 
 Step 1. Import required Cucumber package
         `import { Given, When, Then } from '@cucumber/cucumber';`
 
-Step 2. Copy and Paste the suggested code from thr Terminal.
+Step 2. Copy and Paste the suggested code from the Terminal.
 
 You'll notice that when using quotes in the .fearure file, Cucumber treats this as dynamic data:
 "the user logs in with {string} and {string}"

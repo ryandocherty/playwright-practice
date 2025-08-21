@@ -46,7 +46,7 @@ We'll use this previous test and create a .feature file for it:
 Section_018_103_1_Pass_Test_Data_as_Fixture_Refactor.spec.ts
 
 Created:
-features\Ecommerce.feature
+features\ProductPurchase.feature
 
 You can drive required data directly from a .feature file.
 

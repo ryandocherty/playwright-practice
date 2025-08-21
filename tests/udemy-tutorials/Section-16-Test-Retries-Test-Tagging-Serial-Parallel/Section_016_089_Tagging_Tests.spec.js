@@ -57,8 +57,8 @@ test(`@UI Udemy: Test Tagging Demo for UI`, async ({ page }) => {
   const poManager = new POManager(page);
 
   const loginPage = poManager.getLoginPage();
-  await loginPage.goToLoginPage();
-  await loginPage.validLogin(loginEmail, loginPassword);
+  await loginPage.navigateToLoginPage();
+  await loginPage.enterLoginDetails(loginEmail, loginPassword);
   await expect(page).toHaveURL(`https://rahulshettyacademy.com/client/#/dashboard/dash`);
 
   //==================================================

@@ -68,8 +68,8 @@ test("Udemy: Page Object Pattern", async ({ page }) => {
   //                  Login Page
   //==================================================
   const loginPage = new LoginPage(page);
-  await loginPage.goToLoginPage();
-  await loginPage.validLogin(loginEmail, loginPassword);
+  await loginPage.navigateToLoginPage();
+  await loginPage.enterLoginDetails(loginEmail, loginPassword);
   await expect(page).toHaveURL(`https://rahulshettyacademy.com/client/#/dashboard/dash`);
 
   //==================================================

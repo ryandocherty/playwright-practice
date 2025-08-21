@@ -8,8 +8,8 @@ import { expect } from "@playwright/test";
 Given("the user logs in with a valid email address and password", async function () {
   //Login using the credentials provided in the .env file:
   const loginPage = this.poManager.getLoginPage();
-  await loginPage.goToLoginPage();
-  await loginPage.validLogin(this.loginEmail, this.loginPassword);
+  await loginPage.navigateToLoginPage();
+  await loginPage.enterLoginDetails(this.loginEmail, this.loginPassword);
 });
 
 When("the user adds a product to the cart", async function () {

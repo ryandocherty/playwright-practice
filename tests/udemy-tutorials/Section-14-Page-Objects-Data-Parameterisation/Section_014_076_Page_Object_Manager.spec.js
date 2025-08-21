@@ -31,8 +31,8 @@ test("Udemy: Page Object Manager", async ({ page }) => {
   const poManager = new POManager(page);
 
   const loginPage = poManager.getLoginPage();
-  await loginPage.goToLoginPage();
-  await loginPage.validLogin(loginEmail, loginPassword);
+  await loginPage.navigateToLoginPage();
+  await loginPage.enterLoginDetails(loginEmail, loginPassword);
   await expect(page).toHaveURL(`https://rahulshettyacademy.com/client/#/dashboard/dash`);
 
   //==================================================

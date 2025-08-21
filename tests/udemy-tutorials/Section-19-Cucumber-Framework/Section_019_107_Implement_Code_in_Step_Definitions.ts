@@ -2,6 +2,8 @@
 //Related file: features\Ecommerce.feature
 //Related file: features\step_definitions\steps.js
 
+import { chromium } from "playwright/test";
+
 /*
 ==================================================
     Implementing Code in Step Definitions File
@@ -20,12 +22,12 @@ We have a slight problem here. We have this line of code:
 We're passing "page", because it's a fixture that's automatically exported by Playwright (when using "test()").
 But "page" has no life here now that we're using Cucumber syntax.
 
-A solution to this is to import the "Playwright" keyword.
-The "Playwright" keyword has a method called "launch()".
+A solution to this is to import the "chromium" object.
+The "chromium" object has a method called "launch()".
 We can then use "launch()" to create a new browser context, and thus a new page.
 
-    import { playwright } from "@playwright/test";
-    const browser = await playwright.chromium.launch();
+    import { chromium } from "@playwright/test";
+    const browser = await chromium.launch();
     const context = await browser.newContext();
     const page = await context.newPage();
 */

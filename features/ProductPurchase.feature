@@ -1,5 +1,6 @@
 Feature: Product Purchase
 
+    @regression
     Scenario: Successful Product Purchase
         Given the user logs in with a valid email address and password
         When the user adds a product to the cart
