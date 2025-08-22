@@ -1,4 +1,4 @@
-@errorValidation
+@errorMessageValidation
 Feature: Invalid Login Error Messages
 
     Background: 
