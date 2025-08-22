@@ -1,7 +1,6 @@
 //Section 19.111: Parameterization with Scenario outline & run tests Parallel in Playwright
 
 /*
-
 ==================================================
          About Cucumber Parameterisation
 ==================================================
@@ -35,8 +34,8 @@ Example:
 3. The "Examples" table provides actual data sets to run the scenario multiple times.
 
 Using "Scenario Outline" tells Cucumber that this is a parameterised test.
-It will look to see how many rows there are.
-The first row is ignored because they are the headers used for the placeholder values.
+It will look to see how many rows there are in you "Examples" data table.
+The first row is ignored because they are headers used for the placeholder values.
 It will then run the test X number of times, depending on how many remaining rows there are.
 The data in the remaining rows will be injected into the test at runtime.
 */
