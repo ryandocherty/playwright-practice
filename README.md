@@ -33,7 +33,7 @@ Here you will find various tests and scripts that I've created based on tutorial
 16. Test Retries, Serial & Parallel Execution & Tagging                            ✅
 17. HTML & Allure Reporting & CI/CD Jenkins Integration                            ✅
 18. Understand TypeScript Basics and Refactor Playwright Framework to TypeScript   ✅
-19. Playwright Cucumber Framework Integration with its Features
+19. Playwright Cucumber Framework Integration with its Features                    ✅     
 20. E2E Playwright DevOps Solution using Azure Cloud Parallel Hosting & CI/CD
 21. Playwright MCP - Spin-up AI Agent inside VSCode with Github Copilot
 </pre>
