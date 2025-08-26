@@ -7,10 +7,10 @@ Here you will find various tests and scripts that I've created based on tutorial
 ## Contents
 
 - **Tests**: A collection of tests covering different use cases and scenarios using Playwright.
-- **Tutorials**: The bulk of this project contains tests from Udemy courses, along with some notes and examples from YouTube tutorials, and documentation on [playwright.dev](https://playwright.dev/).
+- **Tutorials**: The bulk of this project contains tests from a comprehensive Udemy course, along with some notes and examples from YouTube tutorials, and documentation on [playwright.dev](https://playwright.dev/).
 - **Languages**: JavaScript, TypeScript, Gherkin.
 
-## Udemy Courses
+## Udemy Course
 **Title**: [*Playwright JS/TS Automation Testing from Scratch & Framework*](https://www.udemy.com/course/playwright-tutorials-automation-testing/)
 
 **Modules**:
