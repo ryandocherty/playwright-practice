@@ -22,7 +22,7 @@ Here you will find various tests and scripts that I've created based on tutorial
 5. Handling UI Components (Dropdowns, Radio buttons, Child windows)                ✅
 6. Playwright Inspectors, Trace Viewers & Codegen Tools                            ✅
 7. End to End Web Automation Practice Exercise                                     ✅
-8. Playwright's Unique GetBy Locators for Smart Testing & Test Runner usage        ✅
+8. Playwright's Unique GetBy Locators for Smart Testing & Test Runner Usage        ✅
 9. Handling Web Dialogs, Frames & Event Listeners                                  ✅
 10. API Testing with Playwright and Build a Mix of Web & API Tests                 ✅
 11. Session Storage & Intercepting Network Request/Responses                       ✅
