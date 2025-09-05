@@ -1,9 +1,9 @@
 //Section 18.98: Understand the differences between TypeScript & JavaScript
 
 /*
-//==================================================
-//               What is TypeScript?
-//==================================================
+==================================================
+              What is TypeScript?
+==================================================
 
 TypeScript is a "superset" of JavaScript developed and maintained by Microsoft.
 It adds "optional static typing" and other features to the JavaScript language.
@@ -35,9 +35,9 @@ The ultimate goal of TypeScript is to catch errors during development, BEFORE ex
 TypeScript's goal is to prevent these errors from making it to runtime.
 
 
-//==================================================
-//           Key Features of TypeScript
-//==================================================
+==================================================
+          Key Features of TypeScript
+==================================================
 
 1. Static Typing:
     You can explicitly declare variable types (e.g. string, number, boolean, custom interfaces).
@@ -60,9 +60,9 @@ TypeScript's goal is to prevent these errors from making it to runtime.
     Because of static types, editors (like VSCode) can provide superior code suggestions and error detection.
 
 
-//==================================================
-//           Playwright with TypeScript
-//==================================================
+==================================================
+           Playwright with TypeScript
+==================================================
 
 From https://playwright.dev/docs/test-typescript:
 
