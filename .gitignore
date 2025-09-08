@@ -2,6 +2,7 @@
 # Playwright
 node_modules/
 /test-results/
+/screenshots
 /playwright-report/
 /cucumber-report/
 /blob-report/

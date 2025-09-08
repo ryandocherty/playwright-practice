@@ -79,7 +79,7 @@ const loginPassword = process.env.LOGIN_PASSWORD ?? "";
 
 let prerequisiteData;
 const loginPayload = { userEmail: loginEmail, userPassword: loginPassword };
-const placeOrderPayload = { orders: [{ country: "United Kingdom", productOrderedId: "67a8dde5c0d3e6622a297cc8" }] };
+const placeOrderPayload = { orders: [{ country: "United Kingdom", productOrderedId: "68a961459320a140fe1ca57a" }] };
 
 test.beforeAll(async () => {
   const apiContext = await request.newContext();

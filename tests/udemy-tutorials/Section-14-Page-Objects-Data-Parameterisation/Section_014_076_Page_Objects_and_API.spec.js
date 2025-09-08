@@ -19,7 +19,7 @@ const loginPassword = process.env.LOGIN_PASSWORD ?? "";
 
 let prerequisiteData;
 const loginPayload = { userEmail: loginEmail, userPassword: loginPassword };
-const placeOrderPayload = { orders: [{ country: "United Kingdom", productOrderedId: "67a8dde5c0d3e6622a297cc8" }] };
+const placeOrderPayload = { orders: [{ country: "United Kingdom", productOrderedId: "68a961459320a140fe1ca57a" }] };
 
 test.beforeAll(async () => {
   const apiContext = await request.newContext();
@@ -65,22 +65,22 @@ function getSelectedProductInfo() {
   //Based on the "productOrderedId" in "placeOrderPayload", it will return the productName and productPrice.
   //I can use the returned "productSelected" object to perform assertions.
 
-  const productOrderedId_ZARA = "67a8dde5c0d3e6622a297cc8";
-  const productOrderedId_ADIDAS = "67a8df1ac0d3e6622a297ccb";
-  const productOrderedId_IPHONE = "67a8df56c0d3e6622a297ccd";
+  const productOrderedId_ZARA = "68a961459320a140fe1ca57a";
+  const productOrderedId_ADIDAS = "668a961719320a140fe1ca57c";
+  const productOrderedId_IPHONE = "68a961959320a140fe1ca57e";
 
   let selectedProductInfo = {};
   const productID = placeOrderPayload.orders[0].productOrderedId;
 
   switch (productID) {
     case productOrderedId_ZARA:
-      selectedProductInfo = { name: "ZARA COAT 3", price: 31500 };
+      selectedProductInfo = { name: "ZARA COAT 3", price: 11500 };
       break;
     case productOrderedId_ADIDAS:
-      selectedProductInfo = { name: "ADIDAS ORIGINAL", price: 31500 };
+      selectedProductInfo = { name: "ADIDAS ORIGINAL", price: 11500 };
       break;
     case productOrderedId_IPHONE:
-      selectedProductInfo = { name: "IPHONE 13 PRO", price: 231500 };
+      selectedProductInfo = { name: "IPHONE 13 PRO", price: 55000 };
       break;
     default:
       selectedProductInfo = { name: "PRODUCT NOT FOUND", price: 0 };

@@ -91,11 +91,11 @@ function getProductInfo(desiredProductName) {
 
   switch (desiredProductName) {
     case "ZARA COAT 3":
-      return { productOrderedId: "67a8dde5c0d3e6622a297cc8", price: 31500 };
+      return { productOrderedId: "68a961459320a140fe1ca57a", price: 11500 };
     case "ADIDAS ORIGINAL":
-      return { productOrderedId: "67a8df1ac0d3e6622a297ccb", price: 31500 };
+      return { productOrderedId: "668a961719320a140fe1ca57c", price: 11500 };
     case "IPHONE 13 PRO":
-      return { productOrderedId: "67a8df56c0d3e6622a297ccd", price: 231500 };
+      return { productOrderedId: "68a961959320a140fe1ca57e", price: 55000 };
     default:
       return { name: "PRODUCT NOT FOUND", price: 0 };
   }

@@ -93,12 +93,12 @@ function getProductInfo(productID) {
   //I can then use these variables to perform the UI assertions.
 
   switch (productID) {
-    case "67a8dde5c0d3e6622a297cc8":
-      return { name: "ZARA COAT 3", price: 31500 };
-    case "67a8df1ac0d3e6622a297ccb":
-      return { name: "ADIDAS ORIGINAL", price: 31500 };
-    case "67a8df56c0d3e6622a297ccd":
-      return { name: "IPHONE 13 PRO", price: 231500 };
+    case "68a961459320a140fe1ca57a":
+      return { name: "ZARA COAT 3", price: 11500 };
+    case "668a961719320a140fe1ca57c":
+      return { name: "ADIDAS ORIGINAL", price: 11500 };
+    case "68a961959320a140fe1ca57e":
+      return { name: "IPHONE 13 PRO", price: 55000 };
     default:
       return { name: "PRODUCT NOT FOUND", price: 0 };
   }

@@ -25,11 +25,11 @@ const loginPassword = process.env.LOGIN_PASSWORD ?? "";
 //Global variables:
 let prerequisiteData;
 const loginPayload = { userEmail: loginEmail, userPassword: loginPassword };
-const placeOrderPayload = { orders: [{ country: "United Kingdom", productOrderedId: "67a8dde5c0d3e6622a297cc8" }] };
+const placeOrderPayload = { orders: [{ country: "United Kingdom", productOrderedId: "68a961459320a140fe1ca57a" }] };
 
-//productOrderedId for "ZARA COAT 4": 67a8dde5c0d3e6622a297cc8
-//productOrderedId for "ADIDAS ORIGINAL": 67a8df1ac0d3e6622a297ccb
-//productOrderedId for "IPHONE 13 PRO": 67a8df56c0d3e6622a297ccd
+//productOrderedId for "ZARA COAT 3": 68a961459320a140fe1ca57a
+//productOrderedId for "ADIDAS ORIGINAL": 668a961719320a140fe1ca57c
+//productOrderedId for "IPHONE 13 PRO": 68a961959320a140fe1ca57e
 
 test.beforeAll(async () => {
   /*---------------------------------------Invoke APIUtils Class---------------------------------*/

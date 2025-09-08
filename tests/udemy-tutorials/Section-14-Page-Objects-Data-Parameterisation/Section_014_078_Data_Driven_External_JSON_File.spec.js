@@ -86,11 +86,11 @@ function getSelectedProductInfo(productOrderedId) {
 
   switch (productOrderedId) {
     case testData.productOrderedId_ZARA:
-      return { name: "ZARA COAT 3", price: 31500 };
+      return { name: "ZARA COAT 3", price: 11500 };
     case testData.productOrderedId_ADIDAS:
-      return { name: "ADIDAS ORIGINAL", price: 31500 };
+      return { name: "ADIDAS ORIGINAL", price: 11500 };
     case testData.productOrderedId_IPHONE:
-      return { name: "IPHONE 13 PRO", price: 231500 };
+      return { name: "IPHONE 13 PRO", price: 55000 };
     default:
       return { name: "PRODUCT NOT FOUND", price: 0 };
   }

@@ -34,6 +34,11 @@ export class APIUtils {
     const loginResponse = await this.APIContext.post(`https://rahulshettyacademy.com/api/ecom/auth/login`, {
       data: this.loginPayload,
     });
+
+    if (!loginResponse.ok()) {
+      console.error(`loginResponse failed with status ${loginResponse.status()}`);
+    }
+
     const loginResponse_JSON = await loginResponse.json();
     console.log(`\nloginResponse: ${loginResponse_JSON.message}`);
     const loginToken = await loginResponse_JSON.token;
@@ -51,10 +56,18 @@ export class APIUtils {
     //Add a "loginToken" property and assign it the value received from the getLoginToken() method:
     prerequisiteData.loginToken = await this.getLoginToken();
 
-    const placeOrderResponse = await this.APIContext.post(`https://rahulshettyacademy.com/api/ecom/order/create-order`, {
-      data: placeOrderPayload,
-      headers: { Authorization: prerequisiteData.loginToken, "Content-Type": "application/json" },
-    });
+    const placeOrderResponse = await this.APIContext.post(
+      `https://rahulshettyacademy.com/api/ecom/order/create-order`,
+      {
+        data: placeOrderPayload,
+        headers: { Authorization: prerequisiteData.loginToken, "Content-Type": "application/json" },
+      }
+    );
+
+    if (!placeOrderResponse.ok()) {
+      console.error(`placeOrderResponse failed with status ${placeOrderResponse.status()}`);
+    }
+
     const placeOrderResponse_JSON = await placeOrderResponse.json();
     console.log(`\nplaceOrderResponse: ${placeOrderResponse_JSON.message}`);
     const orderID = await placeOrderResponse_JSON.orders[0];

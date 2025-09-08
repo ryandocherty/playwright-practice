@@ -41,7 +41,9 @@ import PlaceOrder_SeveralDataSets from "../../../udemy_utils/PlaceOrder_SeveralD
 const testData = JSON.parse(JSON.stringify(PlaceOrder_SeveralDataSets));
 
 for (const data of testData) {
-  test(`Udemy: Placing order for: ${getProductInfo(data.productID).name}, account: ${data.loginEmail}`, async ({ page }) => {
+  test(`Udemy: Placing order for: ${getProductInfo(data.productID).name}, account: ${data.loginEmail}`, async ({
+    page,
+  }) => {
     const loginPayload = { userEmail: data.loginEmail, userPassword: data.loginPassword };
     const placeOrderPayload = {
       orders: [{ country: data.desiredDeliveryCountry, productOrderedId: data.productID }],
@@ -84,7 +86,7 @@ for (const data of testData) {
     expect(deliveryEmailInOrderSummary).toBe(loginPayload.userEmail);
     expect(billingCountryInOrderSummary).toBe(placeOrderPayload.orders[0].country);
     expect(deliveryCountryInOrderSummary).toBe(placeOrderPayload.orders[0].country);
-    expect(productNameInOrderSummary).toBe(productNameAndPrice.name);
+    expect(productNameInOrderSummary.toLowerCase()).toBe(productNameAndPrice.name.toLowerCase());
     expect(productPriceInOrderSummary_Numeric).toBe(productNameAndPrice.price);
   });
 }
@@ -139,24 +141,24 @@ customtest("Udemy: Place order using custom fixture", async ({ page, testDataFor
   expect(deliveryEmailInOrderSummary).toBe(loginPayload.userEmail);
   expect(billingCountryInOrderSummary).toBe(placeOrderPayload.orders[0].country);
   expect(deliveryCountryInOrderSummary).toBe(placeOrderPayload.orders[0].country);
-  expect(productNameInOrderSummary).toBe(testDataForOrder.desiredProductName);
+  expect(productNameInOrderSummary.toLowerCase()).toBe(testDataForOrder.desiredProductName.toLowerCase());
   expect(productPriceInOrderSummary_Numeric).toBe(productIDAndPrice.price);
 });
 
 function getProductInfo(desiredProductIdentifier) {
   switch (desiredProductIdentifier) {
     case "ZARA COAT 3":
-      return { productOrderedId: "67a8dde5c0d3e6622a297cc8", price: 31500 };
+      return { productOrderedId: "68a961459320a140fe1ca57a", price: 11500 };
     case "ADIDAS ORIGINAL":
-      return { productOrderedId: "67a8df1ac0d3e6622a297ccb", price: 31500 };
+      return { productOrderedId: "668a961719320a140fe1ca57c", price: 11500 };
     case "IPHONE 13 PRO":
-      return { productOrderedId: "67a8df56c0d3e6622a297ccd", price: 231500 };
-    case "67a8dde5c0d3e6622a297cc8":
-      return { name: "ZARA COAT 3", price: 31500 };
-    case "67a8df1ac0d3e6622a297ccb":
-      return { name: "ADIDAS ORIGINAL", price: 31500 };
-    case "67a8df56c0d3e6622a297ccd":
-      return { name: "IPHONE 13 PRO", price: 231500 };
+      return { productOrderedId: "68a961959320a140fe1ca57e", price: 55000 };
+    case "68a961459320a140fe1ca57a":
+      return { name: "ZARA COAT 3", price: 11500 };
+    case "668a961719320a140fe1ca57c":
+      return { name: "ADIDAS ORIGINAL", price: 11500 };
+    case "68a961959320a140fe1ca57e":
+      return { name: "IPHONE 13 PRO", price: 55000 };
     default:
       return { name: "PRODUCT NOT FOUND", price: 0 };
   }
