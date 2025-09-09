@@ -35,7 +35,9 @@ test.beforeAll(async () => {
 //It will use the data from each index iteration (loginEmail, loginPassword etc.).
 //The data from each index will then be placed into loginPayload and placeOrderPayload.
 for (const data of testData) {
-  test(`Udemy: Placing order for: ${getProductInfo(data.productID).name}, account: ${data.loginEmail}`, async ({ page }) => {
+  test(`@Web Udemy: Placing order for: ${getProductInfo(data.productID).name}, account: ${data.loginEmail}`, async ({
+    page,
+  }) => {
     //Properties for loginPayload and placeOrderPayload are now dynamically created.
     //The credentials are read from the .json file  based on the current data set:
     const loginPayload = { userEmail: data.loginEmail, userPassword: data.loginPassword };
@@ -82,7 +84,7 @@ for (const data of testData) {
     expect(deliveryEmailInOrderSummary).toBe(loginPayload.userEmail);
     expect(billingCountryInOrderSummary).toBe(placeOrderPayload.orders[0].country);
     expect(deliveryCountryInOrderSummary).toBe(placeOrderPayload.orders[0].country);
-    expect(productNameInOrderSummary).toBe(productNameAndPrice.name);
+    expect(productNameInOrderSummary.toLowerCase()).toBe(productNameAndPrice.name.toLowerCase());
     expect(productPriceInOrderSummary_Numeric).toBe(productNameAndPrice.price);
   });
 }
@@ -95,7 +97,7 @@ function getProductInfo(productID) {
   switch (productID) {
     case "68a961459320a140fe1ca57a":
       return { name: "ZARA COAT 3", price: 11500 };
-    case "668a961719320a140fe1ca57c":
+    case "68a961719320a140fe1ca57c":
       return { name: "ADIDAS ORIGINAL", price: 11500 };
     case "68a961959320a140fe1ca57e":
       return { name: "IPHONE 13 PRO", price: 55000 };

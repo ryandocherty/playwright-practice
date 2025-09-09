@@ -141,7 +141,7 @@ test.beforeAll(async () => {
   orderID = placeOrderResponse_JSON.orders[0];
 });
 
-test("Udemy: Login using API", async ({ page }) => {
+test("@Web Udemy: Login using API", async ({ page }) => {
   /*---------------------------------------Inject Login Token------------------------------------*/
   /*---------------------------------------------------------------------------------------------*/
   //Here is where we'll inject loginToken to avoid repeatedly logging in.

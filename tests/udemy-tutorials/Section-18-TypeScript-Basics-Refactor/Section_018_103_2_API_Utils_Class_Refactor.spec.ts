@@ -16,11 +16,11 @@ const loginPassword = process.env.LOGIN_PASSWORD ?? "";
 let prerequisiteData: PrerequisiteData;
 const loginPayload: LoginPayload = { userEmail: loginEmail, userPassword: loginPassword };
 const placeOrderPayload: PlaceOrderPayload = {
-  orders: [{ country: "United Kingdom", productOrderedId: "668a961719320a140fe1ca57c" }],
+  orders: [{ country: "United Kingdom", productOrderedId: "68a961719320a140fe1ca57c" }],
 };
 
 //productOrderedId for "ZARA COAT 3": 68a961459320a140fe1ca57a
-//productOrderedId for "ADIDAS ORIGINAL": 668a961719320a140fe1ca57c
+//productOrderedId for "ADIDAS ORIGINAL": 68a961719320a140fe1ca57c
 //productOrderedId for "IPHONE 13 PRO": 68a961959320a140fe1ca57e
 
 test.beforeAll(async () => {
@@ -32,7 +32,7 @@ test.beforeAll(async () => {
   prerequisiteData = await apiUtils.getOrderID(placeOrderPayload);
 });
 
-test("Udemy: Verify Order using APIUtils", async ({ page }) => {
+test("@Web Udemy: Verify Order using APIUtils", async ({ page }) => {
   //==================================================
   //    Login Page - Set Auth Token in localStorage
   //==================================================

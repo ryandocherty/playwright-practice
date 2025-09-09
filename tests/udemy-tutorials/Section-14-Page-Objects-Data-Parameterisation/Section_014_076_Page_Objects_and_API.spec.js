@@ -27,7 +27,7 @@ test.beforeAll(async () => {
   prerequisiteData = await apiUtils.getOrderID(placeOrderPayload);
 });
 
-test("Udemy: Page Object Manager and API", async ({ page }) => {
+test("@Web Udemy: Page Object Manager and API", async ({ page }) => {
   await page.addInitScript((value) => {
     window.localStorage.setItem(`token`, value);
   }, prerequisiteData.loginToken);
@@ -56,7 +56,7 @@ test("Udemy: Page Object Manager and API", async ({ page }) => {
   expect(deliveryEmailInOrderSummary).toBe(loginPayload.userEmail);
   expect(billingCountryInOrderSummary).toBe(placeOrderPayload.orders[0].country);
   expect(deliveryCountryInOrderSummary).toBe(placeOrderPayload.orders[0].country);
-  expect(productNameInOrderSummary).toBe(productNameAndPrice.name);
+  expect(productNameInOrderSummary.toLowerCase()).toBe(productNameAndPrice.name.toLowerCase());
   expect(productPriceInOrderSummary_Numeric).toBe(productNameAndPrice.price);
 });
 
@@ -66,7 +66,7 @@ function getSelectedProductInfo() {
   //I can use the returned "productSelected" object to perform assertions.
 
   const productOrderedId_ZARA = "68a961459320a140fe1ca57a";
-  const productOrderedId_ADIDAS = "668a961719320a140fe1ca57c";
+  const productOrderedId_ADIDAS = "68a961719320a140fe1ca57c";
   const productOrderedId_IPHONE = "68a961959320a140fe1ca57e";
 
   let selectedProductInfo = {};

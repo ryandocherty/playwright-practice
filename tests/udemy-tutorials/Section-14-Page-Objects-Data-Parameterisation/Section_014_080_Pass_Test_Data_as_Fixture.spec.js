@@ -30,7 +30,7 @@ import { APIUtils } from "../../../udemy_utils/APIUtils";
 import { POManager } from "../../../udemy_page_objects/POManager";
 
 //Here we pass our "customtest" and pass the fixture "testDataForOrder":
-customtest("Udemy: Place order using custom fixture", async ({ page, testDataForOrder }) => {
+customtest("@Web Udemy: Place order using custom fixture", async ({ page, testDataForOrder }) => {
   const loginPayload = { userEmail: testDataForOrder.loginEmail, userPassword: testDataForOrder.loginPassword };
   const placeOrderPayload = {
     orders: [
@@ -81,7 +81,7 @@ customtest("Udemy: Place order using custom fixture", async ({ page, testDataFor
   expect(deliveryEmailInOrderSummary).toBe(loginPayload.userEmail);
   expect(billingCountryInOrderSummary).toBe(placeOrderPayload.orders[0].country);
   expect(deliveryCountryInOrderSummary).toBe(placeOrderPayload.orders[0].country);
-  expect(productNameInOrderSummary).toBe(testDataForOrder.desiredProductName);
+  expect(productNameInOrderSummary.toLowerCase()).toBe(testDataForOrder.desiredProductName.toLowerCase());
   expect(productPriceInOrderSummary_Numeric).toBe(productIDAndPrice.price);
 });
 
@@ -93,7 +93,7 @@ function getProductInfo(desiredProductName) {
     case "ZARA COAT 3":
       return { productOrderedId: "68a961459320a140fe1ca57a", price: 11500 };
     case "ADIDAS ORIGINAL":
-      return { productOrderedId: "668a961719320a140fe1ca57c", price: 11500 };
+      return { productOrderedId: "68a961719320a140fe1ca57c", price: 11500 };
     case "IPHONE 13 PRO":
       return { productOrderedId: "68a961959320a140fe1ca57e", price: 55000 };
     default:

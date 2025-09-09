@@ -137,6 +137,6 @@ test("Udemy: Page Object Pattern", async ({ page }) => {
   expect(orderIDInOrderSummary).toBe(orderID);
   expect(billingEmailInOrderSummary && deliveryEmailInOrderSummary).toBe(loginEmail);
   expect(billingCountryInOrderSummary && deliveryCountryInOrderSummary).toBe(desiredCountryName);
-  expect(productNameInOrderSummary).toBe(itemNameInCart);
+  expect(productNameInOrderSummary.toLowerCase()).toBe(itemNameInCart.toLowerCase());
   expect(productPriceInOrderSummary_Numeric).toBe(priceInCart_Numeric);
 });

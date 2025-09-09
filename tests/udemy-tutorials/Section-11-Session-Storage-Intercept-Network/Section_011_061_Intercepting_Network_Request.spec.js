@@ -49,7 +49,7 @@ test.beforeAll(async () => {
   loginToken = await apiUtils.getLoginToken();
 });
 
-test("Udemy: Verify Unauthorised/Forbidden message", async ({ page }) => {
+test("@Web Udemy: Verify Unauthorised/Forbidden message", async ({ page }) => {
   //Set the loginToken in the browser storage:
   await page.addInitScript((value) => {
     window.localStorage.setItem(`token`, value);

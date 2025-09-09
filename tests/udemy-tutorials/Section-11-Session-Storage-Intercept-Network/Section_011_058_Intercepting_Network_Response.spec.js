@@ -89,7 +89,7 @@ test.beforeAll(async () => {
   prerequisiteData = await apiUtils.getOrderID(placeOrderPayload);
 });
 
-test("Udemy: Verify No Orders error message", async ({ page }) => {
+test("@Web Udemy: Verify No Orders error message", async ({ page }) => {
   /*-------------------------------------Login Page----------------------------------------------*/
   /*---------------------------------------------------------------------------------------------*/
   await page.addInitScript((value) => {

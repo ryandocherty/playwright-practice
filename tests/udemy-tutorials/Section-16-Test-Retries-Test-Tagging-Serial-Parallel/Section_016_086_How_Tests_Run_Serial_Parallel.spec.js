@@ -41,7 +41,7 @@ import PlaceOrder_SeveralDataSets from "../../../udemy_utils/PlaceOrder_SeveralD
 const testData = JSON.parse(JSON.stringify(PlaceOrder_SeveralDataSets));
 
 for (const data of testData) {
-  test(`Udemy: Placing order for: ${getProductInfo(data.productID).name}, account: ${data.loginEmail}`, async ({
+  test(`@Web Udemy: Placing order for: ${getProductInfo(data.productID).name}, account: ${data.loginEmail}`, async ({
     page,
   }) => {
     const loginPayload = { userEmail: data.loginEmail, userPassword: data.loginPassword };
@@ -150,12 +150,12 @@ function getProductInfo(desiredProductIdentifier) {
     case "ZARA COAT 3":
       return { productOrderedId: "68a961459320a140fe1ca57a", price: 11500 };
     case "ADIDAS ORIGINAL":
-      return { productOrderedId: "668a961719320a140fe1ca57c", price: 11500 };
+      return { productOrderedId: "68a961719320a140fe1ca57c", price: 11500 };
     case "IPHONE 13 PRO":
       return { productOrderedId: "68a961959320a140fe1ca57e", price: 55000 };
     case "68a961459320a140fe1ca57a":
       return { name: "ZARA COAT 3", price: 11500 };
-    case "668a961719320a140fe1ca57c":
+    case "68a961719320a140fe1ca57c":
       return { name: "ADIDAS ORIGINAL", price: 11500 };
     case "68a961959320a140fe1ca57e":
       return { name: "IPHONE 13 PRO", price: 55000 };

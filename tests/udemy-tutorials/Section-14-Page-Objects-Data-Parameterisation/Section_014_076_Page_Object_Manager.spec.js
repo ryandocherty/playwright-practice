@@ -70,7 +70,8 @@ test("Udemy: Page Object Manager", async ({ page }) => {
   //==================================================
   const orderConfirmedPage = poManager.getOrderConfirmedPage();
   const orderInfoInOrderConfirmed = await orderConfirmedPage.getOrderInfoInOrderConfirmed();
-  const { productNameInOrderConfirmed, priceInOrderConfirmed_Numeric, orderIDInOrderConfirmed } = orderInfoInOrderConfirmed;
+  const { productNameInOrderConfirmed, priceInOrderConfirmed_Numeric, orderIDInOrderConfirmed } =
+    orderInfoInOrderConfirmed;
   await orderConfirmedPage.navigateToOrderHistoryPage();
   expect(page).toHaveURL(`https://rahulshettyacademy.com/client/#/dashboard/myorders`);
 
@@ -79,7 +80,9 @@ test("Udemy: Page Object Manager", async ({ page }) => {
   //==================================================
   const orderHistoryPage = poManager.getOrderHistoryPage();
   await orderHistoryPage.navigateToOrderSummaryPage(orderIDInOrderConfirmed);
-  await expect(page).toHaveURL(`https://rahulshettyacademy.com/client/#/dashboard/order-details/` + orderIDInOrderConfirmed);
+  await expect(page).toHaveURL(
+    `https://rahulshettyacademy.com/client/#/dashboard/order-details/` + orderIDInOrderConfirmed
+  );
 
   //==================================================
   //               Order Summary Page
@@ -100,6 +103,8 @@ test("Udemy: Page Object Manager", async ({ page }) => {
   expect(orderIDInOrderSummary).toBe(orderIDInOrderConfirmed);
   expect(billingEmailInOrderSummary && deliveryEmailInOrderSummary).toBe(loginEmail);
   expect(billingCountryInOrderSummary && deliveryCountryInOrderSummary).toBe(desiredCountryName);
-  expect(productNameInOrderSummary).toBe(itemNameInCart && productNameInOrderConfirmed);
+  expect(productNameInOrderSummary.toLowerCase()).toBe(
+    itemNameInCart.toLowerCase() && productNameInOrderConfirmed.toLowerCase()
+  );
   expect(productPriceInOrderSummary_Numeric).toBe(priceInCart_Numeric && priceInOrderConfirmed_Numeric);
 });

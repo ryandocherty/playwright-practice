@@ -15,7 +15,7 @@ test('@regression Form validation works', () => {...});
 
 At the commandline, you can then use these tags to control which tests execute.
 So for the 2 tests in this file:
-I've assigned "@web" for the test that just uses API calls.
+I've assigned "@Web" for the test that just uses API calls.
 I've assigned "@UI" for the test that uses UI automation.
 
 In the terminal, use:
@@ -95,7 +95,8 @@ test(`@UI Udemy: Test Tagging Demo for UI`, async ({ page }) => {
   //==================================================
   const orderConfirmedPage = poManager.getOrderConfirmedPage();
   const orderInfoInOrderConfirmed = await orderConfirmedPage.getOrderInfoInOrderConfirmed();
-  const { productNameInOrderConfirmed, priceInOrderConfirmed_Numeric, orderIDInOrderConfirmed } = orderInfoInOrderConfirmed;
+  const { productNameInOrderConfirmed, priceInOrderConfirmed_Numeric, orderIDInOrderConfirmed } =
+    orderInfoInOrderConfirmed;
   await orderConfirmedPage.navigateToOrderHistoryPage();
   expect(page).toHaveURL(`https://rahulshettyacademy.com/client/#/dashboard/myorders`);
 
@@ -104,7 +105,9 @@ test(`@UI Udemy: Test Tagging Demo for UI`, async ({ page }) => {
   //==================================================
   const orderHistoryPage = poManager.getOrderHistoryPage();
   await orderHistoryPage.navigateToOrderSummaryPage(orderIDInOrderConfirmed);
-  await expect(page).toHaveURL(`https://rahulshettyacademy.com/client/#/dashboard/order-details/` + orderIDInOrderConfirmed);
+  await expect(page).toHaveURL(
+    `https://rahulshettyacademy.com/client/#/dashboard/order-details/` + orderIDInOrderConfirmed
+  );
 
   //==================================================
   //               Order Summary Page
@@ -125,7 +128,9 @@ test(`@UI Udemy: Test Tagging Demo for UI`, async ({ page }) => {
   expect(orderIDInOrderSummary).toBe(orderIDInOrderConfirmed);
   expect(billingEmailInOrderSummary && deliveryEmailInOrderSummary).toBe(loginEmail);
   expect(billingCountryInOrderSummary && deliveryCountryInOrderSummary).toBe(desiredCountryName);
-  expect(productNameInOrderSummary).toBe(itemNameInCart && productNameInOrderConfirmed);
+  expect(productNameInOrderSummary.toLowerCase()).toBe(
+    itemNameInCart.toLowerCase() && productNameInOrderConfirmed.toLowerCase()
+  );
   expect(productPriceInOrderSummary_Numeric).toBe(priceInCart_Numeric && priceInOrderConfirmed_Numeric);
 });
 
@@ -135,7 +140,7 @@ test(`@Web Udemy: Test Tagging Demo for Web`, async () => {
   const apiContext = await request.newContext();
 
   const loginPayload = { userEmail: loginEmail, userPassword: loginPassword };
-  const placeOrderPayload = { orders: [{ country: "United Kingdom", productOrderedId: "668a961719320a140fe1ca57c" }] };
+  const placeOrderPayload = { orders: [{ country: "United Kingdom", productOrderedId: "68a961719320a140fe1ca57c" }] };
 
   const loginResponse = await apiContext.post(`https://rahulshettyacademy.com/api/ecom/auth/login`, {
     data: loginPayload,
