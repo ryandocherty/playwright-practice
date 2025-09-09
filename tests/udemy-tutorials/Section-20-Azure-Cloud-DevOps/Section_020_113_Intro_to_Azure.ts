@@ -1,13 +1,13 @@
 //Section 20.113: Introduction to Azure & Playwright cloud workspace resource creation steps
 
 /*
-NOTE:
+PREFACE NOTE:
 I'll not be doing any practical work as part of this section.
 I'll just be watching the Udemy tutorials, doing some extra reading/research, and making notes.
 Microsoft Azure requires a creepy amount of personal information which makes me uncomfortable.
 They require your home address, phone number, and a debit/credit card.
 All this to "verify your identity", which is disingenuous and absurd to me.
-In the real world, a company is likely to already have an existing & paid Azure subscription.
+In the real world, an organisation is likely to already have an existing & paid Azure subscription.
 */
 
 /*
