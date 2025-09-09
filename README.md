@@ -13,6 +13,8 @@ Here you'll find various tests and scripts that I've created based on tutorials 
 ## Udemy Course
 **Title**: [*Playwright JS/TS Automation Testing from Scratch & Framework*](https://www.udemy.com/course/playwright-tutorials-automation-testing/)
 
+**Link**: [udemy-tutorials](https://github.com/ryandocherty/playwright-practice/tree/main/tests/udemy-tutorials)
+
 **Modules**:
 <pre>
 1. Introduction to Playwright Automation & Course Expectations                     ✅
