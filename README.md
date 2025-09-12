@@ -37,5 +37,5 @@ Here you'll find various tests and scripts that I've created based on tutorials 
 18. Understand TypeScript Basics and Refactor Playwright Framework to TypeScript   ✅
 19. Playwright Cucumber Framework Integration with its Features                    ✅     
 20. E2E Playwright DevOps Solution using Azure Cloud Parallel Hosting & CI/CD      ✅
-21. Playwright MCP - Spin-up AI Agent inside VSCode with Github Copilot
+21. Playwright MCP - Spin-up AI Agent inside VSCode with Github Copilot            ✅
 </pre>
