@@ -1,8 +1,8 @@
 //Section 23.124. 75 Mins In detail discussion on commonly asked JavaScript Interview Questions
 
-console.log(`\n===============================================================================================`);
+console.log(`\n======================================================================================================`);
 console.log(`Question 1: Can a JavaScript Object hold a function as a property?`);
-console.log(`===============================================================================================\n`);
+console.log(`======================================================================================================\n`);
 
 //The answer is yes:
 
@@ -25,9 +25,9 @@ console.log(person.location);
 //When calling an object function, you need to use brackets:
 person.greet();
 
-console.log(`\n===============================================================================================`);
+console.log(`\n======================================================================================================`);
 console.log(`Question 2: What are anonymous functions in Javascript? Define thier syntax and implementation.`);
-console.log(`===============================================================================================\n`);
+console.log(`======================================================================================================\n`);
 
 /*
 An anonymous function is a function that is declared without any named identifier.
@@ -112,9 +112,9 @@ setTimeout(function () {
 const add = (a, b) => a + b;
 console.log(add(10, 20));
 
-console.log(`\n===============================================================================================`);
+console.log(`\n======================================================================================================`);
 console.log(`Question 3: What is the difference between var, let, and const? Explain with examples.`);
-console.log(`===============================================================================================\n`);
+console.log(`======================================================================================================\n`);
 
 /*
 Understanding the differences between var, let, and const is fundamental in JavaScript.
@@ -132,6 +132,7 @@ Re-declaration: Allowed.
 Re-assignment: Allowed.
 */
 
+var x = 23;
 function varExample() {
   console.log(x); //Output: undefined (due to hoisting)
   if (true) {
@@ -141,6 +142,7 @@ function varExample() {
   console.log(x); //Output: 10 (var is function-scoped, not block-scoped)
 }
 varExample();
+console.log(x); //Output: 23
 
 //The var variable "x" is accessible anywhere inside the "varExample()" function.
 //It is accessible even before it is declared (hoisted).
@@ -203,3 +205,96 @@ console.log(constObj.name); //Output: "Timothy"
 //Variables with const must be initialised when declared.
 //You cannot reassign a const variable.
 //However, if const is used with object or arrays, the *contents* can be modified, but the *binding* itself cannot.
+
+console.log(`\n======================================================================================================`);
+console.log(`Question 4: Explain push, pop, slice, shift, and unshift methods when accessing array elements.`);
+console.log(`======================================================================================================\n`);
+
+//Commonly used JavaScript array methods are "push", "pop", "slice", "shift", and "unshift".
+//They are fundamental tools for manipulating arrays by adding, removing, or extracting elements.
+
+/*
+==========================
+        1. push
+==========================
+
+Purpose: Adds one or more element(s) to the END of an array.
+Returns: The new length of the array.
+Modifies: The original array.
+*/
+
+const pushExample = ["apple", "bananna"];
+pushExample.push("orange");
+console.log(pushExample); //Output: ["apple", "bananna", "orange"]
+
+/*
+==========================
+        2. unshift
+==========================
+
+Purpose: Adds one or more element(s) to the START of an array.
+Returns: The new length of the array.
+Modifies: The original array.
+*/
+
+const unshiftExample = ["apple", "bananna", "orange"];
+unshiftExample.unshift("grape");
+console.log(unshiftExample); //Output: ["grape", "apple", "bananna", "orange"];
+
+/*
+==========================
+        3. pop
+==========================
+
+Purpose: Removes the LAST element from an array.
+Returns: The removed element.
+Modifies: The original array.
+*/
+
+const popExample = ["apple", "bananna", "orange"];
+const lastElement = popExample.pop();
+console.log(popExample); //Output: ["apple", "bananna"]
+console.log(lastElement); //Output: "orange"
+
+/*
+==========================
+        4. shift
+==========================
+
+Purpose: Removes the FIRST element from an array.
+Returns: The removed element.
+Modifies: The original array.
+*/
+
+const shiftExample = ["apple", "bananna", "orange"];
+const firstElement = shiftExample.shift();
+console.log(shiftExample); //Output: ["bananna", "orange"]
+console.log(firstElement); //Output: "apple"
+
+/*
+==========================
+        5. slice
+==========================
+
+Purpose: Returns a shallow copy of a portion of an array without modifying the original.
+Parameters: slice(startIndex, endIndex) - extracts elements from startIndex up to but NOT including endIndex.
+            If the parameters are omitted, it just copies the whole array.
+Returns: New array with extracted elements.
+*/
+//                      0          1          2        3        4
+const sliceExample = ["apple", "bananna", "orange", "mango", "grape"];
+const slicedArray = sliceExample.slice(1, 3);
+console.log(slicedArray); //Output: ["bananna", "orange"]
+console.log(sliceExample); //Output: ["apple", "bananna", "orange", "mango", "grape"]
+const unchangedArray = sliceExample.slice();
+console.log(unchangedArray); //Output: ["apple", "bananna", "orange", "mango", "grape"]
+
+/*
+==========================
+  When to use each method
+==========================
+
+Use "push" and "unshift" when you need to ADD elements to an array.
+Use "pop" and "shift" when you need to REMOVE elements from an array.
+Use "slice" when you need to COPY parts of an array without changin the original.
+*/
