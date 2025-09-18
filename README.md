@@ -13,6 +13,8 @@ Here you'll find various tests and scripts that I've created based on tutorials 
 ## Udemy Course
 **Title**: [*Playwright JS/TS Automation Testing from Scratch & Framework*](https://www.udemy.com/course/playwright-tutorials-automation-testing/)
 
+**Link**: [udemy-tutorials](https://github.com/ryandocherty/playwright-practice/tree/main/tests/udemy-tutorials)
+
 **Modules**:
 <pre>
 1. Introduction to Playwright Automation & Course Expectations                     ✅
@@ -34,6 +36,6 @@ Here you'll find various tests and scripts that I've created based on tutorials 
 17. HTML & Allure Reporting & CI/CD Jenkins Integration                            ✅
 18. Understand TypeScript Basics and Refactor Playwright Framework to TypeScript   ✅
 19. Playwright Cucumber Framework Integration with its Features                    ✅     
-20. E2E Playwright DevOps Solution using Azure Cloud Parallel Hosting & CI/CD
-21. Playwright MCP - Spin-up AI Agent inside VSCode with Github Copilot
+20. E2E Playwright DevOps Solution using Azure Cloud Parallel Hosting & CI/CD      ✅
+21. Playwright MCP - Spin-up AI Agent inside VSCode with Github Copilot            ✅
 </pre>
