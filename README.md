@@ -15,6 +15,9 @@ Here you'll find various tests and scripts that I've created based on tutorials 
 
 **Link**: [udemy-tutorials](https://github.com/ryandocherty/playwright-practice/tree/main/tests/udemy-tutorials)
 
+**[Certificate of Completion](https://udemy-certificate.s3.amazonaws.com/pdf/UC-d0845263-538e-41f3-96b4-8a4e51616085.pdf)**
+
+
 **Modules**:
 <pre>
 1. Introduction to Playwright Automation & Course Expectations                     ✅
