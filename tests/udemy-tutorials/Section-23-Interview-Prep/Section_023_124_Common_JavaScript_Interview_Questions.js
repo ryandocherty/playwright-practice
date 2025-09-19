@@ -1,7 +1,7 @@
 //Section 23.124. 75 Mins In detail discussion on commonly asked JavaScript Interview Questions
 
 console.log(`\n======================================================================================================`);
-console.log(`Question 1: Can a JavaScript Object hold a function as a property?`);
+console.log(`Question 1: Can a JavaScript object hold a function as a property?`);
 console.log(`======================================================================================================\n`);
 
 //The answer is yes:
@@ -147,6 +147,7 @@ console.log(x); //Output: 23
 //The var variable "x" is accessible anywhere inside the "varExample()" function.
 //It is accessible even before it is declared (hoisted).
 //It is NOT block-scoped - so it's visible outside the "if" block.
+//Declaring a variable without var, let, or const (e.g. "x = 12") will default it to "var".
 
 /*
 ==========================
@@ -207,11 +208,36 @@ console.log(constObj.name); //Output: "Timothy"
 //However, if const is used with object or arrays, the *contents* can be modified, but the *binding* itself cannot.
 
 console.log(`\n======================================================================================================`);
-console.log(`Question 4: Explain push, pop, slice, shift, and unshift methods when accessing array elements.`);
+console.log(`Question 4: Explain the different methods for accessing and manipulating array elements.`);
 console.log(`======================================================================================================\n`);
 
-//Commonly used JavaScript array methods are "push", "pop", "slice", "shift", and "unshift".
+//Commonly used JavaScript array methods are "push", "pop", "slice", "shift", "splice", and "unshift".
 //They are fundamental tools for manipulating arrays by adding, removing, or extracting elements.
+
+//                0          1          2        3        4
+const fruits = ["apple", "bananna", "orange", "mango", "grape"];
+
+//Accessing array elements by index:
+console.log(fruits[0]); //Output: "apple"
+console.log(fruits[3]); //Output: "mango"
+
+//Accessing the index (number) of elements in an array:
+console.log(fruits.indexOf("bananna")); //Output: 1
+console.log(fruits.indexOf("grape")); //Output: 4
+
+//Iterating over arrays:
+fruits.forEach((fruit, index) => {
+  console.log(`${index} : ${fruit}`);
+});
+
+/*
+  Output:
+  0 : apple
+  1 : bananna
+  2 : orange
+  3 : mango
+  4 : grape
+  */
 
 /*
 ==========================
@@ -281,6 +307,7 @@ Parameters: slice(startIndex, endIndex) - extracts elements from startIndex up t
             If the parameters are omitted, it just copies the whole array.
 Returns: New array with extracted elements.
 */
+
 //                      0          1          2        3        4
 const sliceExample = ["apple", "bananna", "orange", "mango", "grape"];
 const slicedArray = sliceExample.slice(1, 3);
@@ -291,10 +318,59 @@ console.log(unchangedArray); //Output: ["apple", "bananna", "orange", "mango", "
 
 /*
 ==========================
+        6. splice
+==========================
+
+Purpose: Add, remove, or replace elements at any posiiton in an array.
+Parameters: splice(startIndex, deleteCount, item1, item2, ...).
+            Using a negative startIndex starts from the end of the array.
+            Having no deleteCount will delete every element after the startIndex.
+Returns: Array containing the removed elements (empty if none are removed).
+Modifies: The original array.
+
+1. Starting from "startIndex", remove "deleteCount" elements from array.
+2. Then, insert any additional items (if provided) starting from "startIndex".
+*/
+
+//Removing elements with splice:
+//                       0          1          2        3        4
+const spliceRemoved = ["apple", "bananna", "orange", "mango", "grape"];
+let removed = spliceRemoved.splice(1, 3);
+console.log(spliceRemoved); //Output: ["apple", "grape"]
+console.log(removed); //Output: ["bananna", "orange", "mango"]
+
+//Adding elements with splice:
+//                     0          1          2        3        4
+const spliceAdded = ["apple", "bananna", "orange", "mango", "grape"];
+spliceAdded.splice(3, 0, "blueberry", "raspberry");
+console.log(spliceAdded); //Output: ["apple", "bananna", "orange", "blueberry", "raspberry", "mango", "grape"]
+
+//Replacing elements with splice:
+//                       0          1          2        3        4
+const spliceReplaced = ["apple", "bananna", "orange", "mango", "grape"];
+let replaced = spliceReplaced.splice(1, 2, "blueberry", "kiwi");
+console.log(spliceReplaced); //Output: ["apple", "blueberry", "kiwi", "mango", "grape"]
+console.log(replaced); //Output: ["bananna", "orange"]
+
+//Using a negative index with splice:
+//                       0          1          2        3        4
+const spliceNegative = ["apple", "bananna", "orange", "mango", "grape"];
+spliceNegative.splice(-2, 1);
+console.log(spliceNegative); //Output: ["apple", "bananna", "orange", "grape"]
+
+/*
+==========================
   When to use each method
 ==========================
 
 Use "push" and "unshift" when you need to ADD elements to an array.
 Use "pop" and "shift" when you need to REMOVE elements from an array.
-Use "slice" when you need to COPY parts of an array without changin the original.
+Use "slice" when you need to COPY parts of an array without changing the original.
+Use "splice" when you need to modify specific parts of an array, while also modifying the original.
+
+==========================
+     Example usage
+==========================
+
+
 */
