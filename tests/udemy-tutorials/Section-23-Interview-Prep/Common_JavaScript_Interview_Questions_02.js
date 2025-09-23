@@ -1,5 +1,5 @@
 console.log(`\n======================================================================================================`);
-console.log(`Question 2: What are anonymous functions in Javascript? Define thier syntax and implementation.`);
+console.log(`Question 2: What are anonymous functions in Javascript? Define thier syntax and implementation.         `);
 console.log(`======================================================================================================\n`);
 
 /*

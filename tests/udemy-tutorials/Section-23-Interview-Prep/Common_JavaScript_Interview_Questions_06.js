@@ -1,5 +1,5 @@
 console.log(`\n======================================================================================================`);
-console.log(`Question 6. What are callback functions in JavaScript?`);
+console.log(`Question 6. What are callback functions in JavaScript?                                                  `);
 console.log(`======================================================================================================\n`);
 
 /*

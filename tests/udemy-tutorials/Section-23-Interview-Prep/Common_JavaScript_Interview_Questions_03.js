@@ -1,5 +1,5 @@
 console.log(`\n======================================================================================================`);
-console.log(`Question 3: What is the difference between var, let, and const? Explain with examples.`);
+console.log(`Question 3: What is the difference between var, let, and const? Explain with examples.                  `);
 console.log(`======================================================================================================\n`);
 
 /*

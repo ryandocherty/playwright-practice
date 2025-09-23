@@ -1,5 +1,5 @@
 console.log(`\n======================================================================================================`);
-console.log(`Question 6. What are promises in JavaScript? Explain the differences between callbacks and promises.`);
+console.log(`Question 7. What are promises in JavaScript? Explain the differences between callbacks and promises.    `);
 console.log(`======================================================================================================\n`);
 
 /*
@@ -65,7 +65,7 @@ function _processData(data) {
 //_fetchData(_processData); //Output: NULL/INCOMPLETE
 
 //====================================================
-//      Example with Promise (modern approach)
+// Example with Promise.then() (more modern approach)
 //====================================================
 
 function fetchData() {
@@ -74,20 +74,22 @@ function fetchData() {
   //While Pending, this function will not Resolve, meaning it fully waits for the data to be fetched.
   //If rejected, it will not
 
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
     console.log(`Fetching data...`);
 
     setTimeout(() => {
       console.log(`Promise Resolved! Data has been fetched.`);
       const data = "Complete Data";
       resolve(data);
+      reject(new Error(`Failure Reason`));
     }, 3000);
   });
 }
 
 function processData(data) {
   //Do some processing on the fetched data.
-  console.log(`Processing: ${data}`);
+  console.log(`Processing ${data}\n`);
+  return `Processing ${data}`;
 }
 
 /*
@@ -118,3 +120,88 @@ fetchData()
   .catch((error) => {
     console.error(`Error: ${error}`);
   });
+
+//====================================================
+//  Example with async/await (most modern approach)
+//====================================================
+
+/*
+Using async/await is considered the more modern, clean, and readable approach for handling
+asynchronous code in JavaScript overall.
+
+Why async/await is considered modern and preferred:
+
+1. Synchronous-like code structure:
+    async/await lets you write asynchronous code that looks and behaves like synchronous code.
+    This makes it easier to read and maintain.
+
+2. Improved readability and maintainability:
+    Instead of chaining multiple .then() calls, you simply "await" each Promise.
+    This creates linear and intuitive control flow.
+
+3. Simplified error handling:
+    You can use standard try/catch blocks to handle errors, rather than .catch() on Promise chains.
+    Promise chains can become complex in nested or sequential operations.
+
+4. Better debugging experience:
+    Stack traces and debugging tools work more naturally with async/await.
+    This is due to the control flow being more straightforward.
+*/
+
+async function fetchAndProcessData() {
+  try {
+    //async functions also return Promises.
+    //This means it will "await" fetchData() to be resolved before moving on.
+    const data = await fetchData();
+    const result = await processData(data);
+    console.log(`Result using async/await: ${result}`);
+  } catch (error) {
+    console.log(`Error: ${error}`);
+  }
+}
+
+fetchAndProcessData();
+
+/*
+When to use async/await:
+
+1. For most modern JavaScript development, especially when readability and maintainability matter, prefer async/await.
+2. It's fully compatible with Promises since async functions always return Promises.
+3. You can still mic .then() with async/await if needed, but it's generally cleaner to stick with just async/await.
+
+Basically, async/await is syntactic sugar over Promises that makes async code cleaner and easier to understand.
+It improves error handling using standard try/catch.
+It's widely supported in modern environments and recommended for new code bases.
+*/
+
+/*
+====================================================
+    Summary: Callback and Promise differences
+====================================================
+
+A Callback is a function passsed into another function as an argument to be executed later,
+usually after an asynchronous operation finishes.
+
+A Promise is an object representing the eventual completion (or failure) of an asynchronous operation.
+It provides .then() and .catch() methods to handle success and failure cases, and enables chaining.
+
+1. Readability:
+    Callbacks can lead to nested callback hell.
+    Promises provide cleaner chaining .then(), improving reasability.
+
+2. Error handling:
+    Callbacks have manual and scattered error handling (try/catch inside callbacks).
+    Promises provide centralised error handling with .catch() method.
+
+3. Composability:
+    Callbacks are difficult to compose with multiple async operations.
+    Promises are easy to chain, combine (Promise.all, Promise.race).
+
+4. States:
+    Callbacks have no concept of state; only executes callback on completion.
+    Promises track the state (pending, fulfilled, rejected).
+
+5. Control flow:
+    Callbacks are hard to follow for multiple sequential or parallel tasks.
+    Promises allows for explicit control flow with chaining and async/await.
+*/

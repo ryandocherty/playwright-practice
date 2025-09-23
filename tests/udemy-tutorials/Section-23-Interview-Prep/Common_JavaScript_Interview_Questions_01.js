@@ -1,7 +1,5 @@
-//Section 23.124. 75 Mins In detail discussion on commonly asked JavaScript Interview Questions
-
 console.log(`\n======================================================================================================`);
-console.log(`Question 1: Can a JavaScript object hold a function as a property?`);
+console.log(`Question 1: Can a JavaScript object hold a function as a property?                                      `);
 console.log(`======================================================================================================\n`);
 
 //The answer is yes:

@@ -1,5 +1,5 @@
 console.log(`\n======================================================================================================`);
-console.log(`Question 4: Explain the different methods for accessing and manipulating array elements.`);
+console.log(`Question 4: Explain the different methods for accessing and manipulating array elements.                `);
 console.log(`======================================================================================================\n`);
 
 //Commonly used JavaScript array methods are "push", "pop", "slice", "shift", "splice", and "unshift".
