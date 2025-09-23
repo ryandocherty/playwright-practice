@@ -60,13 +60,12 @@ This will enable asynchronous programming, meaning JavaScript will wait for the 
 
 function fetchData(callback) {
   //Fetch data from server.
-  let data;
 
   //We can use setTimeout() to force JavaScript to wait while some code executes:
   setTimeout(() => {
     console.log(`Fetching data...`);
     console.log(`Data fetched!`);
-    data = "Some example data";
+    const data = "Some example data";
 
     //After the data has been fetched, we need to execute the processData() step.
     //In this case, we can pass the processData() function as an argument to this fetchData() function.
