@@ -1,0 +1,14 @@
+[
+  {
+    "loginEmail": "emailaddress@email.com",
+    "loginPassword": "Password1!",
+    "desiredDeliveryCountry": "United Kingdom",
+    "productID": "68a961459320a140fe1ca57a"
+  },
+  {
+    "loginEmail": "emailaddress2@email.com",
+    "loginPassword": "Password2!",
+    "desiredDeliveryCountry": "United States",
+    "productID": "68a961959320a140fe1ca57e"
+  }
+]
