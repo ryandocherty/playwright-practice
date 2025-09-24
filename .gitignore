@@ -7,3 +7,12 @@ node_modules/
 /cucumber-report/
 /blob-report/
 /playwright/.cache/
+
+#I originally ignored these files below.
+#But since they contain non-sensitive dummy data, I'm commiting them:
+
+#udemy_utils/PlaceOrder_SeveralDataSets.json
+#udemy_utils/PlaceOrder_SingleDataSet.json
+#udemy_utils/PlaceOrder_TestBase.js
+#Udemy_storageState.json
+#.env
