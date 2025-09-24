@@ -64,7 +64,7 @@ test(`@UI Udemy: Test Tagging Demo for UI`, async ({ page }) => {
   //==================================================
   //                  Dashboard Page
   //==================================================
-  const desiredProductName = `IPHONE 13 PRO`;
+  const desiredProductName = `iphone 13 pro`;
 
   const dashboardPage = poManager.getDashboardPage();
   await dashboardPage.searchProduct_addToCart(desiredProductName);

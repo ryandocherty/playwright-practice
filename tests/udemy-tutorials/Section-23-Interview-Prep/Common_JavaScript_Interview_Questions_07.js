@@ -27,7 +27,7 @@ the previous one, so you nest callback inside callbacks repeatedly.
 */
 
 /*
-Using the previous "fetchData()" example, we need the data to be fetched before invoking "modifyData()".
+Using the previous "fetchData()" example, we need the data to be fetched before invoking "processData()".
 When you use setTimeout() to wait for some event, you specify a delay duration in miliseconds, but:
 
 1. You don't know exactly how long the operation will take - you're essentially guessing.
@@ -121,11 +121,11 @@ fetchData()
     console.error(`Error: ${error}`);
   });
 
-//====================================================
-//  Example with async/await (most modern approach)
-//====================================================
-
 /*
+====================================================
+ Example with async/await (most modern approach)
+====================================================
+
 Using async/await is considered the more modern, clean, and readable approach for handling
 asynchronous code in JavaScript overall.
 
@@ -187,7 +187,7 @@ It provides .then() and .catch() methods to handle success and failure cases, an
 
 1. Readability:
     Callbacks can lead to nested callback hell.
-    Promises provide cleaner chaining .then(), improving reasability.
+    Promises provide cleaner chaining with .then(), improving readability.
 
 2. Error handling:
     Callbacks have manual and scattered error handling (try/catch inside callbacks).
@@ -195,7 +195,7 @@ It provides .then() and .catch() methods to handle success and failure cases, an
 
 3. Composability:
     Callbacks are difficult to compose with multiple async operations.
-    Promises are easy to chain, combine (Promise.all, Promise.race).
+    Promises are easy to chain and combine (Promise.all, Promise.race).
 
 4. States:
     Callbacks have no concept of state; only executes callback on completion.
