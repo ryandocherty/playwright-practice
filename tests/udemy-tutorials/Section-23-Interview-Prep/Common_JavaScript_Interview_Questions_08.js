@@ -127,10 +127,12 @@ Advantages of calling super.method() inside an overidden method:
     If the parent class method changes internally (e.g. adding logging or validation),
     child classes calling super() automatically get the benefit of updated logic without modification.
 
+
 Why you might *not* call super():
 
 1. If the child's behaviour is completely unrelated or incompatible with the parent's.
 2. If you want to replace the parent's implementation altogether.
+
 
 Final notes on super():
 
@@ -144,7 +146,7 @@ Final notes on super():
 ====================================================
 
 See:
-tests/udemy-tutorials/Section-23-Interview-Prep/01_child.js
-tests/udemy-tutorials/Section-23-Interview-Prep/01_mainjs
-tests/udemy-tutorials/Section-23-Interview-Prep/01_parent.js
+tests/udemy-tutorials/Section-23-Interview-Prep/01_main.js
+tests/udemy-tutorials/Section-23-Interview-Prep/01_person.js
+tests/udemy-tutorials/Section-23-Interview-Prep/01_student.js
 */
