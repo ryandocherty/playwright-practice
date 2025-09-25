@@ -276,7 +276,9 @@ test("Udemy: Client Item Purchase Test", async ({ page }) => {
   const priceOnSummary_raw: any = await page.locator(`.price`).textContent();
   const priceOnSummary_Numeric: number = parseFloat(priceOnSummary_raw?.replace(/[^0-9]+/g, ""));
   console.log(`Item price (on summary): $${priceOnSummary_Numeric}`);
-  expect(priceOnSummary_Numeric).toEqual(priceBeforeCart_Numeric && priceInCart_Numeric && priceInOrderConfirmed_Numeric);
+  expect(priceOnSummary_Numeric).toEqual(
+    priceBeforeCart_Numeric && priceInCart_Numeric && priceInOrderConfirmed_Numeric
+  );
 
   //Order summary is split into 2 sections: "Billing Address" & "Delivery Address"
   //Both sections display the email address and country for the order,

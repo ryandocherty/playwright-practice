@@ -22,7 +22,9 @@ export class DashboardPage {
     console.log(productTitles);
 
     for (let i = 0; i < productTitlesCount; ++i) {
-      if ((await this.allProducts.nth(i).locator(`b`).textContent()) === desiredProduct) {
+      let productText = (await this.allProducts.nth(i).locator(`b`).textContent()).toLowerCase();
+
+      if ((await productText) === desiredProduct) {
         await this.allProducts.nth(i).locator(`button.w-10`).click();
         await this.page.waitForLoadState(`networkidle`);
         console.log(`Clicking 'Add To Cart' for product "${desiredProduct}"`);

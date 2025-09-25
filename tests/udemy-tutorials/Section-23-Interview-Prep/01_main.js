@@ -45,7 +45,7 @@ console.log(student3.getStudentDetails()); //Output: Name: John Johnson, Age: 16
         name: "Jimothy Timbers"
         age: 16
         grabe: "A"
-    b. Prototype linked to Student.prototype, which itself inherits from Person.prototype. 
+    b. Prototype linked to Student.prototype, which itself inherits from Person.prototype.
     
 This means the "student1" object can access methods from both Student and Person classes.
 

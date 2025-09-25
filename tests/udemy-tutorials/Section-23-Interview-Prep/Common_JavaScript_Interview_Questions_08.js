@@ -96,7 +96,7 @@ Explaination:
 4. You can define additional child-specific methods like "childMethod()".
 
 You would typicall place these three files (Parent.js, Child.js, and main.js) inside the same folder.
-You'd then just run the main.js file (node main.js).
+You'd then just run the main.js file (using node main.js).
 
 
 ====================================================
@@ -138,9 +138,8 @@ Final notes on super():
 
 1. Calling super() is *mandatory* in subclasses before you use "this".
 2. Calling super.method() inside methods is optional but often helps write cleaner, more maintainable code.
-*/
 
-/*
+
 ====================================================
            Example using seperate files
 ====================================================
@@ -149,4 +148,31 @@ See:
 tests/udemy-tutorials/Section-23-Interview-Prep/01_main.js
 tests/udemy-tutorials/Section-23-Interview-Prep/01_person.js
 tests/udemy-tutorials/Section-23-Interview-Prep/01_student.js
+
+
+====================================================
+                    Summary
+====================================================
+
+So to answer the questions:
+
+Question 8.1. Create an inheritance relationship between a parent and child class.
+                Invoke the parent constructor from the child class.
+                Create a main.js file to call the parent class methods from a child class object.
+Question 8.2. Explain how the "super" and "this" keywords help achieve this solution.
+
+
+1. "super()" is used to invoke a Parent's class constructor from inside a Child class.
+      When the child class constructor runs, super() calls the parent class constructor.
+      This is mandatory in JavaScript when using "extends" - you must caall super() before using "this" in a child constructor.
+      super() initialises the "this" context with properties defined in the parent constructor.
+
+2. "this" is used to instantiate variables/paramaters for each instance of a class object.
+      "this" refers to the current instance object being constructed.
+      After calling super(), the childObj instance will have the properties initialised both by the parent (this.name/age) and by the child (this.grade).
+      You can then use "this" to add child-specific properties and methods.
+
+This is how the child inherits properties and methods from the parent class and extends the functionality.
+1. super() - Calls the parent constructor, sets up "this" for the child.
+2. "this" - References the current instance; used to assign/access properties.
 */
