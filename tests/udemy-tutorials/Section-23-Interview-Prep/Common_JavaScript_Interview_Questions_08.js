@@ -171,6 +171,9 @@ Question 8.2. Explain how the "super" and "this" keywords help achieve this solu
       "this" refers to the current instance object being constructed.
       After calling super(), the childObj instance will have the properties initialised both by the parent (this.name/age) and by the child (this.grade).
       You can then use "this" to add child-specific properties and methods.
+      Without using "this", parameters passed only exist within the scope of the constructor.
+      Using "this" allows parameters to exist within the scope of the whole class, meaing it can then be used in class methods.
+      Using "this" basically allows paramaters to become whole class instances.
 
 This is how the child inherits properties and methods from the parent class and extends the functionality.
 1. super() - Calls the parent constructor, sets up "this" for the child.

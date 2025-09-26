@@ -13,6 +13,10 @@ By inheriting these properties from the Person class, we avoid unnecessarily ins
 export class Student extends Person {
   constructor(name, age, grade) {
     super(name, age); //Call the parent class constructor using super()
+
+    //Without using "this", the "grade" parameter will only be accessible inside the constructor (due to scope).
+    //Initialising "grade" with "this" means that the "grade" parameter can be used throughout the class.
+    //This way, you can now use "grade" in the getStudentDetails() method below (or any other method(s) in the class).
     this.grade = grade;
   }
 
