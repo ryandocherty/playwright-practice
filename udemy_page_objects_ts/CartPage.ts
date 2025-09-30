@@ -37,6 +37,7 @@ export class CartPage {
     These errors will then be caught by your test at runtime.
     */
 
+    await this.page.waitForLoadState(`networkidle`);
     const itemNameInCart_Text: string = (await this.itemNameInCart_Locator.textContent()) ?? "";
     const priceInCart_Text: string = (await this.itemPriceInCart_Locator.textContent()) ?? "";
 

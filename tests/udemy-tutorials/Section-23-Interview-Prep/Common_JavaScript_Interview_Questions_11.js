@@ -305,7 +305,6 @@ After all iterations: accumulator (256)
 */
 
 /*
-
 ====================================================
  How to convert passed students' names to uppercase
  While also keeping it as an array of objects
