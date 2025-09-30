@@ -3,7 +3,7 @@ console.log(`Question 11. Create an array of objects representing students with 
 console.log(`             Use the array methods "filter", "map", and "reduce".                                       `);
 console.log(`             Get the below result with an optimised solution:                                           `);
 console.log(`             1. Filters out students who passed the exam with a score more than/equal to 40.            `);
-console.log(`             2. Update Passed students names to uppercase.                                              `);
+console.log(`             2. Update Passed students' names to uppercase.                                             `);
 console.log(`             3. Total score of all passing students.                                                    `);
 console.log(`======================================================================================================\n`);
 
@@ -178,7 +178,7 @@ Detailed Explaination:
     b. This is the flattened array.
 */
 
-//----------Example 3: Count occurrences of items in an array:---------
+//----------Example 3: Count occurrences of items in an array---------
 
 const fruits = ["apple", "banana", "apple", "orange", "banana", "apple"];
 const fruitsCount = fruits.reduce((accumulator, fruit) => {
@@ -201,47 +201,48 @@ Basic Explanation:
 
 Detailed Explanation:
 1. Initial state:
-    a. accumulator is initialised as an empty object {}, which will hold counts.
+    a. accumulator is initialised as an empty object {}, which will hold counts
     b. Array to process: ["apple", "banana", "apple", "orange", "banana", "apple"]
 
 2. Iteration 1 (fruit = "apple"):
-    a. accumulator["apple"] does not exist, so (accumulator["apple"] || 0) is 0.
-    b. Increment by 1 -> 1.
-    c. accumulator is now: {apple: 1}.
+    a. accumulator["apple"] does not exist, so (accumulator["apple"] || 0) is 0
+    b. Increment by 1 -> 1
+    c. accumulator is now: {apple: 1}
 
 3. Iteration 2 (fruit = "banana"):
-    a. accumulator["banana"] undefined, so (accumulator["banana"] || 0) is 0.
-    b. Increment by 1 -> 1.
+    a. accumulator["banana"] undefined, so (accumulator["banana"] || 0) is 0
+    b. Increment by 1 -> 1
     c. accumulator is now: {apple: 1, banana: 1}
 
 4. Iteration 3 (fruit = "apple"):
-    a. accumulator["apple"] is 1, so (1 || 0) is 1.
-    b. Increment by 1 -> 2.
-    c. accumulator is now: {apple: 2, banana: 1}.
+    a. accumulator["apple"] is 1, so (1 || 0) is 1
+    b. Increment by 1 -> 2
+    c. accumulator is now: {apple: 2, banana: 1}
 
 5. Iteration 4 (fruit = "orange"):
-    a. accumulator["orange"] undefined, so (accumulator["orange"] || 0) is 0.
-    b. Increment by 1 -> 1.
-    c. accumulator is now: {apple: 2, banana: 1, orange: 1}.
+    a. accumulator["orange"] undefined, so (accumulator["orange"] || 0) is 0
+    b. Increment by 1 -> 1
+    c. accumulator is now: {apple: 2, banana: 1, orange: 1}
 
 6. Iteration 5 (fruit = "banana"):
-    a. accumulator["banana"] is 1, so (1 || 0) is 1.
-    b. Increment by 1 -> 2.
-    c. accumulator is now: {apple: 2, banana: 2, orange: 1}.
+    a. accumulator["banana"] is 1, so (1 || 0) is 1
+    b. Increment by 1 -> 2
+    c. accumulator is now: {apple: 2, banana: 2, orange: 1}
 
 7. Iteration 6 (fruit = "apple"):
-    a. accumulator["apple"] is 2, so (2 || 0) is 2.
-    b. Increment by 1 -> 3.
-    c. Accumulator is now: {apple: 3, banana: 2, orange: 1}.
+    a. accumulator["apple"] is 2, so (2 || 0) is 2
+    b. Increment by 1 -> 3
+    c. Accumulator is now: {apple: 3, banana: 2, orange: 1}
 
 8. After all iterations:
-    a. reduce() returns the final accumulator object: {apple: 3, banana: 2, orange: 1}.
+    a. reduce() returns the final accumulator object: {apple: 3, banana: 2, orange: 1}
 */
 
 //================================
 //  Interview Question Solution
 //================================
 
+//Create an array of objects representing students with their names and scores:
 const students = [
   { name: "Charlie", score: 13 },
   { name: "Ronald", score: 39 },
@@ -252,13 +253,120 @@ const students = [
   { name: "Matthew", score: 98 },
 ];
 
+//Filter out students who passed the exam with a score more than/equal to 40:
 const passedStudents = students.filter((student) => student.score >= 40);
 console.log(passedStudents);
 /*
-The filter() method iterates through the array index-by-index.
-It takes the first index (e.g. { name: "Charlie", score: 13 }) and stores it in the "student" parameter.
+Output:
+[
+  { name: 'Deandra', score: 48 },
+  { name: 'Dennis', score: 70 },
+  { name: 'Waitress', score: 40 },
+  { name: 'Matthew', score: 98 }
+]
+
+The filter() method iterates through the array index-by-index (each index/element is an object).
+It takes the first element (e.g. { name: "Charlie", score: 13 }) and stores it in the "student" parameter.
 We then have an arrow function to grab the "score" property, and check if its value is >= 40.
 If the condition is satisfied, it gets stored in the new array "passedStudents".
 If the condition is not satisfied, it gets ignored/skipped.
 So we're "filtering" the array based on a function which checks a condition.
+*/
+
+//Update Passed students' names to uppercase:
+const passedStudents_UppercaseNames = passedStudents.map((student) => student.name.toUpperCase());
+console.log(passedStudents_UppercaseNames); //Output: [ 'DEANDRA', 'DENNIS', 'WAITRESS', 'MATTHEW' ]
+/*
+The map() method iterates through each element (which are objects) in the "passedStudents" array.
+Each element (an object) is stored in the "student" parameter.
+The map() method then targets the "name" value in each element/object by using student.name.
+Then it finally transforms each name to uppercase using student.name.toUpperCase().
+This returns a new array containing just the students' names in uppercase.
+*/
+
+//Total score of all passing students:
+const passedStudents_ScoresTotal = passedStudents.reduce((accumulator, student) => {
+  return accumulator + student.score;
+}, 0);
+console.log(passedStudents_ScoresTotal + `/${passedStudents.length * 100}`); //Output: 256/400
+/*
+The reduce() method iterates through each element (which are objects) in the "passedStudents" array.
+The initial value of accumulator is 0 - from the 2nd parameter of reduce().
+Each element (an object) is stored in the "student" parameter.
+Then it targets the "score" value in each element/object by using student.score.
+It then finalls adds this value to the accumulator (which is 0 initially).
+It continues looping through the array, grabbing the scores, while adding them all up.
+
+1st iteration: accumulator (0) + student.score (48)
+2nd iteration: accumulator (48) + student.score (70)
+3rd iteration: accumulator (118) + student.score (40)
+4th iteration: accumulator (158) + student.score (98)
+After all iterations: accumulator (256)
+*/
+
+/*
+
+====================================================
+ How to convert passed students' names to uppercase
+ While also keeping it as an array of objects
+====================================================
+
+Originally when updating the passed students' names to uppercas using map(), we wrote:
+
+const passedStudents_UppercaseNames = passedStudents.map((student) => student.name.toUpperCase());
+console.log(passedStudents_UppercaseNames);
+
+Output:
+[ 'DEANDRA', 'DENNIS', 'WAITRESS', 'MATTHEW' ]
+
+This returned a simple array which only contained each student.name.toUppercase().
+But we can also use map() to perform the same modification, while returing an array of objects.
+This will return an array that looks just like the original passedStudents array, but with uppercase names.
+*/
+
+const passedStudents_UppercaseNames_AsObjects = passedStudents.map((student) => {
+  //Here we create a new object so the original is not mutated:
+  return {
+    ...student, //Spread all existing properties.
+    name: student.name.toUpperCase(), //But convert the names to uppercase.
+  };
+});
+console.log(passedStudents_UppercaseNames_AsObjects);
+/*
+Output:
+[
+  { name: 'DEANDRA', score: 48 },
+  { name: 'DENNIS', score: 70 },
+  { name: 'WAITRESS', score: 40 },
+  { name: 'MATTHEW', score: 98 }
+]
+
+Detailed explaination:
+1. We start with an array of student objects, where each object has a "name" key and a "score" value.
+    e.g. [{ name: 'Deandra', score: 48 }]
+
+2. Calling map() on the array.
+    a. students.map(student => { ... }); 
+    b. The map() method iterates over each element in the students array (each element is an object representing a student).
+    c. For each "student" in the array, the arrow function inside .map() is called with "student" as its argument.
+
+3. Creating a new object inside map's callback.
+    a. Inside the map's callback, for every student, we return a new object.
+    b. return {...student, name: student.name.toUpperCase(),};
+    c. "...student" is the spread syntax, which copies all the key-value pairs from the current "student" object into a new object.
+    d. Then we override the "name" property by assigning it "student.name.toUpperCase()", converting the names to uppercase.
+    e. Because JavaScript objects don't allow duplicate keys,
+       the "name" property is assigned *after* the spread syntax replaces the one copied earlier.
+    f. So the final object has the same "score" as before, but the "name" is converted to uppercase.
+
+4. Collecting results in a new array.
+    a. Each call to thw map callback returns a new object (with uppercase names).
+    b. Thee new objects are collected in an array behind the scenes.
+    c. .map() then returns this new array, which we assigned to passedStudents_UppercaseNames_AsObjects.
+
+Important notes:
+1. The original passedStudents array remains unchanged.
+2. Since .map() returns a new array of new objects, this approach is immutable and functional.
+3. Using the spread syntax {...student} ensures we do not modify the original objects, but create new ones.
+4. This pattern is very common when you want to update some properties in an array of objects without side effects.
 */
