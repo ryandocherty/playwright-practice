@@ -12,6 +12,7 @@ export class CartPage {
   }
 
   async getOrderInfoInCart() {
+    //TODO: Maybe I should clear the cart first?
     await this.page.waitForLoadState(`networkidle`);
     const itemNameInCart_Text = await this.itemNameInCart_Locator.textContent();
     const priceInCart_Text = await this.itemPriceInCart_Locator.textContent();
